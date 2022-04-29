@@ -17,7 +17,7 @@ function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
     // construct game objects here
-    // ...
+    // 
 
     // startup the ticker
     createjs.Ticker.framerate = FRAME_RATE;
@@ -29,8 +29,8 @@ function onTick(e:createjs.Event) {
     // console.log("TICK!");
     document.getElementById("fps").innerHTML = String(createjs.Ticker.getMeasuredFPS());
 
-    // this is your game loop!
-    // ...
+    // game loop
+    // 
 
     // update the stage
     stage.update();
