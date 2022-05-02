@@ -1045,6 +1045,58 @@ exports.AssetManager = AssetManager;
 
 /***/ }),
 
+/***/ "./src/Car.ts":
+/*!********************!*\
+  !*** ./src/Car.ts ***!
+  \********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Car = void 0;
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
+class Car {
+    constructor(stage, assetManager) {
+        this._speed = Constants_1.STARTING_CAR_SPEED;
+        this.stage = stage;
+        this._sprite = assetManager.getSprite("sprites", "Car/Left", 550, 300);
+        this.width = this._sprite.getBounds().width;
+    }
+    get sprite() {
+        return this._sprite;
+    }
+    positionMe() {
+        if (this._direction = Car.LEFT) {
+            this._sprite.gotoAndPlay("Car/Left");
+        }
+        else if (this._direction = Car.RIGHT) {
+            this._sprite.gotoAndPlay("Car/Right");
+        }
+        this.stage.addChild(this._sprite);
+    }
+    update() {
+        if (this._direction = Car.LEFT) {
+            this._sprite.x = this._sprite.x - this._speed;
+            if (this._sprite.x < 0 - this.width) {
+                this._sprite.x = (Constants_1.STAGE_WIDTH + this.width);
+            }
+        }
+        else if (this._direction = Car.RIGHT) {
+            this._sprite.x = this._sprite.x + this._speed;
+            if (this._sprite.x > (Constants_1.STAGE_WIDTH - this.width)) {
+                this._sprite.x = 0;
+            }
+        }
+    }
+}
+exports.Car = Car;
+Car.RIGHT = 0;
+Car.LEFT = 1;
+
+
+/***/ }),
+
 /***/ "./src/Chicken.ts":
 /*!************************!*\
   !*** ./src/Chicken.ts ***!
@@ -1066,6 +1118,27 @@ class Chicken {
         this.width = this._sprite.getBounds().width;
         stage.addChild(this._sprite);
     }
+    get sprite() {
+        return this._sprite;
+    }
+    get speed() {
+        return this._speed;
+    }
+    set speed(value) {
+        this._speed = value;
+    }
+    set direction(value) {
+        this._direction = value;
+    }
+    get direction() {
+        return this._direction;
+    }
+    get state() {
+        return this._state;
+    }
+    set state(value) {
+        this._state = value;
+    }
     startMe() {
         if (this._state == Chicken.STATE_IDLE) {
             this._state = Chicken.STATE_MOVING;
@@ -1081,14 +1154,30 @@ class Chicken {
             let sprite = this._sprite;
             if (this._direction == Chicken.LEFT) {
                 sprite.x = sprite.x - this._speed;
-                if (sprite.x < 60) {
-                    sprite.x = 60;
+                this.sprite.gotoAndPlay("Chicken/Left");
+                if (sprite.x < 0) {
+                    sprite.x = 0;
                 }
             }
             else if (this._direction == Chicken.RIGHT) {
                 sprite.x = sprite.x + this._speed;
+                this.sprite.gotoAndPlay("Chicken/Right");
                 if (sprite.x > (Constants_1.STAGE_WIDTH - this.width)) {
                     sprite.x = (Constants_1.STAGE_WIDTH - this.width);
+                }
+            }
+            else if (this._direction == Chicken.UP) {
+                sprite.y = sprite.y - this._speed;
+                this.sprite.gotoAndPlay("Chicken/Up");
+                if (sprite.y < 0) {
+                    sprite.y = 0;
+                }
+            }
+            else if (this._direction == Chicken.DOWN) {
+                sprite.y = sprite.y + this._speed;
+                this.sprite.gotoAndPlay("Chicken/Down");
+                if (sprite.y > (Constants_1.STAGE_HEIGHT - this.width)) {
+                    sprite.y = (Constants_1.STAGE_HEIGHT - this.width);
                 }
             }
         }
@@ -1115,11 +1204,12 @@ Chicken.STATE_DEAD = 3;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ASSET_MANIFEST = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
+exports.ASSET_MANIFEST = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
 exports.STAGE_WIDTH = 600;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
-exports.CHICKEN_SPEED = 5;
+exports.CHICKEN_SPEED = 3;
+exports.STARTING_CAR_SPEED = 5;
 exports.CHICKEN_START_Y = 575;
 exports.CHICKEN_START_X = 300;
 exports.ASSET_MANIFEST = [
@@ -1159,20 +1249,73 @@ __webpack_require__(/*! createjs */ "./node_modules/createjs/builds/1.0.0/create
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 const AssetManager_1 = __webpack_require__(/*! ./AssetManager */ "./src/AssetManager.ts");
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
+const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
 let stage;
 let canvas;
 let assetManager;
+let leftKey = false;
+let rightKey = false;
+let upKey = false;
+let downKey = false;
 let chicken;
+let car;
+function monitorKeys() {
+    if (upKey) {
+        chicken.direction = Chicken_1.Chicken.UP;
+        chicken.startMe();
+    }
+    else if (downKey) {
+        chicken.direction = Chicken_1.Chicken.DOWN;
+        chicken.startMe();
+    }
+    else if (leftKey) {
+        chicken.direction = Chicken_1.Chicken.LEFT;
+        chicken.startMe();
+    }
+    else if (rightKey) {
+        chicken.direction = Chicken_1.Chicken.RIGHT;
+        chicken.startMe();
+    }
+    else
+        chicken.stopMe();
+}
 function onReady(e) {
     console.log(">> spritesheet loaded – ready to add sprites to game");
     chicken = new Chicken_1.Chicken(stage, assetManager);
+    car = new Car_1.Car(stage, assetManager);
+    car.positionMe();
+    document.onkeydown = onKeyDown;
+    document.onkeyup = onKeyUp;
     createjs.Ticker.framerate = Constants_1.FRAME_RATE;
     createjs.Ticker.on("tick", onTick);
     console.log(">> game ready");
 }
 function onTick(e) {
     document.getElementById("fps").innerHTML = String(createjs.Ticker.getMeasuredFPS());
+    monitorKeys();
+    chicken.update();
+    car.update();
     stage.update();
+}
+function onKeyDown(e) {
+    if (e.key == "w")
+        upKey = true;
+    else if (e.key == "s")
+        downKey = true;
+    else if (e.key == "a")
+        leftKey = true;
+    else if (e.key == "d")
+        rightKey = true;
+}
+function onKeyUp(e) {
+    if (e.key == "w")
+        upKey = false;
+    else if (e.key == "s")
+        downKey = false;
+    else if (e.key == "a")
+        leftKey = false;
+    else if (e.key == "d")
+        rightKey = false;
 }
 function main() {
     canvas = document.getElementById("game-canvas");
@@ -3519,7 +3662,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("884247dc2e2f8f524a22")
+/******/ 		__webpack_require__.h = () => ("0585f1c7347001b8816e")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
