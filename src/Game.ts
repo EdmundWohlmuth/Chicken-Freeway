@@ -6,18 +6,24 @@ import "createjs";
 // importing game constants
 import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST } from "./Constants";
 import { AssetManager } from "./AssetManager";
+import { Chicken } from "./Chicken";
 
 // game variables
 let stage:createjs.StageGL;
 let canvas:HTMLCanvasElement;
 let assetManager:AssetManager;
 
+// monitorkeys
+
+// sprites
+let chicken:Chicken;
+
 // --------------------------------------------------- event handler
 function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
     // construct game objects here
-    // 
+     chicken = new Chicken(stage, assetManager);
 
     // startup the ticker
     createjs.Ticker.framerate = FRAME_RATE;
