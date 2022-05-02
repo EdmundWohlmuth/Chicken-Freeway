@@ -83,6 +83,10 @@ export class Chicken {
         }
     }
 
+    public killMe():void {
+
+    }
+
     // determine direction and speed based off: this._direction
     public update():void {
         if (this._state == Chicken.STATE_MOVING) {

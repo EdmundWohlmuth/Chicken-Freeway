@@ -1056,11 +1056,14 @@ exports.AssetManager = AssetManager;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Car = void 0;
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class Car {
-    constructor(stage, assetManager) {
+    constructor(stage, assetManager, chicken) {
         this._speed = Constants_1.STARTING_CAR_SPEED;
         this.stage = stage;
-        this._sprite = assetManager.getSprite("sprites", "Car/Left", 550, 300);
+        this._direction = Car.RIGHT;
+        this.chicken = chicken;
+        this._sprite = assetManager.getSprite("sprites", "Car/Left", 250, 294);
         this.width = this._sprite.getBounds().width;
     }
     get sprite() {
@@ -1087,6 +1090,9 @@ class Car {
             if (this._sprite.x > (Constants_1.STAGE_WIDTH - this.width)) {
                 this._sprite.x = 0;
             }
+        }
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            console.log("collision");
         }
     }
 }
@@ -1149,6 +1155,8 @@ class Chicken {
             this._state = Chicken.STATE_IDLE;
         }
     }
+    killMe() {
+    }
     update() {
         if (this._state == Chicken.STATE_MOVING) {
             let sprite = this._sprite;
@@ -1205,13 +1213,13 @@ Chicken.STATE_DEAD = 3;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ASSET_MANIFEST = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
-exports.STAGE_WIDTH = 600;
+exports.STAGE_WIDTH = 256;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
 exports.CHICKEN_SPEED = 3;
 exports.STARTING_CAR_SPEED = 5;
 exports.CHICKEN_START_Y = 575;
-exports.CHICKEN_START_X = 300;
+exports.CHICKEN_START_X = 125;
 exports.ASSET_MANIFEST = [
     {
         type: "json",
@@ -1259,6 +1267,13 @@ let upKey = false;
 let downKey = false;
 let chicken;
 let car;
+let startLane;
+let laneOne;
+let laneTwo;
+let laneThree;
+let laneFour;
+let laneFive;
+let laneSix;
 function monitorKeys() {
     if (upKey) {
         chicken.direction = Chicken_1.Chicken.UP;
@@ -1281,8 +1296,22 @@ function monitorKeys() {
 }
 function onReady(e) {
     console.log(">> spritesheet loaded – ready to add sprites to game");
+    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 575);
+    stage.addChild(startLane);
+    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 481);
+    stage.addChild(laneOne);
+    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 385);
+    stage.addChild(laneTwo);
+    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 289);
+    stage.addChild(laneThree);
+    laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
+    stage.addChild(laneFour);
+    laneFive = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 96);
+    stage.addChild(laneFive);
+    laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
+    stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
-    car = new Car_1.Car(stage, assetManager);
+    car = new Car_1.Car(stage, assetManager, chicken);
     car.positionMe();
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -1327,6 +1356,64 @@ function main() {
     assetManager.loadAssets(Constants_1.ASSET_MANIFEST);
 }
 main();
+
+
+/***/ }),
+
+/***/ "./src/Toolkit.ts":
+/*!************************!*\
+  !*** ./src/Toolkit.ts ***!
+  \************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.pointHit = exports.boxHit = exports.randomMe = void 0;
+function randomMe(low, high) {
+    let randomNum = 0;
+    randomNum = Math.floor(Math.random() * (high - low + 1)) + low;
+    return randomNum;
+}
+exports.randomMe = randomMe;
+function boxHit(sprite1, sprite2) {
+    let width1 = sprite1.getBounds().width;
+    let height1 = sprite1.getBounds().height;
+    let width2 = sprite2.getBounds().width;
+    let height2 = sprite2.getBounds().height;
+    if ((sprite1.x + width1 > sprite2.x) &&
+        (sprite1.y + height1 > sprite2.y) &&
+        (sprite1.x < sprite2.x + width2) &&
+        (sprite1.y < sprite2.y + height2)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+exports.boxHit = boxHit;
+function pointHit(sprite1, sprite2, sprite1HitX = 0, sprite1HitY = 0, stage = null) {
+    if (stage != null) {
+        let markerPoint = sprite1.localToGlobal(sprite1HitX, sprite1HitY);
+        let marker = new createjs.Shape();
+        marker.graphics.beginFill("#FF00EC");
+        marker.graphics.drawRect(0, 0, 4, 4);
+        marker.regX = 2;
+        marker.regY = 2;
+        marker.x = markerPoint.x;
+        marker.y = markerPoint.y;
+        marker.cache(0, 0, 4, 4);
+        stage.addChild(marker);
+    }
+    let point = sprite1.localToLocal(sprite1HitX, sprite1HitY, sprite2);
+    if (sprite2.hitTest(point.x, point.y)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+exports.pointHit = pointHit;
 
 
 /***/ }),
@@ -3662,7 +3749,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("0585f1c7347001b8816e")
+/******/ 		__webpack_require__.h = () => ("d1b24627cdb803ba28f4")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

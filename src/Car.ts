@@ -1,5 +1,7 @@
 import { AssetManager } from "./AssetManager";
+import { Chicken } from "./Chicken";
 import { STARTING_CAR_SPEED, STAGE_HEIGHT, STAGE_WIDTH } from "./Constants";
+import { boxHit } from "./Toolkit";
 
 export class Car {
 
@@ -12,19 +14,24 @@ export class Car {
     private _sprite:createjs.Sprite;
     private _direction:number;
 
+    private chicken:Chicken;
+
     private stage:createjs.StageGL;
     private width:number;
 
     // event handlers
 
     // constructor
-    constructor(stage:createjs.StageGL, assetManager:AssetManager) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken) {
         // init
         this._speed = STARTING_CAR_SPEED;
         this.stage = stage;
+        this._direction = Car.RIGHT;
+
+        this.chicken = chicken;
 
         //sprite
-        this._sprite = assetManager.getSprite("sprites", "Car/Left", 550, 300);
+        this._sprite = assetManager.getSprite("sprites", "Car/Left", 250, 294);
         this.width = this._sprite.getBounds().width;       
     }
 
@@ -64,6 +71,11 @@ export class Car {
             if (this._sprite.x > (STAGE_WIDTH - this.width)) {
                 this._sprite.x = 0;
             }
+        }
+
+        // collision
+        if (boxHit(this._sprite, this.chicken.sprite)) {
+            console.log("collision");
         }
     }
 

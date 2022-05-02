@@ -24,6 +24,14 @@ let downKey:boolean = false;
 let chicken:Chicken;
 let car:Car;
 
+let startLane:createjs.Sprite;
+let laneOne:createjs.Sprite;
+let laneTwo:createjs.Sprite;
+let laneThree:createjs.Sprite;
+let laneFour:createjs.Sprite;
+let laneFive:createjs.Sprite;
+let laneSix:createjs.Sprite;
+
 
 function monitorKeys():void {
     if (upKey) {
@@ -53,10 +61,26 @@ function monitorKeys():void {
 function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
+    // temp map creation
+    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 575)
+    stage.addChild(startLane);
+    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 481)
+    stage.addChild(laneOne);
+    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 385)
+    stage.addChild(laneTwo);
+    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 289)
+    stage.addChild(laneThree);
+    laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
+    stage.addChild(laneFour);
+    laneFive = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 96);
+    stage.addChild(laneFive);
+    laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0)
+    stage.addChild(laneSix);
+
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
 
-    car = new Car(stage, assetManager);
+    car = new Car(stage, assetManager, chicken);
     car.positionMe();
 
      // event listeners
