@@ -143,5 +143,14 @@ export class Chicken {
         }
     }
 
+    public stageClear():void {
+        let sprite:createjs.Sprite = this._sprite;
+        // incriment score
+
+        // reset player
+        sprite.x = CHICKEN_START_X;
+        sprite.y = CHICKEN_START_Y;
+    }
+
     // ---------------------- private meathods ----------------------------
 }

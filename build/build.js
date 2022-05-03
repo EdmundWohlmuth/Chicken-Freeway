@@ -1200,6 +1200,11 @@ class Chicken {
             }
         }
     }
+    stageClear() {
+        let sprite = this._sprite;
+        sprite.x = Constants_1.CHICKEN_START_X;
+        sprite.y = Constants_1.CHICKEN_START_Y;
+    }
 }
 exports.Chicken = Chicken;
 Chicken.UP = 0;
@@ -1268,6 +1273,7 @@ const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts")
 const AssetManager_1 = __webpack_require__(/*! ./AssetManager */ "./src/AssetManager.ts");
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
 const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
+const Nest_1 = __webpack_require__(/*! ./Nest */ "./src/Nest.ts");
 let stage;
 let canvas;
 let assetManager;
@@ -1277,6 +1283,7 @@ let upKey = false;
 let downKey = false;
 let chicken;
 let car;
+let nest;
 let startLane;
 let laneOne;
 let laneTwo;
@@ -1321,6 +1328,7 @@ function onReady(e) {
     laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
     stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
+    nest = new Nest_1.Nest(stage, assetManager, chicken);
     car = new Car_1.Car(stage, assetManager, chicken);
     car.positionMe();
     document.onkeydown = onKeyDown;
@@ -1333,6 +1341,7 @@ function onTick(e) {
     document.getElementById("fps").innerHTML = String(createjs.Ticker.getMeasuredFPS());
     monitorKeys();
     chicken.update();
+    nest.update();
     car.update();
     stage.update();
 }
@@ -1366,6 +1375,36 @@ function main() {
     assetManager.loadAssets(Constants_1.ASSET_MANIFEST);
 }
 main();
+
+
+/***/ }),
+
+/***/ "./src/Nest.ts":
+/*!*********************!*\
+  !*** ./src/Nest.ts ***!
+  \*********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Nest = void 0;
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Nest {
+    constructor(stage, assetManager, chicken) {
+        this.chicken = chicken;
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", 10, 10);
+        this.width = this._sprite.getBounds().width;
+        stage.addChild(this._sprite);
+    }
+    update() {
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            this.chicken.stageClear();
+            console.log("collssion");
+        }
+    }
+}
+exports.Nest = Nest;
 
 
 /***/ }),
@@ -3759,7 +3798,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("b1d0578b22d8e82d24ce")
+/******/ 		__webpack_require__.h = () => ("530fe8e812ecd80577da")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

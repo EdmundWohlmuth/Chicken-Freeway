@@ -8,6 +8,7 @@ import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST } from "./Constan
 import { AssetManager } from "./AssetManager";
 import { Chicken } from "./Chicken";
 import { Car } from "./Car";
+import { Nest } from "./Nest";
 
 // game variables
 let stage:createjs.StageGL;
@@ -23,7 +24,7 @@ let downKey:boolean = false;
 // sprites
 let chicken:Chicken;
 let car:Car;
-
+let nest:Nest;
 let startLane:createjs.Sprite;
 let laneOne:createjs.Sprite;
 let laneTwo:createjs.Sprite;
@@ -80,6 +81,8 @@ function onReady(e:createjs.Event):void {
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
 
+    nest = new Nest(stage, assetManager, chicken);
+
     car = new Car(stage, assetManager, chicken);
     car.positionMe();
 
@@ -100,6 +103,7 @@ function onTick(e:createjs.Event) {
     // game loop
     monitorKeys();
     chicken.update();
+    nest.update();
     car.update();
    // console.log(chicken.state); 
 
