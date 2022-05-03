@@ -26,7 +26,7 @@ export class Car {
         // init
         this._speed = STARTING_CAR_SPEED;
         this.stage = stage;
-        this._direction = Car.RIGHT;
+        this._direction = Car.LEFT;
 
         this.chicken = chicken;
 
@@ -76,6 +76,7 @@ export class Car {
         // collision
         if (boxHit(this._sprite, this.chicken.sprite)) {
             console.log("collision");
+            this.chicken.killMe();
         }
     }
 

@@ -62,19 +62,19 @@ function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
     // temp map creation
-    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 575)
+    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576)
     stage.addChild(startLane);
-    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 481)
+    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480)
     stage.addChild(laneOne);
-    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 385)
+    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384)
     stage.addChild(laneTwo);
-    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 289)
+    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 288)
     stage.addChild(laneThree);
     laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
     stage.addChild(laneFour);
-    laneFive = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 96);
+    laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
     stage.addChild(laneFive);
-    laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0)
+    laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0) // inceriments of 96
     stage.addChild(laneSix);
 
     // construct game objects here

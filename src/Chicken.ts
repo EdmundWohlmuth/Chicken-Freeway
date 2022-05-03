@@ -17,6 +17,7 @@ export class Chicken {
     // variables
     private _speed:number;
     private _sprite:createjs.Sprite;
+    private _deadSprite:createjs.Sprite;
     private _state:number;
     private _direction:number;
 
@@ -34,8 +35,9 @@ export class Chicken {
         this._direction = Chicken.UP;
 
         //sprite
-        this._sprite = assetManager.getSprite("sprites", "Chicken/Up", CHICKEN_START_X, CHICKEN_START_Y);
+        this._sprite = assetManager.getSprite("sprites", "Chicken/Up", CHICKEN_START_X, CHICKEN_START_Y);       
         this.width = this._sprite.getBounds().width;
+        this._deadSprite = assetManager.getSprite("sprites", "Chicken/Dead");
 
         stage.addChild(this._sprite);
     }  
@@ -84,12 +86,24 @@ export class Chicken {
     }
 
     public killMe():void {
+        let sprite:createjs.Sprite = this._sprite;
+        this._state = Chicken.STATE_DEAD;
+        // decerement life
 
+        // create cooked chicken
+        this._deadSprite.x = sprite.x;
+        this._deadSprite.y = sprite.y;
+        this.stage.addChild(this._deadSprite);
+        
+        // reset player pos
+        sprite.x = CHICKEN_START_X;
+        sprite.y = CHICKEN_START_Y;
+        this._state = Chicken.STATE_IDLE;
     }
 
     // determine direction and speed based off: this._direction
     public update():void {
-        if (this._state == Chicken.STATE_MOVING) {
+        if (this._state == Chicken.STATE_MOVING && this._state != Chicken.STATE_DEAD) {
             let sprite:createjs.Sprite = this._sprite;
 
             if (this._direction == Chicken.LEFT) {

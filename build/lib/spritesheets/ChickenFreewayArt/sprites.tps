@@ -403,6 +403,36 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">GameObjects/1Up.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>3,5,7,10</rect>
+                <key>scale9Paddings</key>
+                <rect>3,5,7,10</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">GameObjects/Nest.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,4,16,7</rect>
+                <key>scale9Paddings</key>
+                <rect>8,4,16,7</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">Land Tiles/Dirt_LG.png</key>
             <key type="filename">Land Tiles/Grass_LG.png</key>
             <key type="filename">Land Tiles/Road_3_Lane.png</key>
@@ -493,6 +523,21 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">UI/Life.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>3,4,6,7</rect>
+                <key>scale9Paddings</key>
+                <rect>3,4,6,7</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">UI/PAUSE_OVERLAY_XL.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -579,6 +624,7 @@
             <filename>Obstacles</filename>
             <filename>UI</filename>
             <filename>Win-Lose</filename>
+            <filename>GameObjects</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

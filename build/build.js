@@ -1061,7 +1061,7 @@ class Car {
     constructor(stage, assetManager, chicken) {
         this._speed = Constants_1.STARTING_CAR_SPEED;
         this.stage = stage;
-        this._direction = Car.RIGHT;
+        this._direction = Car.LEFT;
         this.chicken = chicken;
         this._sprite = assetManager.getSprite("sprites", "Car/Left", 250, 294);
         this.width = this._sprite.getBounds().width;
@@ -1093,6 +1093,7 @@ class Car {
         }
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
             console.log("collision");
+            this.chicken.killMe();
         }
     }
 }
@@ -1122,6 +1123,7 @@ class Chicken {
         this._direction = Chicken.UP;
         this._sprite = assetManager.getSprite("sprites", "Chicken/Up", Constants_1.CHICKEN_START_X, Constants_1.CHICKEN_START_Y);
         this.width = this._sprite.getBounds().width;
+        this._deadSprite = assetManager.getSprite("sprites", "Chicken/Dead");
         stage.addChild(this._sprite);
     }
     get sprite() {
@@ -1156,9 +1158,17 @@ class Chicken {
         }
     }
     killMe() {
+        let sprite = this._sprite;
+        this._state = Chicken.STATE_DEAD;
+        this._deadSprite.x = sprite.x;
+        this._deadSprite.y = sprite.y;
+        this.stage.addChild(this._deadSprite);
+        sprite.x = Constants_1.CHICKEN_START_X;
+        sprite.y = Constants_1.CHICKEN_START_Y;
+        this._state = Chicken.STATE_IDLE;
     }
     update() {
-        if (this._state == Chicken.STATE_MOVING) {
+        if (this._state == Chicken.STATE_MOVING && this._state != Chicken.STATE_DEAD) {
             let sprite = this._sprite;
             if (this._direction == Chicken.LEFT) {
                 sprite.x = sprite.x - this._speed;
@@ -1296,17 +1306,17 @@ function monitorKeys() {
 }
 function onReady(e) {
     console.log(">> spritesheet loaded – ready to add sprites to game");
-    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 575);
+    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
     stage.addChild(startLane);
-    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 481);
+    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480);
     stage.addChild(laneOne);
-    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 385);
+    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384);
     stage.addChild(laneTwo);
-    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 289);
+    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 288);
     stage.addChild(laneThree);
     laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
     stage.addChild(laneFour);
-    laneFive = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 96);
+    laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
     stage.addChild(laneFive);
     laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
     stage.addChild(laneSix);
@@ -3749,7 +3759,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("d1b24627cdb803ba28f4")
+/******/ 		__webpack_require__.h = () => ("b1d0578b22d8e82d24ce")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
