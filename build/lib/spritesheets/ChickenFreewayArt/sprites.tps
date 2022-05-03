@@ -545,6 +545,28 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">Sedan/Left_1.png</key>
+            <key type="filename">Sedan/Left_2.png</key>
+            <key type="filename">Sedan/Left_3.png</key>
+            <key type="filename">Sedan/Left_4.png</key>
+            <key type="filename">Sedan/Right_1.png</key>
+            <key type="filename">Sedan/Right_2.png</key>
+            <key type="filename">Sedan/Right_3.png</key>
+            <key type="filename">Sedan/Right_4.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>22,7,43,14</rect>
+                <key>scale9Paddings</key>
+                <rect>22,7,43,14</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">UI/Life.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -648,6 +670,7 @@
             <filename>Win-Lose</filename>
             <filename>GameObjects</filename>
             <filename>Police</filename>
+            <filename>Sedan</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
