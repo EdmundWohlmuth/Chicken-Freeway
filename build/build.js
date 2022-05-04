@@ -1082,11 +1082,11 @@ class Car {
             this._direction = Car.RIGHT;
         console.log("direction = " + this._direction);
         if (this._direction == Car.LEFT) {
-            this._sprite.gotoAndPlay("Car/Left");
+            this._sprite.gotoAndPlay(this._animationLeft);
             this.sprite.x = 250;
         }
         else {
-            this._sprite.gotoAndPlay("Car/Right");
+            this._sprite.gotoAndPlay(this._animationRight);
             this.sprite.x = 0;
         }
         this.stage.addChild(this._sprite);
@@ -1283,6 +1283,8 @@ const AssetManager_1 = __webpack_require__(/*! ./AssetManager */ "./src/AssetMan
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
 const SportsCar_1 = __webpack_require__(/*! ./SportsCar */ "./src/SportsCar.ts");
 const Nest_1 = __webpack_require__(/*! ./Nest */ "./src/Nest.ts");
+const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
+const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts");
 let stage;
 let canvas;
 let assetManager;
@@ -1292,6 +1294,8 @@ let upKey = false;
 let downKey = false;
 let chicken;
 let sportsCar;
+let sedan;
+let police;
 let nest;
 let startLane;
 let laneOne;
@@ -1339,6 +1343,10 @@ function onReady(e) {
     chicken = new Chicken_1.Chicken(stage, assetManager);
     sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken);
     sportsCar.positionMe();
+    sedan = new Sedan_1.Sedan(stage, assetManager, chicken);
+    sedan.positionMe();
+    police = new PoliceCar_1.PoliceCar(stage, assetManager, chicken);
+    police.positionMe();
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -1351,6 +1359,8 @@ function onTick(e) {
     monitorKeys();
     chicken.update();
     sportsCar.update();
+    sedan.update();
+    police.update();
     nest.update();
     stage.update();
 }
@@ -1414,6 +1424,68 @@ class Nest {
     }
 }
 exports.Nest = Nest;
+
+
+/***/ }),
+
+/***/ "./src/PoliceCar.ts":
+/*!**************************!*\
+  !*** ./src/PoliceCar.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PoliceCar = void 0;
+const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class PoliceCar extends Car_1.Car {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Police/Left", "Police/Right");
+        this.chicken = chicken;
+        this.sprite.y = 418;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            console.log("collision");
+            this.chicken.killMe();
+        }
+    }
+}
+exports.PoliceCar = PoliceCar;
+
+
+/***/ }),
+
+/***/ "./src/Sedan.ts":
+/*!**********************!*\
+  !*** ./src/Sedan.ts ***!
+  \**********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Sedan = void 0;
+const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Sedan extends Car_1.Car {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Sedan/Left", "Sedan/Right");
+        this.chicken = chicken;
+        this.sprite.y = 325;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            console.log("collision");
+            this.chicken.killMe();
+        }
+    }
+}
+exports.Sedan = Sedan;
 
 
 /***/ }),
@@ -3838,7 +3910,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("a08d8fb7584f12b0c075")
+/******/ 		__webpack_require__.h = () => ("69bd9add9a8d6236ce76")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

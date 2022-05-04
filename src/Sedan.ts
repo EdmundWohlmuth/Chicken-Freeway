@@ -4,16 +4,16 @@ import { Car } from "./Car";
 import { Chicken } from "./Chicken";
 import { boxHit, randomMe } from "./Toolkit";
 
-export class SportsCar extends Car {
+export class Sedan extends Car {
   
     private chicken:Chicken;
 
     constructor (stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken) {
-        super(stage, assetManager, "Car/Left", "Car/Right");
+        super(stage, assetManager, "Sedan/Left", "Sedan/Right");
 
         this.chicken = chicken;
 
-        this.sprite.y = 294; //TEMP y decrements by 24?
+        this.sprite.y = 325; //TEMP
     }
     
     public update(): void {

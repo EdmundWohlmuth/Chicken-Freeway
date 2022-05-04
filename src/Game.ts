@@ -10,6 +10,8 @@ import { Chicken } from "./Chicken";
 import { Car } from "./Car";
 import { SportsCar } from "./SportsCar";
 import { Nest } from "./Nest";
+import { Sedan } from "./Sedan";
+import { PoliceCar } from "./PoliceCar";
 
 // game variables
 let stage:createjs.StageGL;
@@ -25,7 +27,10 @@ let downKey:boolean = false;
 // sprites
 let chicken:Chicken;
 let sportsCar:SportsCar;
+let sedan:Sedan;
+let police:PoliceCar;
 let nest:Nest;
+
 let startLane:createjs.Sprite;
 let laneOne:createjs.Sprite;
 let laneTwo:createjs.Sprite;
@@ -85,6 +90,12 @@ function onReady(e:createjs.Event):void {
     sportsCar = new SportsCar(stage, assetManager, chicken);
     sportsCar.positionMe();
 
+    sedan = new Sedan(stage, assetManager, chicken);
+    sedan.positionMe();
+
+    police = new PoliceCar(stage, assetManager, chicken);
+    police.positionMe();
+
     nest = new Nest(stage, assetManager, chicken);
 
      // event listeners
@@ -105,6 +116,8 @@ function onTick(e:createjs.Event) {
     monitorKeys();
     chicken.update();
     sportsCar.update();
+    sedan.update();
+    police.update();
     nest.update();
    // console.log(chicken.state); 
 

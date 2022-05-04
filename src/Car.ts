@@ -58,11 +58,11 @@ export class Car {
         console.log("direction = " + this._direction);
 
         if (this._direction == Car.LEFT) {          
-            this._sprite.gotoAndPlay("Car/Left");
+            this._sprite.gotoAndPlay(this._animationLeft);
             this.sprite.x = 250;
         }
         else {
-            this._sprite.gotoAndPlay("Car/Right");
+            this._sprite.gotoAndPlay(this._animationRight);
             this.sprite.x = 0;
         }
 
