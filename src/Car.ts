@@ -1,37 +1,37 @@
 import { AssetManager } from "./AssetManager";
-import { Chicken } from "./Chicken";
 import { STARTING_CAR_SPEED, STAGE_HEIGHT, STAGE_WIDTH } from "./Constants";
-import { boxHit } from "./Toolkit";
+import { randomMe } from "./Toolkit";
 
 export class Car {
 
     // states
-    public static RIGHT:number = 0;
-    public static LEFT:number = 1;
+    protected static RIGHT:number = 0;
+    protected static LEFT:number = 1;
 
     // variables
-    private _speed:number;
-    private _sprite:createjs.Sprite;
-    private _direction:number;
+    protected _speed:number;
+    protected _sprite:createjs.Sprite;
+    protected _direction:number;
 
-    private chicken:Chicken;
+    protected _animationLeft:string;
+    protected _animationRight:string;
 
-    private stage:createjs.StageGL;
-    private width:number;
+    protected stage:createjs.StageGL;
+    protected width:number;
 
     // event handlers
 
     // constructor
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, animationLeft:string, animationRight:string) {
         // init
         this._speed = STARTING_CAR_SPEED;
         this.stage = stage;
-        this._direction = Car.LEFT;
 
-        this.chicken = chicken;
+        this._animationLeft = animationLeft;
+        this._animationRight = animationRight;
 
         //sprite
-        this._sprite = assetManager.getSprite("sprites", "Car/Left", 250, 294);
+        this._sprite = assetManager.getSprite("sprites", animationLeft, 0, 0);
         this.width = this._sprite.getBounds().width;       
     }
 
@@ -39,44 +39,50 @@ export class Car {
     // ---------------------- gets / sets ------------------------------
 
     get sprite() {
-        return this._sprite;
+        return this._sprite;     
     }
 
-    // --------------------- event handlers ----------------------------
+    get speed():number {
+        return this._speed;
+    }
+    set speed(value:number) {
+        this._speed = value;
+    }
 
     // --------------------- public meathods ---------------------------
 
-    public positionMe() {        
-        if (this._direction = Car.LEFT) {          
+    public positionMe() {        // placement using lists, ex: leftPositions(2), rightPositions(4), randNum(1, 10)
+               
+        if(randomMe(1, 3) == 1) this._direction = Car.LEFT
+        else this._direction = Car.RIGHT;
+        console.log("direction = " + this._direction);
+
+        if (this._direction == Car.LEFT) {          
             this._sprite.gotoAndPlay("Car/Left");
+            this.sprite.x = 250;
         }
-        else if (this._direction = Car.RIGHT) {
+        else {
             this._sprite.gotoAndPlay("Car/Right");
+            this.sprite.x = 0;
         }
 
         this.stage.addChild(this._sprite);
     }
 
     public update() {
-        if (this._direction = Car.LEFT) {
+        if (this._direction == Car.LEFT) {
             this._sprite.x = this._sprite.x - this._speed;
             
             if (this._sprite.x < 0 - this.width) {
                 this._sprite.x = (STAGE_WIDTH + this.width);
             }           
         }
-        else if (this._direction = Car.RIGHT) {
+        else if (this._direction == Car.RIGHT) {
             this._sprite.x = this._sprite.x + this._speed;
 
-            if (this._sprite.x > (STAGE_WIDTH - this.width)) {
-                this._sprite.x = 0;
+            if (this._sprite.x > (STAGE_WIDTH + this.width)) {
+                this._sprite.x = (0 - this.width);
             }
-        }
-
-        // collision
-        if (boxHit(this._sprite, this.chicken.sprite)) {
-            console.log("collision");
-            this.chicken.killMe();
         }
     }
 

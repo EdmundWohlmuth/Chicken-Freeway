@@ -1058,42 +1058,51 @@ exports.Car = void 0;
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class Car {
-    constructor(stage, assetManager, chicken) {
+    constructor(stage, assetManager, animationLeft, animationRight) {
         this._speed = Constants_1.STARTING_CAR_SPEED;
         this.stage = stage;
-        this._direction = Car.LEFT;
-        this.chicken = chicken;
-        this._sprite = assetManager.getSprite("sprites", "Car/Left", 250, 294);
+        this._animationLeft = animationLeft;
+        this._animationRight = animationRight;
+        this._sprite = assetManager.getSprite("sprites", animationLeft, 0, 0);
         this.width = this._sprite.getBounds().width;
     }
     get sprite() {
         return this._sprite;
     }
+    get speed() {
+        return this._speed;
+    }
+    set speed(value) {
+        this._speed = value;
+    }
     positionMe() {
-        if (this._direction = Car.LEFT) {
+        if ((0, Toolkit_1.randomMe)(1, 3) == 1)
+            this._direction = Car.LEFT;
+        else
+            this._direction = Car.RIGHT;
+        console.log("direction = " + this._direction);
+        if (this._direction == Car.LEFT) {
             this._sprite.gotoAndPlay("Car/Left");
+            this.sprite.x = 250;
         }
-        else if (this._direction = Car.RIGHT) {
+        else {
             this._sprite.gotoAndPlay("Car/Right");
+            this.sprite.x = 0;
         }
         this.stage.addChild(this._sprite);
     }
     update() {
-        if (this._direction = Car.LEFT) {
+        if (this._direction == Car.LEFT) {
             this._sprite.x = this._sprite.x - this._speed;
             if (this._sprite.x < 0 - this.width) {
                 this._sprite.x = (Constants_1.STAGE_WIDTH + this.width);
             }
         }
-        else if (this._direction = Car.RIGHT) {
+        else if (this._direction == Car.RIGHT) {
             this._sprite.x = this._sprite.x + this._speed;
-            if (this._sprite.x > (Constants_1.STAGE_WIDTH - this.width)) {
-                this._sprite.x = 0;
+            if (this._sprite.x > (Constants_1.STAGE_WIDTH + this.width)) {
+                this._sprite.x = (0 - this.width);
             }
-        }
-        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
-            console.log("collision");
-            this.chicken.killMe();
         }
     }
 }
@@ -1272,7 +1281,7 @@ __webpack_require__(/*! createjs */ "./node_modules/createjs/builds/1.0.0/create
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 const AssetManager_1 = __webpack_require__(/*! ./AssetManager */ "./src/AssetManager.ts");
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
-const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
+const SportsCar_1 = __webpack_require__(/*! ./SportsCar */ "./src/SportsCar.ts");
 const Nest_1 = __webpack_require__(/*! ./Nest */ "./src/Nest.ts");
 let stage;
 let canvas;
@@ -1282,7 +1291,7 @@ let rightKey = false;
 let upKey = false;
 let downKey = false;
 let chicken;
-let car;
+let sportsCar;
 let nest;
 let startLane;
 let laneOne;
@@ -1328,9 +1337,9 @@ function onReady(e) {
     laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
     stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
+    sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken);
+    sportsCar.positionMe();
     nest = new Nest_1.Nest(stage, assetManager, chicken);
-    car = new Car_1.Car(stage, assetManager, chicken);
-    car.positionMe();
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
     createjs.Ticker.framerate = Constants_1.FRAME_RATE;
@@ -1341,8 +1350,8 @@ function onTick(e) {
     document.getElementById("fps").innerHTML = String(createjs.Ticker.getMeasuredFPS());
     monitorKeys();
     chicken.update();
+    sportsCar.update();
     nest.update();
-    car.update();
     stage.update();
 }
 function onKeyDown(e) {
@@ -1405,6 +1414,37 @@ class Nest {
     }
 }
 exports.Nest = Nest;
+
+
+/***/ }),
+
+/***/ "./src/SportsCar.ts":
+/*!**************************!*\
+  !*** ./src/SportsCar.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SportsCar = void 0;
+const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class SportsCar extends Car_1.Car {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Car/Left", "Car/Right");
+        this.chicken = chicken;
+        this.sprite.y = 294;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            console.log("collision");
+            this.chicken.killMe();
+        }
+    }
+}
+exports.SportsCar = SportsCar;
 
 
 /***/ }),
@@ -3798,7 +3838,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("530fe8e812ecd80577da")
+/******/ 		__webpack_require__.h = () => ("a08d8fb7584f12b0c075")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
