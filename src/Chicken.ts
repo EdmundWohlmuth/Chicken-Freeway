@@ -150,6 +150,9 @@ export class Chicken {
         // reset player
         sprite.x = CHICKEN_START_X;
         sprite.y = CHICKEN_START_Y;
+
+        // increase difficulty
+        
     }
 
     // ---------------------- private meathods ----------------------------

@@ -12,6 +12,7 @@ import { SportsCar } from "./SportsCar";
 import { Nest } from "./Nest";
 import { Sedan } from "./Sedan";
 import { PoliceCar } from "./PoliceCar";
+import { randomMe } from "./Toolkit";
 
 // game variables
 let stage:createjs.StageGL;
@@ -31,6 +32,14 @@ let sedan:Sedan;
 let police:PoliceCar;
 let nest:Nest;
 
+// Array
+let yValue:number = 292
+let carArray:Car[] = [];
+
+//TEMP
+let instructions:createjs.Sprite;
+
+//TEMP
 let startLane:createjs.Sprite;
 let laneOne:createjs.Sprite;
 let laneTwo:createjs.Sprite;
@@ -87,14 +96,27 @@ function onReady(e:createjs.Event):void {
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
 
-    sportsCar = new SportsCar(stage, assetManager, chicken);
-    sportsCar.positionMe();
+    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
+    stage.addChild(instructions);
 
-    sedan = new Sedan(stage, assetManager, chicken);
-    sedan.positionMe();
-
-    police = new PoliceCar(stage, assetManager, chicken);
-    police.positionMe();
+    // TEMP car gen (hardcoded values for lanes two / three)
+    for (let i = 0; i < 6; i++) {      
+        if(randomMe(1, 4) == 1){           
+            carArray.push(sportsCar = new SportsCar(stage, assetManager, chicken, yValue));
+            sportsCar.positionMe();
+        }
+        else if(randomMe(1, 4) == 2) {
+            carArray.push(sedan = new Sedan(stage, assetManager, chicken, yValue));
+            sedan.positionMe();
+        }
+        else {
+            carArray.push(police = new PoliceCar(stage, assetManager, chicken, yValue));
+            police.positionMe();
+        }
+        yValue = yValue + 31;
+        console.log(yValue);
+        
+    }
 
     nest = new Nest(stage, assetManager, chicken);
 
@@ -115,9 +137,10 @@ function onTick(e:createjs.Event) {
     // game loop
     monitorKeys();
     chicken.update();
-    sportsCar.update();
-    sedan.update();
-    police.update();
+    for (let car of carArray) {
+        car.update();
+    }
+
     nest.update();
    // console.log(chicken.state); 
 
@@ -131,6 +154,8 @@ function onKeyDown(e:KeyboardEvent):void {
     else if (e.key == "s") downKey = true;
     else if (e.key == "a") leftKey = true;
     else if (e.key == "d") rightKey = true;
+
+    stage.removeChild(instructions); // TEMP
 }
 function onKeyUp(e:KeyboardEvent): void {
     if (e.key == "w") upKey = false;

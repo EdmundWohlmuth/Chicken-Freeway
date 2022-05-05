@@ -1083,11 +1083,11 @@ class Car {
         console.log("direction = " + this._direction);
         if (this._direction == Car.LEFT) {
             this._sprite.gotoAndPlay(this._animationLeft);
-            this.sprite.x = 250;
+            this.sprite.x = (0, Toolkit_1.randomMe)(125, 256);
         }
         else {
             this._sprite.gotoAndPlay(this._animationRight);
-            this.sprite.x = 0;
+            this.sprite.x = (0, Toolkit_1.randomMe)(0, 126);
         }
         this.stage.addChild(this._sprite);
     }
@@ -1236,7 +1236,7 @@ Chicken.STATE_DEAD = 3;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ASSET_MANIFEST = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
+exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
 exports.STAGE_WIDTH = 256;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
@@ -1244,6 +1244,8 @@ exports.CHICKEN_SPEED = 3;
 exports.STARTING_CAR_SPEED = 5;
 exports.CHICKEN_START_Y = 575;
 exports.CHICKEN_START_X = 125;
+exports.LEVEL_GEN_START = 480;
+exports.LANE_THREE_Y = 288;
 exports.ASSET_MANIFEST = [
     {
         type: "json",
@@ -1285,6 +1287,7 @@ const SportsCar_1 = __webpack_require__(/*! ./SportsCar */ "./src/SportsCar.ts")
 const Nest_1 = __webpack_require__(/*! ./Nest */ "./src/Nest.ts");
 const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
 const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 let stage;
 let canvas;
 let assetManager;
@@ -1297,6 +1300,9 @@ let sportsCar;
 let sedan;
 let police;
 let nest;
+let yValue = 292;
+let carArray = [];
+let instructions;
 let startLane;
 let laneOne;
 let laneTwo;
@@ -1341,12 +1347,24 @@ function onReady(e) {
     laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
     stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
-    sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken);
-    sportsCar.positionMe();
-    sedan = new Sedan_1.Sedan(stage, assetManager, chicken);
-    sedan.positionMe();
-    police = new PoliceCar_1.PoliceCar(stage, assetManager, chicken);
-    police.positionMe();
+    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
+    stage.addChild(instructions);
+    for (let i = 0; i < 6; i++) {
+        if ((0, Toolkit_1.randomMe)(1, 4) == 1) {
+            carArray.push(sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken, yValue));
+            sportsCar.positionMe();
+        }
+        else if ((0, Toolkit_1.randomMe)(1, 4) == 2) {
+            carArray.push(sedan = new Sedan_1.Sedan(stage, assetManager, chicken, yValue));
+            sedan.positionMe();
+        }
+        else {
+            carArray.push(police = new PoliceCar_1.PoliceCar(stage, assetManager, chicken, yValue));
+            police.positionMe();
+        }
+        yValue = yValue + 31;
+        console.log(yValue);
+    }
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -1358,9 +1376,9 @@ function onTick(e) {
     document.getElementById("fps").innerHTML = String(createjs.Ticker.getMeasuredFPS());
     monitorKeys();
     chicken.update();
-    sportsCar.update();
-    sedan.update();
-    police.update();
+    for (let car of carArray) {
+        car.update();
+    }
     nest.update();
     stage.update();
 }
@@ -1373,6 +1391,7 @@ function onKeyDown(e) {
         leftKey = true;
     else if (e.key == "d")
         rightKey = true;
+    stage.removeChild(instructions);
 }
 function onKeyUp(e) {
     if (e.key == "w")
@@ -1441,10 +1460,10 @@ exports.PoliceCar = void 0;
 const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class PoliceCar extends Car_1.Car {
-    constructor(stage, assetManager, chicken) {
+    constructor(stage, assetManager, chicken, YCoord) {
         super(stage, assetManager, "Police/Left", "Police/Right");
         this.chicken = chicken;
-        this.sprite.y = 418;
+        this.sprite.y = YCoord;
     }
     update() {
         super.update();
@@ -1472,10 +1491,10 @@ exports.Sedan = void 0;
 const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class Sedan extends Car_1.Car {
-    constructor(stage, assetManager, chicken) {
+    constructor(stage, assetManager, chicken, YCoord) {
         super(stage, assetManager, "Sedan/Left", "Sedan/Right");
         this.chicken = chicken;
-        this.sprite.y = 325;
+        this.sprite.y = YCoord;
     }
     update() {
         super.update();
@@ -1503,10 +1522,10 @@ exports.SportsCar = void 0;
 const Car_1 = __webpack_require__(/*! ./Car */ "./src/Car.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class SportsCar extends Car_1.Car {
-    constructor(stage, assetManager, chicken) {
+    constructor(stage, assetManager, chicken, YCoord) {
         super(stage, assetManager, "Car/Left", "Car/Right");
         this.chicken = chicken;
-        this.sprite.y = 294;
+        this.sprite.y = YCoord;
     }
     update() {
         super.update();
@@ -3910,7 +3929,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("69bd9add9a8d6236ce76")
+/******/ 		__webpack_require__.h = () => ("8aecacbfa5dbd2352e7d")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

@@ -8,12 +8,12 @@ export class SportsCar extends Car {
   
     private chicken:Chicken;
 
-    constructor (stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken) {
+    constructor (stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, YCoord:number) {
         super(stage, assetManager, "Car/Left", "Car/Right");
 
         this.chicken = chicken;
 
-        this.sprite.y = 294; //TEMP y decrements by 24?
+        this.sprite.y = YCoord; // y decrements / incriments by 31
     }
     
     public update(): void {

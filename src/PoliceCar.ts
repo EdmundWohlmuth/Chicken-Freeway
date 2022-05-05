@@ -8,12 +8,12 @@ export class PoliceCar extends Car {
   
     private chicken:Chicken;
 
-    constructor (stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken) {
+    constructor (stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, YCoord:number) {
         super(stage, assetManager, "Police/Left", "Police/Right");
 
         this.chicken = chicken;
 
-        this.sprite.y = 418; //TEMP
+        this.sprite.y = YCoord;
     }
     
     public update(): void {
