@@ -33,7 +33,7 @@ let police:PoliceCar;
 let nest:Nest;
 
 // Array
-let yValue:number = 292
+let yValue:number = 96
 let carArray:Car[] = [];
 
 //TEMP
@@ -96,11 +96,8 @@ function onReady(e:createjs.Event):void {
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
 
-    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
-    stage.addChild(instructions);
-
     // TEMP car gen (hardcoded values for lanes two / three)
-    for (let i = 0; i < 6; i++) {      
+    for (let i = 0; i < 9; i++) {      
         if(randomMe(1, 4) == 1){           
             carArray.push(sportsCar = new SportsCar(stage, assetManager, chicken, yValue));
             sportsCar.positionMe();
@@ -113,10 +110,14 @@ function onReady(e:createjs.Event):void {
             carArray.push(police = new PoliceCar(stage, assetManager, chicken, yValue));
             police.positionMe();
         }
+
+        if (yValue == 158) yValue = 261;
         yValue = yValue + 31;
-        console.log(yValue);
-        
+        console.log(yValue);       
     }
+
+    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
+    stage.addChild(instructions);
 
     nest = new Nest(stage, assetManager, chicken);
 
@@ -136,11 +137,10 @@ function onTick(e:createjs.Event) {
 
     // game loop
     monitorKeys();
-    chicken.update();
+    chicken.update();  
     for (let car of carArray) {
         car.update();
     }
-
     nest.update();
    // console.log(chicken.state); 
 
@@ -162,6 +162,9 @@ function onKeyUp(e:KeyboardEvent): void {
     else if (e.key == "s") downKey = false;
     else if (e.key == "a") leftKey = false;
     else if (e.key == "d") rightKey = false;
+
+    chicken.stopMe(); 
+    chicken.runOnce = true;  
 }
 
 // --------------------------------------------------- main method

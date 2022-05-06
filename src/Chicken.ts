@@ -21,6 +21,8 @@ export class Chicken {
     private _state:number;
     private _direction:number;
 
+    public runOnce:Boolean;
+
     private stage:createjs.StageGL;
     private width:number;
 
@@ -33,6 +35,8 @@ export class Chicken {
         this._state = Chicken.STATE_IDLE;
         this.stage = stage;
         this._direction = Chicken.UP;
+
+        this.runOnce = true;
 
         //sprite
         this._sprite = assetManager.getSprite("sprites", "Chicken/Up", CHICKEN_START_X, CHICKEN_START_Y);       
@@ -82,6 +86,7 @@ export class Chicken {
     public stopMe():void {
         if (this._state == Chicken.STATE_MOVING) {
             this._state = Chicken.STATE_IDLE;
+            this._sprite.stop();
         }
     }
 
@@ -108,8 +113,12 @@ export class Chicken {
 
             if (this._direction == Chicken.LEFT) {
                 sprite.x = sprite.x - this._speed;
-                this.sprite.gotoAndPlay("Chicken/Left"); // this needs a fix, keeps playing frame 1
 
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Left"); // this needs a fix, keeps playing frame 1
+                    this.runOnce = false;
+                }
+                
                 if (sprite.x < 0) {
                     sprite.x = 0;
                 }
@@ -117,7 +126,11 @@ export class Chicken {
             } 
             else if (this._direction == Chicken.RIGHT) {
                 sprite.x = sprite.x + this._speed;
-                this.sprite.gotoAndPlay("Chicken/Right");
+
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Right");
+                    this.runOnce = false;
+                }               
 
                 if (sprite.x > (STAGE_WIDTH - this.width)) {
                     sprite.x = (STAGE_WIDTH - this.width);
@@ -126,7 +139,11 @@ export class Chicken {
             } 
             else if (this._direction == Chicken.UP) {
                 sprite.y = sprite.y - this._speed;
-                this.sprite.gotoAndPlay("Chicken/Up");
+
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Up");
+                    this.runOnce = false;
+                }             
 
                 if (sprite.y < 0) {
                     sprite.y = 0;
@@ -134,7 +151,11 @@ export class Chicken {
             } 
             else if (this._direction == Chicken.DOWN) {
                 sprite.y = sprite.y + this._speed;
-                this.sprite.gotoAndPlay("Chicken/Down");
+
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Down");
+                    this.runOnce = false;
+                }              
 
                 if (sprite.y > (STAGE_HEIGHT - this.width)) {
                     sprite.y = (STAGE_HEIGHT - this.width);

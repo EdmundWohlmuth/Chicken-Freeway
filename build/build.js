@@ -1130,6 +1130,7 @@ class Chicken {
         this._state = Chicken.STATE_IDLE;
         this.stage = stage;
         this._direction = Chicken.UP;
+        this.runOnce = true;
         this._sprite = assetManager.getSprite("sprites", "Chicken/Up", Constants_1.CHICKEN_START_X, Constants_1.CHICKEN_START_Y);
         this.width = this._sprite.getBounds().width;
         this._deadSprite = assetManager.getSprite("sprites", "Chicken/Dead");
@@ -1164,6 +1165,7 @@ class Chicken {
     stopMe() {
         if (this._state == Chicken.STATE_MOVING) {
             this._state = Chicken.STATE_IDLE;
+            this._sprite.stop();
         }
     }
     killMe() {
@@ -1181,28 +1183,40 @@ class Chicken {
             let sprite = this._sprite;
             if (this._direction == Chicken.LEFT) {
                 sprite.x = sprite.x - this._speed;
-                this.sprite.gotoAndPlay("Chicken/Left");
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Left");
+                    this.runOnce = false;
+                }
                 if (sprite.x < 0) {
                     sprite.x = 0;
                 }
             }
             else if (this._direction == Chicken.RIGHT) {
                 sprite.x = sprite.x + this._speed;
-                this.sprite.gotoAndPlay("Chicken/Right");
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Right");
+                    this.runOnce = false;
+                }
                 if (sprite.x > (Constants_1.STAGE_WIDTH - this.width)) {
                     sprite.x = (Constants_1.STAGE_WIDTH - this.width);
                 }
             }
             else if (this._direction == Chicken.UP) {
                 sprite.y = sprite.y - this._speed;
-                this.sprite.gotoAndPlay("Chicken/Up");
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Up");
+                    this.runOnce = false;
+                }
                 if (sprite.y < 0) {
                     sprite.y = 0;
                 }
             }
             else if (this._direction == Chicken.DOWN) {
                 sprite.y = sprite.y + this._speed;
-                this.sprite.gotoAndPlay("Chicken/Down");
+                if (this.runOnce) {
+                    this.sprite.gotoAndPlay("Chicken/Down");
+                    this.runOnce = false;
+                }
                 if (sprite.y > (Constants_1.STAGE_HEIGHT - this.width)) {
                     sprite.y = (Constants_1.STAGE_HEIGHT - this.width);
                 }
@@ -1240,7 +1254,7 @@ exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = export
 exports.STAGE_WIDTH = 256;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
-exports.CHICKEN_SPEED = 3;
+exports.CHICKEN_SPEED = 2.5;
 exports.STARTING_CAR_SPEED = 5;
 exports.CHICKEN_START_Y = 575;
 exports.CHICKEN_START_X = 125;
@@ -1300,7 +1314,7 @@ let sportsCar;
 let sedan;
 let police;
 let nest;
-let yValue = 292;
+let yValue = 96;
 let carArray = [];
 let instructions;
 let startLane;
@@ -1347,9 +1361,7 @@ function onReady(e) {
     laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
     stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
-    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
-    stage.addChild(instructions);
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 9; i++) {
         if ((0, Toolkit_1.randomMe)(1, 4) == 1) {
             carArray.push(sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken, yValue));
             sportsCar.positionMe();
@@ -1362,9 +1374,13 @@ function onReady(e) {
             carArray.push(police = new PoliceCar_1.PoliceCar(stage, assetManager, chicken, yValue));
             police.positionMe();
         }
+        if (yValue == 158)
+            yValue = 261;
         yValue = yValue + 31;
         console.log(yValue);
     }
+    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
+    stage.addChild(instructions);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -1402,6 +1418,8 @@ function onKeyUp(e) {
         leftKey = false;
     else if (e.key == "d")
         rightKey = false;
+    chicken.stopMe();
+    chicken.runOnce = true;
 }
 function main() {
     canvas = document.getElementById("game-canvas");
@@ -3929,7 +3947,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("8aecacbfa5dbd2352e7d")
+/******/ 		__webpack_require__.h = () => ("33d2c42292d3f2d90197")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
