@@ -437,7 +437,6 @@
             <key type="filename">Land Tiles/Grass_LG.png</key>
             <key type="filename">Land Tiles/Road_3_Lane.png</key>
             <key type="filename">Land Tiles/Water_LG.png</key>
-            <key type="filename">UI/PAUSE_OVERLAY_L.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -457,7 +456,6 @@
             <key type="filename">Land Tiles/Road_2_Lane.png</key>
             <key type="filename">Land Tiles/Sidewalk_LG.png</key>
             <key type="filename">Land Tiles/Water_MED.png</key>
-            <key type="filename">UI/PAUSE_OVERLAY_M.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -477,7 +475,6 @@
             <key type="filename">Land Tiles/Road_1_Lane.png</key>
             <key type="filename">Land Tiles/Sidewalk_MED.png</key>
             <key type="filename">Land Tiles/Water_SM.png</key>
-            <key type="filename">UI/PAUSE_OVERLAY_S.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -568,7 +565,6 @@
                 <false/>
             </struct>
             <key type="filename">UI/Instructions.png</key>
-            <key type="filename">UI/PAUSE_OVERLAY_XL.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -610,6 +606,21 @@
                 <rect>7,2,14,3</rect>
                 <key>scale9Paddings</key>
                 <rect>7,2,14,3</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">UI/Pause_Overlay.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>128,128,256,256</rect>
+                <key>scale9Paddings</key>
+                <rect>128,128,256,256</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

@@ -1,6 +1,6 @@
 import { AssetManager } from "./AssetManager";
 import { Chicken } from "./Chicken";
-import { boxHit } from "./Toolkit";
+import { boxHit, randomMe } from "./Toolkit";
 
 export class Nest {
 
@@ -13,7 +13,7 @@ export class Nest {
 
         this.chicken = chicken;
 
-        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", 10, 10);
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", randomMe(10, 500), 10);
         this.width = this._sprite.getBounds().width;     
 
         stage.addChild(this._sprite);

@@ -1251,13 +1251,13 @@ Chicken.STATE_DEAD = 3;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
-exports.STAGE_WIDTH = 256;
+exports.STAGE_WIDTH = 510;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
 exports.CHICKEN_SPEED = 2.5;
 exports.STARTING_CAR_SPEED = 5;
 exports.CHICKEN_START_Y = 575;
-exports.CHICKEN_START_X = 125;
+exports.CHICKEN_START_X = 250;
 exports.LEVEL_GEN_START = 480;
 exports.LANE_THREE_Y = 288;
 exports.ASSET_MANIFEST = [
@@ -1449,7 +1449,7 @@ const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class Nest {
     constructor(stage, assetManager, chicken) {
         this.chicken = chicken;
-        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", 10, 10);
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", (0, Toolkit_1.randomMe)(10, 500), 10);
         this.width = this._sprite.getBounds().width;
         stage.addChild(this._sprite);
     }
@@ -3947,7 +3947,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("33d2c42292d3f2d90197")
+/******/ 		__webpack_require__.h = () => ("a4bc7b4354467fab21ff")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
