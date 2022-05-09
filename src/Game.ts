@@ -13,6 +13,7 @@ import { Nest } from "./Nest";
 import { Sedan } from "./Sedan";
 import { PoliceCar } from "./PoliceCar";
 import { randomMe } from "./Toolkit";
+import { UserInterface } from "./UserInterface";
 
 // game variables
 let stage:createjs.StageGL;
@@ -35,6 +36,11 @@ let nest:Nest;
 // Array
 let yValue:number = 96
 let carArray:Car[] = [];
+
+// UI && Screens
+let userInterface:UserInterface;
+let levelsCleared:number = 0;
+let lives:number = 3;
 
 //TEMP
 let instructions:createjs.Sprite;
@@ -96,6 +102,12 @@ function onReady(e:createjs.Event):void {
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
 
+    userInterface = new UserInterface(stage, assetManager);
+
+    // listen for custom events
+    stage.on("nestReached", onGameEvent);
+    stage.on("lifeDecrement", onGameEvent);
+
     // TEMP car gen (hardcoded values for lanes two / three)
     for (let i = 0; i < 9; i++) {      
         if(randomMe(1, 4) == 1){           
@@ -116,7 +128,7 @@ function onReady(e:createjs.Event):void {
         console.log(yValue);       
     }
 
-    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
+    instructions = assetManager.getSprite("sprites", "UI/Instructions", 125, 140);
     stage.addChild(instructions);
 
     nest = new Nest(stage, assetManager, chicken);
@@ -128,7 +140,29 @@ function onReady(e:createjs.Event):void {
     // startup the ticker
     createjs.Ticker.framerate = FRAME_RATE;
     createjs.Ticker.on("tick", onTick);        
-    console.log(">> game ready");    
+    console.log(">> game ready"); 
+    
+    function onGameEvent(e:createjs.Event):void {
+        switch (e.type) {
+            case "nestReached":
+                for (let i = 0; i < carArray.length; i++) {
+                    carArray[i].speed = carArray[i].speed + 0.25;
+                }
+                levelsCleared++;
+                userInterface.clears = levelsCleared;
+                console.log ("levelsClears: " + levelsCleared);
+                console.log("Speed: " + carArray[1].speed);
+                break;
+            case "lifeDecrement":
+                lives--
+                userInterface.life = lives;
+                console.log("Lives: " + lives);
+                break;
+        
+            default:
+                break;
+        }
+    }
 }
 
 function onTick(e:createjs.Event) {
@@ -142,7 +176,7 @@ function onTick(e:createjs.Event) {
         car.update();
     }
     nest.update();
-   // console.log(chicken.state); 
+    userInterface.update();
 
     // update the stage
     stage.update();   

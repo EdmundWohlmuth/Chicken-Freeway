@@ -59,11 +59,11 @@ export class Car {
 
         if (this._direction == Car.LEFT) {          
             this._sprite.gotoAndPlay(this._animationLeft);
-            this.sprite.x = randomMe(125, 256);
+            this.sprite.x = randomMe((STAGE_WIDTH / 2), STAGE_WIDTH);
         }
         else {
             this._sprite.gotoAndPlay(this._animationRight);
-            this.sprite.x = randomMe(0, 126);
+            this.sprite.x = randomMe(0, (STAGE_WIDTH / 2));
         }
 
         this.stage.addChild(this._sprite);

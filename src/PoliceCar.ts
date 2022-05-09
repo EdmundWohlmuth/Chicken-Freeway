@@ -21,7 +21,7 @@ export class PoliceCar extends Car {
         
         // collision
         if (boxHit(this._sprite, this.chicken.sprite)) {
-            console.log("collision");
+           // console.log("collision");
             this.chicken.killMe();
         }
     }

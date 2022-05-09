@@ -1083,11 +1083,11 @@ class Car {
         console.log("direction = " + this._direction);
         if (this._direction == Car.LEFT) {
             this._sprite.gotoAndPlay(this._animationLeft);
-            this.sprite.x = (0, Toolkit_1.randomMe)(125, 256);
+            this.sprite.x = (0, Toolkit_1.randomMe)((Constants_1.STAGE_WIDTH / 2), Constants_1.STAGE_WIDTH);
         }
         else {
             this._sprite.gotoAndPlay(this._animationRight);
-            this.sprite.x = (0, Toolkit_1.randomMe)(0, 126);
+            this.sprite.x = (0, Toolkit_1.randomMe)(0, (Constants_1.STAGE_WIDTH / 2));
         }
         this.stage.addChild(this._sprite);
     }
@@ -1130,6 +1130,7 @@ class Chicken {
         this._state = Chicken.STATE_IDLE;
         this.stage = stage;
         this._direction = Chicken.UP;
+        this.lifeDecrement = new createjs.Event("lifeDecrement", true, false);
         this.runOnce = true;
         this._sprite = assetManager.getSprite("sprites", "Chicken/Up", Constants_1.CHICKEN_START_X, Constants_1.CHICKEN_START_Y);
         this.width = this._sprite.getBounds().width;
@@ -1171,6 +1172,7 @@ class Chicken {
     killMe() {
         let sprite = this._sprite;
         this._state = Chicken.STATE_DEAD;
+        this._sprite.dispatchEvent(this.lifeDecrement);
         this._deadSprite.x = sprite.x;
         this._deadSprite.y = sprite.y;
         this.stage.addChild(this._deadSprite);
@@ -1274,6 +1276,18 @@ exports.ASSET_MANIFEST = [
         data: 0
     },
     {
+        type: "json",
+        src: "./lib/spritesheets/glyphs.json",
+        id: "glyphs",
+        data: 0
+    },
+    {
+        type: "image",
+        src: "./lib/spritesheets/glyphs.png",
+        id: "glyphs",
+        data: 0
+    },
+    {
         type: "sound",
         src: "./lib/sounds/beep.ogg",
         id: "beep",
@@ -1302,6 +1316,7 @@ const Nest_1 = __webpack_require__(/*! ./Nest */ "./src/Nest.ts");
 const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
 const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+const UserInterface_1 = __webpack_require__(/*! ./UserInterface */ "./src/UserInterface.ts");
 let stage;
 let canvas;
 let assetManager;
@@ -1316,6 +1331,9 @@ let police;
 let nest;
 let yValue = 96;
 let carArray = [];
+let userInterface;
+let levelsCleared = 0;
+let lives = 3;
 let instructions;
 let startLane;
 let laneOne;
@@ -1361,6 +1379,9 @@ function onReady(e) {
     laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
     stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
+    userInterface = new UserInterface_1.UserInterface(stage, assetManager);
+    stage.on("nestReached", onGameEvent);
+    stage.on("lifeDecrement", onGameEvent);
     for (let i = 0; i < 9; i++) {
         if ((0, Toolkit_1.randomMe)(1, 4) == 1) {
             carArray.push(sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken, yValue));
@@ -1379,7 +1400,7 @@ function onReady(e) {
         yValue = yValue + 31;
         console.log(yValue);
     }
-    instructions = assetManager.getSprite("sprites", "UI/Instructions", 0, 30);
+    instructions = assetManager.getSprite("sprites", "UI/Instructions", 125, 140);
     stage.addChild(instructions);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
@@ -1387,6 +1408,26 @@ function onReady(e) {
     createjs.Ticker.framerate = Constants_1.FRAME_RATE;
     createjs.Ticker.on("tick", onTick);
     console.log(">> game ready");
+    function onGameEvent(e) {
+        switch (e.type) {
+            case "nestReached":
+                for (let i = 0; i < carArray.length; i++) {
+                    carArray[i].speed = carArray[i].speed + 0.25;
+                }
+                levelsCleared++;
+                userInterface.clears = levelsCleared;
+                console.log("levelsClears: " + levelsCleared);
+                console.log("Speed: " + carArray[1].speed);
+                break;
+            case "lifeDecrement":
+                lives--;
+                userInterface.life = lives;
+                console.log("Lives: " + lives);
+                break;
+            default:
+                break;
+        }
+    }
 }
 function onTick(e) {
     document.getElementById("fps").innerHTML = String(createjs.Ticker.getMeasuredFPS());
@@ -1396,6 +1437,7 @@ function onTick(e) {
         car.update();
     }
     nest.update();
+    userInterface.update();
     stage.update();
 }
 function onKeyDown(e) {
@@ -1449,14 +1491,15 @@ const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class Nest {
     constructor(stage, assetManager, chicken) {
         this.chicken = chicken;
-        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", (0, Toolkit_1.randomMe)(10, 500), 10);
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", (0, Toolkit_1.randomMe)(10, 490), 70);
         this.width = this._sprite.getBounds().width;
+        this.nestReached = new createjs.Event("nestReached", true, false);
         stage.addChild(this._sprite);
     }
     update() {
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
             this.chicken.stageClear();
-            console.log("collssion");
+            this._sprite.dispatchEvent(this.nestReached);
         }
     }
 }
@@ -1486,7 +1529,6 @@ class PoliceCar extends Car_1.Car {
     update() {
         super.update();
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
-            console.log("collision");
             this.chicken.killMe();
         }
     }
@@ -1517,7 +1559,6 @@ class Sedan extends Car_1.Car {
     update() {
         super.update();
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
-            console.log("collision");
             this.chicken.killMe();
         }
     }
@@ -1548,7 +1589,6 @@ class SportsCar extends Car_1.Car {
     update() {
         super.update();
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
-            console.log("collision");
             this.chicken.killMe();
         }
     }
@@ -1612,6 +1652,66 @@ function pointHit(sprite1, sprite2, sprite1HitX = 0, sprite1HitY = 0, stage = nu
     }
 }
 exports.pointHit = pointHit;
+
+
+/***/ }),
+
+/***/ "./src/UserInterface.ts":
+/*!******************************!*\
+  !*** ./src/UserInterface.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserInterface = void 0;
+class UserInterface {
+    constructor(stage, assetManager) {
+        this.lives = 3;
+        this.stage = stage;
+        this.overlay = assetManager.getSprite("sprites", "UI/UI_Bar", 314, 1);
+        stage.addChild(this.overlay);
+        this.clearsText = new createjs.BitmapText("0", assetManager.getSpriteSheet("glyphs"));
+        this.clearsText.x = 400;
+        this.clearsText.y = 45;
+        this.clearsText.letterSpacing = 2;
+        stage.addChild(this.clearsText);
+        this.score = assetManager.getSprite("sprites", "UI/Score", 325, 45);
+        stage.addChild(this.score);
+        this.lifeCounter1 = assetManager.getSprite("sprites", "UI/Life", 380, 18);
+        this.lifeCounter2 = assetManager.getSprite("sprites", "UI/Life", (380 + 25), 18);
+        this.lifeCounter3 = assetManager.getSprite("sprites", "UI/Life", (380 + 50), 18);
+        stage.addChild(this.lifeCounter1);
+        stage.addChild(this.lifeCounter2);
+        stage.addChild(this.lifeCounter3);
+        this.resetMe();
+        console.log("lives: " + this.lives);
+    }
+    set clears(value) {
+        this.clearsCount = value;
+        this.clearsText.text = String(this.clearsCount);
+    }
+    set life(value) {
+        this.lives = value;
+    }
+    resetMe() {
+        this.clearsCount = 0;
+        this.lives = 3;
+    }
+    update() {
+        if (this.lives == 2) {
+            this.stage.removeChild(this.lifeCounter3);
+        }
+        else if (this.lives == 1) {
+            this.stage.removeChild(this.lifeCounter2);
+        }
+        else if (this.lives == 0) {
+            this.stage.removeChild(this.lifeCounter1);
+        }
+    }
+}
+exports.UserInterface = UserInterface;
 
 
 /***/ }),
@@ -3947,7 +4047,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("a4bc7b4354467fab21ff")
+/******/ 		__webpack_require__.h = () => ("a88ccad39b425b5f7a5a")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

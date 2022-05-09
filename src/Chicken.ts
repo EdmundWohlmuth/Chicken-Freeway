@@ -26,7 +26,8 @@ export class Chicken {
     private stage:createjs.StageGL;
     private width:number;
 
-    // event dispatching
+    // events
+    private lifeDecrement:createjs.Event;
 
     // constructor
     constructor(stage:createjs.StageGL, assetManager:AssetManager) {
@@ -35,7 +36,7 @@ export class Chicken {
         this._state = Chicken.STATE_IDLE;
         this.stage = stage;
         this._direction = Chicken.UP;
-
+        this.lifeDecrement = new createjs.Event("lifeDecrement", true, false);
         this.runOnce = true;
 
         //sprite
@@ -94,6 +95,7 @@ export class Chicken {
         let sprite:createjs.Sprite = this._sprite;
         this._state = Chicken.STATE_DEAD;
         // decerement life
+        this._sprite.dispatchEvent(this.lifeDecrement);
 
         // create cooked chicken
         this._deadSprite.x = sprite.x;
@@ -166,13 +168,9 @@ export class Chicken {
 
     public stageClear():void {
         let sprite:createjs.Sprite = this._sprite;
-        // incriment score
-
         // reset player
         sprite.x = CHICKEN_START_X;
         sprite.y = CHICKEN_START_Y;
-
-        // increase difficulty
         
     }
 
