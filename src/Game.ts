@@ -41,12 +41,12 @@ let levelGeneration:LevelGeneration;
 
 // Array
 let carArray:Car[] = [];
-let yValue:number = 96
 
 // UI && Screens
 let userInterface:UserInterface;
 let levelsCleared:number = 0;
 let lives:number = 3;
+let currentLevel:number;
 
 function monitorKeys():void {
     if (upKey) {
@@ -76,38 +76,19 @@ function monitorKeys():void {
 function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
-    // temp map creation
-
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
-
     userInterface = new UserInterface(stage, assetManager);
+    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan);
 
-    for (let i = 0; i < 9; i++) {      
-        if(randomMe(1, 4) == 1){           
-            carArray.push(sportsCar = new SportsCar(stage, assetManager, chicken, yValue));
-            sportsCar.positionMe();
-        }
-        else if(randomMe(1, 4) == 2) {
-            carArray.push(sedan = new Sedan(stage, assetManager, chicken, yValue));
-            sedan.positionMe();
-        }
-        else {
-            carArray.push(police = new PoliceCar(stage, assetManager, chicken, yValue));
-            police.positionMe();
-        }
-
-        if (yValue == 158) yValue = 261;
-        yValue = yValue + 31;
-    } 
-
-    screenManager = new ScreenManager(stage, assetManager);
+    screenManager = new ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();
 
 
     // listen for custom events
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
+    stage.on("newLevel", onGameEvent);
 
     nest = new Nest(stage, assetManager, chicken);
 
@@ -123,13 +104,18 @@ function onReady(e:createjs.Event):void {
     function onGameEvent(e:createjs.Event):void {
         switch (e.type) {
             case "nestReached":
+                // update car speed
                 for (let i = 0; i < carArray.length; i++) {
                     carArray[i].speed = carArray[i].speed + 0.25;
                 }
+                // update score
                 levelsCleared++;
                 userInterface.clears = levelsCleared;
+                // gen new level
+                levelGeneration.genLevels();
+                // console logs
                 console.log ("levelsClears: " + levelsCleared);
-                console.log("Speed: " + carArray[1].speed);
+               // console.log("Speed: " + carArray[1].speed);              
                 break;
             case "lifeDecrement":
                 lives--
@@ -137,6 +123,7 @@ function onReady(e:createjs.Event):void {
                 console.log("Lives: " + lives);
                 break;
             case "newLevel":
+
                 break;
         
             default:
@@ -152,9 +139,7 @@ function onTick(e:createjs.Event) {
     // game loop
     monitorKeys();
     chicken.update();  
-    for (let car of carArray) {
-        car.update();
-    }
+    levelGeneration.update();
     nest.update();
     userInterface.update();
 

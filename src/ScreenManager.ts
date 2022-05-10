@@ -1,8 +1,10 @@
 import { AssetManager } from "./AssetManager";
+import { LevelGeneration } from "./LevelGeneration";
 
 export class ScreenManager {
 
     private stage:createjs.StageGL;
+    private levelGen:LevelGeneration
     private startButton:createjs.Sprite;
     private restartButton:createjs.Sprite;
 
@@ -10,8 +12,9 @@ export class ScreenManager {
     private GameScreen:createjs.Container;
     private GameOver:createjs.Container;
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, levelgen:LevelGeneration) {
         this.stage = stage;
+        this.levelGen = levelgen
 
         // Containers
         // main menu
@@ -41,6 +44,7 @@ export class ScreenManager {
         this.startButton.on("click", (e) => {
             console.log("button pressed");
             this.hideAll();
+            this.levelGen.genLevels();
         }, this, true);
 
     }
