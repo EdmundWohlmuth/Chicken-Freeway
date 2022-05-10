@@ -1317,6 +1317,7 @@ const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
 const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 const UserInterface_1 = __webpack_require__(/*! ./UserInterface */ "./src/UserInterface.ts");
+const ScreenManager_1 = __webpack_require__(/*! ./ScreenManager */ "./src/ScreenManager.ts");
 let stage;
 let canvas;
 let assetManager;
@@ -1329,19 +1330,13 @@ let sportsCar;
 let sedan;
 let police;
 let nest;
-let yValue = 96;
+let screenManager;
+let levelGeneration;
 let carArray = [];
+let yValue = 96;
 let userInterface;
 let levelsCleared = 0;
 let lives = 3;
-let instructions;
-let startLane;
-let laneOne;
-let laneTwo;
-let laneThree;
-let laneFour;
-let laneFive;
-let laneSix;
 function monitorKeys() {
     if (upKey) {
         chicken.direction = Chicken_1.Chicken.UP;
@@ -1364,24 +1359,8 @@ function monitorKeys() {
 }
 function onReady(e) {
     console.log(">> spritesheet loaded – ready to add sprites to game");
-    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
-    stage.addChild(startLane);
-    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480);
-    stage.addChild(laneOne);
-    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384);
-    stage.addChild(laneTwo);
-    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 288);
-    stage.addChild(laneThree);
-    laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
-    stage.addChild(laneFour);
-    laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
-    stage.addChild(laneFive);
-    laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
-    stage.addChild(laneSix);
     chicken = new Chicken_1.Chicken(stage, assetManager);
     userInterface = new UserInterface_1.UserInterface(stage, assetManager);
-    stage.on("nestReached", onGameEvent);
-    stage.on("lifeDecrement", onGameEvent);
     for (let i = 0; i < 9; i++) {
         if ((0, Toolkit_1.randomMe)(1, 4) == 1) {
             carArray.push(sportsCar = new SportsCar_1.SportsCar(stage, assetManager, chicken, yValue));
@@ -1398,10 +1377,11 @@ function onReady(e) {
         if (yValue == 158)
             yValue = 261;
         yValue = yValue + 31;
-        console.log(yValue);
     }
-    instructions = assetManager.getSprite("sprites", "UI/Instructions", 125, 140);
-    stage.addChild(instructions);
+    screenManager = new ScreenManager_1.ScreenManager(stage, assetManager);
+    screenManager.showMainMenu();
+    stage.on("nestReached", onGameEvent);
+    stage.on("lifeDecrement", onGameEvent);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -1423,6 +1403,8 @@ function onReady(e) {
                 lives--;
                 userInterface.life = lives;
                 console.log("Lives: " + lives);
+                break;
+            case "newLevel":
                 break;
             default:
                 break;
@@ -1449,7 +1431,6 @@ function onKeyDown(e) {
         leftKey = true;
     else if (e.key == "d")
         rightKey = true;
-    stage.removeChild(instructions);
 }
 function onKeyUp(e) {
     if (e.key == "w")
@@ -1534,6 +1515,52 @@ class PoliceCar extends Car_1.Car {
     }
 }
 exports.PoliceCar = PoliceCar;
+
+
+/***/ }),
+
+/***/ "./src/ScreenManager.ts":
+/*!******************************!*\
+  !*** ./src/ScreenManager.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ScreenManager = void 0;
+class ScreenManager {
+    constructor(stage, assetManager) {
+        this.stage = stage;
+        this.MainMenu = new createjs.Container();
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 512));
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 125, 140));
+        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 400);
+        this.MainMenu.addChild(this.startButton);
+    }
+    showMainMenu() {
+        this.hideAll();
+        this.stage.addChildAt(this.MainMenu, 0);
+        this.startButton.on("click", (e) => {
+            console.log("button pressed");
+            this.hideAll();
+        }, this, true);
+    }
+    showGame() {
+    }
+    showGameOver() {
+        this.hideAll();
+        this.stage.addChildAt(this.GameOver, 0);
+        this.restartButton.on("click", (e) => {
+        }, this, true);
+    }
+    hideAll() {
+        this.stage.removeChild(this.MainMenu);
+        this.stage.removeChild(this.GameOver);
+    }
+}
+exports.ScreenManager = ScreenManager;
 
 
 /***/ }),
@@ -4047,7 +4074,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("a88ccad39b425b5f7a5a")
+/******/ 		__webpack_require__.h = () => ("c4254cfcf0c7dfc5fb92")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

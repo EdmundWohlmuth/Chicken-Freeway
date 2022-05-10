@@ -185,6 +185,40 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">Button/Back.png</key>
+            <key type="filename">Button/Back_Pressed.png</key>
+            <key type="filename">Button/Quit.png</key>
+            <key type="filename">Button/Quit_Pressed.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>14,6,28,11</rect>
+                <key>scale9Paddings</key>
+                <rect>14,6,28,11</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Button/Instruction.png</key>
+            <key type="filename">Button/Instruction_Pressed.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>38,6,76,11</rect>
+                <key>scale9Paddings</key>
+                <rect>38,6,76,11</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">Button/Next.png</key>
             <key type="filename">Button/Quit.jpg</key>
             <key type="filename">Button/Start.png</key>
@@ -202,6 +236,21 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">Button/Next_Pressed.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>15,6,29,11</rect>
+                <key>scale9Paddings</key>
+                <rect>15,6,29,11</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">Button/Restart.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -214,6 +263,36 @@
                 <rect>11,3,23,5</rect>
                 <key>scale9Paddings</key>
                 <rect>11,3,23,5</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Button/Restart_Pressed.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>24,6,47,11</rect>
+                <key>scale9Paddings</key>
+                <rect>24,6,47,11</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Button/Start_Pressed.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>17,6,35,11</rect>
+                <key>scale9Paddings</key>
+                <rect>17,6,35,11</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

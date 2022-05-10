@@ -14,6 +14,8 @@ import { Sedan } from "./Sedan";
 import { PoliceCar } from "./PoliceCar";
 import { randomMe } from "./Toolkit";
 import { UserInterface } from "./UserInterface";
+import { ScreenManager } from "./ScreenManager";
+import { LevelGeneration } from "./LevelGeneration";
 
 // game variables
 let stage:createjs.StageGL;
@@ -33,27 +35,18 @@ let sedan:Sedan;
 let police:PoliceCar;
 let nest:Nest;
 
+// managers
+let screenManager:ScreenManager;
+let levelGeneration:LevelGeneration;
+
 // Array
-let yValue:number = 96
 let carArray:Car[] = [];
+let yValue:number = 96
 
 // UI && Screens
 let userInterface:UserInterface;
 let levelsCleared:number = 0;
 let lives:number = 3;
-
-//TEMP
-let instructions:createjs.Sprite;
-
-//TEMP
-let startLane:createjs.Sprite;
-let laneOne:createjs.Sprite;
-let laneTwo:createjs.Sprite;
-let laneThree:createjs.Sprite;
-let laneFour:createjs.Sprite;
-let laneFive:createjs.Sprite;
-let laneSix:createjs.Sprite;
-
 
 function monitorKeys():void {
     if (upKey) {
@@ -84,31 +77,12 @@ function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
     // temp map creation
-    startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576)
-    stage.addChild(startLane);
-    laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480)
-    stage.addChild(laneOne);
-    laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384)
-    stage.addChild(laneTwo);
-    laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 288)
-    stage.addChild(laneThree);
-    laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
-    stage.addChild(laneFour);
-    laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
-    stage.addChild(laneFive);
-    laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0) // inceriments of 96
-    stage.addChild(laneSix);
 
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
 
     userInterface = new UserInterface(stage, assetManager);
 
-    // listen for custom events
-    stage.on("nestReached", onGameEvent);
-    stage.on("lifeDecrement", onGameEvent);
-
-    // TEMP car gen (hardcoded values for lanes two / three)
     for (let i = 0; i < 9; i++) {      
         if(randomMe(1, 4) == 1){           
             carArray.push(sportsCar = new SportsCar(stage, assetManager, chicken, yValue));
@@ -125,11 +99,15 @@ function onReady(e:createjs.Event):void {
 
         if (yValue == 158) yValue = 261;
         yValue = yValue + 31;
-        console.log(yValue);       
-    }
+    } 
 
-    instructions = assetManager.getSprite("sprites", "UI/Instructions", 125, 140);
-    stage.addChild(instructions);
+    screenManager = new ScreenManager(stage, assetManager);
+    screenManager.showMainMenu();
+
+
+    // listen for custom events
+    stage.on("nestReached", onGameEvent);
+    stage.on("lifeDecrement", onGameEvent);
 
     nest = new Nest(stage, assetManager, chicken);
 
@@ -157,6 +135,8 @@ function onReady(e:createjs.Event):void {
                 lives--
                 userInterface.life = lives;
                 console.log("Lives: " + lives);
+                break;
+            case "newLevel":
                 break;
         
             default:
@@ -188,8 +168,6 @@ function onKeyDown(e:KeyboardEvent):void {
     else if (e.key == "s") downKey = true;
     else if (e.key == "a") leftKey = true;
     else if (e.key == "d") rightKey = true;
-
-    stage.removeChild(instructions); // TEMP
 }
 function onKeyUp(e:KeyboardEvent): void {
     if (e.key == "w") upKey = false;
