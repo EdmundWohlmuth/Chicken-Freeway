@@ -15,7 +15,7 @@ export class ScreenManager {
     private GameOver:createjs.Container;
 
     // events
-    private startPressd:createjs.Event;
+    private gameReset:createjs.Event;
 
     constructor(stage:createjs.StageGL, assetManager:AssetManager, levelgen:LevelGeneration) {
         this.stage = stage;
@@ -24,10 +24,9 @@ export class ScreenManager {
         // Containers
         // main menu
         this.MainMenu = new createjs.Container();
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 512));
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 125, 140));
-        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 400);
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 100, 110));
+        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 500);
         this.MainMenu.addChild(this.startButton);
         // game over
         this.GameOver = new createjs.Container();
@@ -35,6 +34,9 @@ export class ScreenManager {
         this.GameOver.addChild(assetManager.getSprite("sprites",  "Win-Lose/Lose_Game_Overlay", 170, 240));
         this.restartButton = assetManager.getSprite("sprites", "Button/Restart", 200, 400);
         this.GameOver.addChild(this.restartButton);
+
+        // event
+        this.gameReset = new createjs.Event("gameReset", true, false);
 
     }
 
@@ -48,7 +50,8 @@ export class ScreenManager {
         this.startButton.on("click", (e) => {  
             console.log("start pressed");
             this.hideAll();
-            this.levelGen.genLevels();
+            this.levelGen.genLevels();       
+            console.log("game reset");
         }, this, true);
 
     }
@@ -61,7 +64,8 @@ export class ScreenManager {
         // detcted pressed restart
         this.restartButton.on("click", (e) => {
             this.hideAll();
-            this.showMainMenu();       
+            this.showMainMenu();  
+            this.startButton.dispatchEvent(this.gameReset) ;    
         }, this, true);
 
     }

@@ -1327,6 +1327,7 @@ let sportsCar;
 let sedan;
 let police;
 let nest;
+let car;
 let screenManager;
 let levelGeneration;
 let userInterface;
@@ -1362,6 +1363,7 @@ function onReady(e) {
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
+    stage.on("gameReset", onGameEvent);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -1384,6 +1386,15 @@ function onReady(e) {
                     screenManager.showGameOver();
                     console.log("Game over");
                 }
+                break;
+            case "lifeIncriment":
+                break;
+            case "gameReset":
+                userInterface.resetMe();
+                chicken.stageClear();
+                lives = 3;
+                console.log("reset succsessfully");
+                console.log("Lives: " + lives);
                 break;
             default:
                 break;
@@ -1604,16 +1615,16 @@ class ScreenManager {
         this.stage = stage;
         this.levelGen = levelgen;
         this.MainMenu = new createjs.Container();
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 512));
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 125, 140));
-        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 400);
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 100, 110));
+        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 500);
         this.MainMenu.addChild(this.startButton);
         this.GameOver = new createjs.Container();
         this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
         this.GameOver.addChild(assetManager.getSprite("sprites", "Win-Lose/Lose_Game_Overlay", 170, 240));
         this.restartButton = assetManager.getSprite("sprites", "Button/Restart", 200, 400);
         this.GameOver.addChild(this.restartButton);
+        this.gameReset = new createjs.Event("gameReset", true, false);
     }
     showMainMenu() {
         this.hideAll();
@@ -1622,6 +1633,7 @@ class ScreenManager {
             console.log("start pressed");
             this.hideAll();
             this.levelGen.genLevels();
+            console.log("game reset");
         }, this, true);
     }
     showGameOver() {
@@ -1630,6 +1642,7 @@ class ScreenManager {
         this.restartButton.on("click", (e) => {
             this.hideAll();
             this.showMainMenu();
+            this.startButton.dispatchEvent(this.gameReset);
         }, this, true);
     }
     hideAll() {
@@ -1775,6 +1788,7 @@ class UserInterface {
     constructor(stage, assetManager) {
         this.lives = 3;
         this.stage = stage;
+        this.assetManager = assetManager;
         this.overlay = assetManager.getSprite("sprites", "UI/UI_Bar", 314, 1);
         stage.addChild(this.overlay);
         this.clearsText = new createjs.BitmapText("0", assetManager.getSpriteSheet("glyphs"));
@@ -1803,6 +1817,9 @@ class UserInterface {
     resetMe() {
         this.clearsCount = 0;
         this.lives = 3;
+        this.stage.addChild(this.lifeCounter1);
+        this.stage.addChild(this.lifeCounter2);
+        this.stage.addChild(this.lifeCounter3);
     }
     update() {
         if (this.lives == 2) {
@@ -4152,7 +4169,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("c38c00865b7038de2832")
+/******/ 		__webpack_require__.h = () => ("c74dc4a6a3f42c4235eb")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

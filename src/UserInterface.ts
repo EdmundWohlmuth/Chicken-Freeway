@@ -4,6 +4,7 @@ export class UserInterface {
 
     // private variables
     private stage:createjs.StageGL;
+    private assetManager:AssetManager;
 
     private clearsCount:number;
     private clearsText:createjs.BitmapText;
@@ -18,6 +19,7 @@ export class UserInterface {
 
     constructor(stage:createjs.StageGL, assetManager:AssetManager) {
         this.stage = stage;
+        this.assetManager = assetManager
 
         // overlay sprite
         this.overlay = assetManager.getSprite("sprites", "UI/UI_Bar", 314, 1);
@@ -64,6 +66,9 @@ export class UserInterface {
     public resetMe():void {
         this.clearsCount = 0;
         this.lives = 3;
+        this.stage.addChild(this.lifeCounter1);
+        this.stage.addChild(this.lifeCounter2);
+        this.stage.addChild(this.lifeCounter3);
     }
 
     public update():void {

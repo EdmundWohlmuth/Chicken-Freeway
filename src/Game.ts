@@ -4,7 +4,7 @@
 // importing createjs framework
 import "createjs";
 // importing game constants
-import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST } from "./Constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST, STARTING_CAR_SPEED } from "./Constants";
 import { AssetManager } from "./AssetManager";
 import { Chicken } from "./Chicken";
 import { SportsCar } from "./SportsCar";
@@ -14,6 +14,7 @@ import { PoliceCar } from "./PoliceCar";
 import { UserInterface } from "./UserInterface";
 import { ScreenManager } from "./ScreenManager";
 import { LevelGeneration } from "./LevelGeneration";
+import { Car } from "./Car";
 
 // game variables
 let stage:createjs.StageGL;
@@ -32,6 +33,7 @@ let sportsCar:SportsCar;
 let sedan:Sedan;
 let police:PoliceCar;
 let nest:Nest;
+let car:Car;
 
 // managers
 let screenManager:ScreenManager;
@@ -83,6 +85,7 @@ function onReady(e:createjs.Event):void {
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
+    stage.on("gameReset", onGameEvent);
 
     nest = new Nest(stage, assetManager, chicken);
 
@@ -114,6 +117,16 @@ function onReady(e:createjs.Event):void {
                     screenManager.showGameOver();
                     console.log("Game over");
                 } 
+                break;
+            case "lifeIncriment":           
+
+                break;
+            case "gameReset":
+                userInterface.resetMe();
+                chicken.stageClear();
+                lives = 3;
+                console.log("reset succsessfully");
+                console.log("Lives: " + lives);
                 break;
         
             default:
