@@ -7,12 +7,10 @@ import "createjs";
 import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST } from "./Constants";
 import { AssetManager } from "./AssetManager";
 import { Chicken } from "./Chicken";
-import { Car } from "./Car";
 import { SportsCar } from "./SportsCar";
 import { Nest } from "./Nest";
 import { Sedan } from "./Sedan";
 import { PoliceCar } from "./PoliceCar";
-import { randomMe } from "./Toolkit";
 import { UserInterface } from "./UserInterface";
 import { ScreenManager } from "./ScreenManager";
 import { LevelGeneration } from "./LevelGeneration";
@@ -39,14 +37,10 @@ let nest:Nest;
 let screenManager:ScreenManager;
 let levelGeneration:LevelGeneration;
 
-// Array
-let carArray:Car[] = [];
-
 // UI && Screens
 let userInterface:UserInterface;
 let levelsCleared:number = 0;
 let lives:number = 3;
-let currentLevel:number;
 
 function monitorKeys():void {
     if (upKey) {
@@ -104,26 +98,22 @@ function onReady(e:createjs.Event):void {
     function onGameEvent(e:createjs.Event):void {
         switch (e.type) {
             case "nestReached":
-                // update car speed
-                for (let i = 0; i < carArray.length; i++) {
-                    carArray[i].speed = carArray[i].speed + 0.25;
-                }
                 // update score
                 levelsCleared++;
                 userInterface.clears = levelsCleared;
                 // gen new level
                 levelGeneration.genLevels();
                 // console logs
-                console.log ("levelsClears: " + levelsCleared);
-               // console.log("Speed: " + carArray[1].speed);              
+                console.log ("levelsClears: " + levelsCleared);             
                 break;
             case "lifeDecrement":
                 lives--
                 userInterface.life = lives;
                 console.log("Lives: " + lives);
-                break;
-            case "newLevel":
-
+                if (lives < 1) {
+                    screenManager.showGameOver();
+                    console.log("Game over");
+                } 
                 break;
         
             default:
@@ -152,7 +142,7 @@ function onKeyDown(e:KeyboardEvent):void {
     if (e.key == "w") upKey = true;
     else if (e.key == "s") downKey = true;
     else if (e.key == "a") leftKey = true;
-    else if (e.key == "d") rightKey = true;
+    else if (e.key == "d" ) rightKey = true;
 }
 function onKeyUp(e:KeyboardEvent): void {
     if (e.key == "w") upKey = false;

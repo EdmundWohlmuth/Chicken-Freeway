@@ -20,7 +20,7 @@ export class LevelGeneration {
     private police:PoliceCar;
     private sedan:Sedan;
     private chicken:Chicken;
-
+ 
     // lanes
     private startLane:createjs.Sprite;
     private laneOne:createjs.Sprite;
@@ -108,7 +108,7 @@ export class LevelGeneration {
        this.yValue = 96;
 
        if (levelType == 1) {
-        this.stage.addChildAt(this.levelOne, 0);           
+        this.stage.addChildAt(this.levelOne, 0);         
         }
         else if (levelType == 2) {
 
@@ -131,7 +131,7 @@ export class LevelGeneration {
         }     
     }
 
-    private clearLevel():void {
+    public clearLevel():void {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);

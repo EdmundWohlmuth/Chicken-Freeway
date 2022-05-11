@@ -26,9 +26,8 @@ export class Nest {
     public update():void {
         if (boxHit(this._sprite, this.chicken.sprite)) {
             this.chicken.stageClear();
-            this._sprite.dispatchEvent(this.nestReached);
+            this._sprite.dispatchEvent(this.nestReached);          
            // console.log("collssion");
         }
-    }
-    
+    }  
 }

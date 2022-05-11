@@ -1329,11 +1329,9 @@ let police;
 let nest;
 let screenManager;
 let levelGeneration;
-let carArray = [];
 let userInterface;
 let levelsCleared = 0;
 let lives = 3;
-let currentLevel;
 function monitorKeys() {
     if (upKey) {
         chicken.direction = Chicken_1.Chicken.UP;
@@ -1373,9 +1371,6 @@ function onReady(e) {
     function onGameEvent(e) {
         switch (e.type) {
             case "nestReached":
-                for (let i = 0; i < carArray.length; i++) {
-                    carArray[i].speed = carArray[i].speed + 0.25;
-                }
                 levelsCleared++;
                 userInterface.clears = levelsCleared;
                 levelGeneration.genLevels();
@@ -1385,8 +1380,10 @@ function onReady(e) {
                 lives--;
                 userInterface.life = lives;
                 console.log("Lives: " + lives);
-                break;
-            case "newLevel":
+                if (lives < 1) {
+                    screenManager.showGameOver();
+                    console.log("Game over");
+                }
                 break;
             default:
                 break;
@@ -1612,25 +1609,31 @@ class ScreenManager {
         this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 125, 140));
         this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 400);
         this.MainMenu.addChild(this.startButton);
+        this.GameOver = new createjs.Container();
+        this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
+        this.GameOver.addChild(assetManager.getSprite("sprites", "Win-Lose/Lose_Game_Overlay", 170, 240));
+        this.restartButton = assetManager.getSprite("sprites", "Button/Restart", 200, 400);
+        this.GameOver.addChild(this.restartButton);
     }
     showMainMenu() {
         this.hideAll();
         this.stage.addChildAt(this.MainMenu, 0);
         this.startButton.on("click", (e) => {
-            console.log("button pressed");
+            console.log("start pressed");
             this.hideAll();
             this.levelGen.genLevels();
         }, this, true);
-    }
-    showGame() {
     }
     showGameOver() {
         this.hideAll();
         this.stage.addChildAt(this.GameOver, 0);
         this.restartButton.on("click", (e) => {
+            this.hideAll();
+            this.showMainMenu();
         }, this, true);
     }
     hideAll() {
+        this.levelGen.clearLevel();
         this.stage.removeChild(this.MainMenu);
         this.stage.removeChild(this.GameOver);
     }
@@ -4149,7 +4152,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("3b3efa07df529c971f99")
+/******/ 		__webpack_require__.h = () => ("c38c00865b7038de2832")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
