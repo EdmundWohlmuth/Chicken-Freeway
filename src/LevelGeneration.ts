@@ -5,6 +5,7 @@ import { SportsCar } from "./SportsCar";
 import { PoliceCar } from "./PoliceCar";
 import { Sedan } from "./Sedan";
 import { Chicken } from "./Chicken";
+import { STARTING_CAR_SPEED } from "./Constants";
 
 export class LevelGeneration {
 
@@ -63,13 +64,14 @@ export class LevelGeneration {
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0) // inceriments of 96
         this.levelOne.addChild(this.laneSix);
         // cars
-        for (let i = 0; i < 9; i++) {      
-            if(randomMe(1, 4) == 1){           
+        for (let i = 0; i < 9; i++) { 
+            let carType:number = randomMe(1, 3);     
+            if(carType == 1){           
                 this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                 this.sportsCar.positionMe();
                 this.levelOne.addChild(this.sportsCar.sprite);
                 }
-                else if(randomMe(1, 4) == 2) {
+                else if(carType == 2) {
                     this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
                     this.levelOne.addChild(this.sedan.sprite);
@@ -135,6 +137,13 @@ export class LevelGeneration {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
+    }
+
+    public reset():void {
+        // reset car's speed
+        for (let i = 0; i < this.carArray.length; i++) {
+            this.carArray[i].speed = STARTING_CAR_SPEED;
+            }
     }
 
 

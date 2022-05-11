@@ -1229,6 +1229,7 @@ class Chicken {
         let sprite = this._sprite;
         sprite.x = Constants_1.CHICKEN_START_X;
         sprite.y = Constants_1.CHICKEN_START_Y;
+        this.stage.removeChild(this._deadSprite);
     }
 }
 exports.Chicken = Chicken;
@@ -1327,7 +1328,6 @@ let sportsCar;
 let sedan;
 let police;
 let nest;
-let car;
 let screenManager;
 let levelGeneration;
 let userInterface;
@@ -1358,13 +1358,13 @@ function onReady(e) {
     chicken = new Chicken_1.Chicken(stage, assetManager);
     userInterface = new UserInterface_1.UserInterface(stage, assetManager);
     levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan);
+    nest = new Nest_1.Nest(stage, assetManager, chicken);
     screenManager = new ScreenManager_1.ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
     stage.on("gameReset", onGameEvent);
-    nest = new Nest_1.Nest(stage, assetManager, chicken);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
     createjs.Ticker.framerate = Constants_1.FRAME_RATE;
@@ -1392,6 +1392,7 @@ function onReady(e) {
             case "gameReset":
                 userInterface.resetMe();
                 chicken.stageClear();
+                levelGeneration.reset();
                 lives = 3;
                 console.log("reset succsessfully");
                 console.log("Lives: " + lives);
@@ -1460,6 +1461,7 @@ const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 const SportsCar_1 = __webpack_require__(/*! ./SportsCar */ "./src/SportsCar.ts");
 const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts");
 const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class LevelGeneration {
     constructor(stage, assetManager, chicken, sportsCar, police, sedan) {
         this.carArray = [];
@@ -1486,12 +1488,13 @@ class LevelGeneration {
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
         this.levelOne.addChild(this.laneSix);
         for (let i = 0; i < 9; i++) {
-            if ((0, Toolkit_1.randomMe)(1, 4) == 1) {
+            let carType = (0, Toolkit_1.randomMe)(1, 3);
+            if (carType == 1) {
                 this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                 this.sportsCar.positionMe();
                 this.levelOne.addChild(this.sportsCar.sprite);
             }
-            else if ((0, Toolkit_1.randomMe)(1, 4) == 2) {
+            else if (carType == 2) {
                 this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                 this.sedan.positionMe();
                 this.levelOne.addChild(this.sedan.sprite);
@@ -1532,6 +1535,11 @@ class LevelGeneration {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
+    }
+    reset() {
+        for (let i = 0; i < this.carArray.length; i++) {
+            this.carArray[i].speed = Constants_1.STARTING_CAR_SPEED;
+        }
     }
 }
 exports.LevelGeneration = LevelGeneration;
@@ -1620,7 +1628,7 @@ class ScreenManager {
         this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 500);
         this.MainMenu.addChild(this.startButton);
         this.GameOver = new createjs.Container();
-        this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
+        this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
         this.GameOver.addChild(assetManager.getSprite("sprites", "Win-Lose/Lose_Game_Overlay", 170, 240));
         this.restartButton = assetManager.getSprite("sprites", "Button/Restart", 200, 400);
         this.GameOver.addChild(this.restartButton);
@@ -4169,7 +4177,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("c74dc4a6a3f42c4235eb")
+/******/ 		__webpack_require__.h = () => ("7bb6e332faca60ed387f")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

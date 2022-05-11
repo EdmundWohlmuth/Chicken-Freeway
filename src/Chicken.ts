@@ -171,7 +171,8 @@ export class Chicken {
         // reset player
         sprite.x = CHICKEN_START_X;
         sprite.y = CHICKEN_START_Y;
-        
+        // hide cooked goose
+        this.stage.removeChild(this._deadSprite);      
     }
 
     // ---------------------- private meathods ----------------------------

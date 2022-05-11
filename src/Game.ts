@@ -33,7 +33,6 @@ let sportsCar:SportsCar;
 let sedan:Sedan;
 let police:PoliceCar;
 let nest:Nest;
-let car:Car;
 
 // managers
 let screenManager:ScreenManager;
@@ -77,17 +76,16 @@ function onReady(e:createjs.Event):void {
     userInterface = new UserInterface(stage, assetManager);
     levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan);
 
-    screenManager = new ScreenManager(stage, assetManager, levelGeneration);
-    screenManager.showMainMenu();
+    nest = new Nest(stage, assetManager, chicken);
 
+    screenManager = new ScreenManager(stage, assetManager, levelGeneration);
+    screenManager.showMainMenu();  
 
     // listen for custom events
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
     stage.on("gameReset", onGameEvent);
-
-    nest = new Nest(stage, assetManager, chicken);
 
      // event listeners
      document.onkeydown = onKeyDown;
@@ -124,6 +122,7 @@ function onReady(e:createjs.Event):void {
             case "gameReset":
                 userInterface.resetMe();
                 chicken.stageClear();
+                levelGeneration.reset();
                 lives = 3;
                 console.log("reset succsessfully");
                 console.log("Lives: " + lives);

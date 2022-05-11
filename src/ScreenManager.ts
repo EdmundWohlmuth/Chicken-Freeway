@@ -30,7 +30,7 @@ export class ScreenManager {
         this.MainMenu.addChild(this.startButton);
         // game over
         this.GameOver = new createjs.Container();
-        this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Pause_Overlay", 0, 0));
+        this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
         this.GameOver.addChild(assetManager.getSprite("sprites",  "Win-Lose/Lose_Game_Overlay", 170, 240));
         this.restartButton = assetManager.getSprite("sprites", "Button/Restart", 200, 400);
         this.GameOver.addChild(this.restartButton);
