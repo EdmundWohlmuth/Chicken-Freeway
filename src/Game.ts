@@ -44,27 +44,29 @@ let levelsCleared:number = 0;
 let lives:number = 3;
 
 function monitorKeys():void {
-    if (upKey) {
-        chicken.direction = Chicken.UP;
-       // console.log("up");
-        chicken.startMe();
-
-    } else if (downKey) {
-        chicken.direction = Chicken.DOWN;
-       // console.log("down");
-        chicken.startMe();
-
-    } else if (leftKey) {
-        chicken.direction = Chicken.LEFT;
-       // console.log("left");
-        chicken.startMe();
-        
-    } else if (rightKey) {
-        chicken.direction = Chicken.RIGHT;
-       // console.log("right");
-        chicken.startMe();
-        
-    } else chicken.stopMe();
+    if (screenManager.inMenuBool == false){
+        if (upKey) {
+            chicken.direction = Chicken.UP;
+           // console.log("up");
+            chicken.startMe();
+    
+        } else if (downKey) {
+            chicken.direction = Chicken.DOWN;
+           // console.log("down");
+            chicken.startMe();
+    
+        } else if (leftKey) {
+            chicken.direction = Chicken.LEFT;
+           // console.log("left");
+            chicken.startMe();
+            
+        } else if (rightKey) {
+            chicken.direction = Chicken.RIGHT;
+           // console.log("right");
+            chicken.startMe();
+            
+        } else chicken.stopMe();
+    }    
 }
 
 // --------------------------------------------------- event handler

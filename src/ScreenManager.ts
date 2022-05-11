@@ -11,8 +11,10 @@ export class ScreenManager {
 
     // containers
     private MainMenu:createjs.Container;
-    private GameScreen:createjs.Container;
     private GameOver:createjs.Container;
+
+    // bool
+    private inMenu:Boolean;
 
     // events
     private gameReset:createjs.Event;
@@ -20,6 +22,9 @@ export class ScreenManager {
     constructor(stage:createjs.StageGL, assetManager:AssetManager, levelgen:LevelGeneration) {
         this.stage = stage;
         this.levelGen = levelgen
+
+        // bool
+        this.inMenu = true;
 
         // Containers
         // main menu
@@ -40,17 +45,26 @@ export class ScreenManager {
 
     }
 
+    // ---------------------------- gets / sets ------------------------------------
+
+    get inMenuBool() {
+        return this.inMenu;
+    }
+
     // -------------------------- public meathods ----------------------------------
     public showMainMenu():void {
         // show mainMenu
         this.hideAll();
         this.stage.addChildAt(this.MainMenu, 0);
+        // set bool to true
+        this.inMenu = true;
 
         // detect click
         this.startButton.on("click", (e) => {  
             console.log("start pressed");
             this.hideAll();
-            this.levelGen.genLevels();       
+            this.levelGen.genLevels();
+            this.inMenu = false;      
             console.log("game reset");
         }, this, true);
 
@@ -60,12 +74,15 @@ export class ScreenManager {
         // show gameOver
         this.hideAll();
         this.stage.addChildAt(this.GameOver, 0);
+        // set bool to true
+        this.inMenu = true;
 
         // detcted pressed restart
         this.restartButton.on("click", (e) => {
             this.hideAll();
             this.showMainMenu();  
-            this.startButton.dispatchEvent(this.gameReset) ;    
+            this.startButton.dispatchEvent(this.gameReset);
+            this.inMenu = true;    
         }, this, true);
 
     }

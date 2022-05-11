@@ -1334,24 +1334,26 @@ let userInterface;
 let levelsCleared = 0;
 let lives = 3;
 function monitorKeys() {
-    if (upKey) {
-        chicken.direction = Chicken_1.Chicken.UP;
-        chicken.startMe();
+    if (screenManager.inMenuBool == false) {
+        if (upKey) {
+            chicken.direction = Chicken_1.Chicken.UP;
+            chicken.startMe();
+        }
+        else if (downKey) {
+            chicken.direction = Chicken_1.Chicken.DOWN;
+            chicken.startMe();
+        }
+        else if (leftKey) {
+            chicken.direction = Chicken_1.Chicken.LEFT;
+            chicken.startMe();
+        }
+        else if (rightKey) {
+            chicken.direction = Chicken_1.Chicken.RIGHT;
+            chicken.startMe();
+        }
+        else
+            chicken.stopMe();
     }
-    else if (downKey) {
-        chicken.direction = Chicken_1.Chicken.DOWN;
-        chicken.startMe();
-    }
-    else if (leftKey) {
-        chicken.direction = Chicken_1.Chicken.LEFT;
-        chicken.startMe();
-    }
-    else if (rightKey) {
-        chicken.direction = Chicken_1.Chicken.RIGHT;
-        chicken.startMe();
-    }
-    else
-        chicken.stopMe();
 }
 function onReady(e) {
     console.log(">> spritesheet loaded – ready to add sprites to game");
@@ -1622,6 +1624,7 @@ class ScreenManager {
     constructor(stage, assetManager, levelgen) {
         this.stage = stage;
         this.levelGen = levelgen;
+        this.inMenu = true;
         this.MainMenu = new createjs.Container();
         this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
         this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 100, 110));
@@ -1634,23 +1637,30 @@ class ScreenManager {
         this.GameOver.addChild(this.restartButton);
         this.gameReset = new createjs.Event("gameReset", true, false);
     }
+    get inMenuBool() {
+        return this.inMenu;
+    }
     showMainMenu() {
         this.hideAll();
         this.stage.addChildAt(this.MainMenu, 0);
+        this.inMenu = true;
         this.startButton.on("click", (e) => {
             console.log("start pressed");
             this.hideAll();
             this.levelGen.genLevels();
+            this.inMenu = false;
             console.log("game reset");
         }, this, true);
     }
     showGameOver() {
         this.hideAll();
         this.stage.addChildAt(this.GameOver, 0);
+        this.inMenu = true;
         this.restartButton.on("click", (e) => {
             this.hideAll();
             this.showMainMenu();
             this.startButton.dispatchEvent(this.gameReset);
+            this.inMenu = true;
         }, this, true);
     }
     hideAll() {
@@ -4177,7 +4187,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("7bb6e332faca60ed387f")
+/******/ 		__webpack_require__.h = () => ("d43c0b0585cffca4b203")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
