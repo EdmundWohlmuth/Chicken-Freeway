@@ -14,7 +14,6 @@ import { PoliceCar } from "./PoliceCar";
 import { UserInterface } from "./UserInterface";
 import { ScreenManager } from "./ScreenManager";
 import { LevelGeneration } from "./LevelGeneration";
-import { Car } from "./Car";
 
 // game variables
 let stage:createjs.StageGL;
@@ -76,9 +75,9 @@ function onReady(e:createjs.Event):void {
     // construct game objects here
     chicken = new Chicken(stage, assetManager);
     userInterface = new UserInterface(stage, assetManager);
-    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan);
-
     nest = new Nest(stage, assetManager, chicken);
+    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest);
+
 
     screenManager = new ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();  
@@ -125,7 +124,7 @@ function onReady(e:createjs.Event):void {
                 userInterface.resetMe();
                 chicken.stageClear();
                 levelGeneration.reset();
-                lives = 3;
+                lives = 3;              
                 console.log("reset succsessfully");
                 console.log("Lives: " + lives);
                 break;

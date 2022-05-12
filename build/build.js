@@ -1359,8 +1359,8 @@ function onReady(e) {
     console.log(">> spritesheet loaded – ready to add sprites to game");
     chicken = new Chicken_1.Chicken(stage, assetManager);
     userInterface = new UserInterface_1.UserInterface(stage, assetManager);
-    levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
+    levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest);
     screenManager = new ScreenManager_1.ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();
     stage.on("nestReached", onGameEvent);
@@ -1465,7 +1465,7 @@ const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts")
 const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class LevelGeneration {
-    constructor(stage, assetManager, chicken, sportsCar, police, sedan) {
+    constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest) {
         this.carArray = [];
         this.yValue = 96;
         this.stage = stage;
@@ -1473,6 +1473,7 @@ class LevelGeneration {
         this.sportsCar = sportsCar;
         this.police = police;
         this.sedan = sedan;
+        this.nest = nest;
         this.assetManager = assetManager;
         this.levelOne = new createjs.Container;
         this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
@@ -1490,6 +1491,7 @@ class LevelGeneration {
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
         this.levelOne.addChild(this.laneSix);
         this.levelTwo = new createjs.Container;
+        this.levelThree = new createjs.Container;
     }
     genLevels() {
         this.clearLevel();
@@ -1528,6 +1530,7 @@ class LevelGeneration {
         }
         console.log("level " + levelType);
         console.log("Speed: " + this.carArray[1].speed);
+        this.nest.positiionMe();
     }
     update() {
         for (let car of this.carArray) {
@@ -1570,10 +1573,14 @@ const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
 class Nest {
     constructor(stage, assetManager, chicken) {
         this.chicken = chicken;
-        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", (0, Toolkit_1.randomMe)(10, 490), 70);
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", -20, -20);
         this.width = this._sprite.getBounds().width;
         this.nestReached = new createjs.Event("nestReached", true, false);
         stage.addChild(this._sprite);
+    }
+    positiionMe() {
+        this._sprite.y = 70;
+        this._sprite.x = (0, Toolkit_1.randomMe)(10, 480);
     }
     update() {
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
@@ -4198,7 +4205,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("cd3b3fc3ea09b80b6c61")
+/******/ 		__webpack_require__.h = () => ("5c6dd83c8f053a063ba6")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

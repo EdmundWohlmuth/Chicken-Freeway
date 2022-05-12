@@ -6,13 +6,13 @@ import { PoliceCar } from "./PoliceCar";
 import { Sedan } from "./Sedan";
 import { Chicken } from "./Chicken";
 import { STARTING_CAR_SPEED } from "./Constants";
+import { Nest } from "./Nest"; 
 
 export class LevelGeneration {
 
     // variables
     private stage:createjs.StageGL;
     private assetManager:AssetManager;
-    private car:Car;
     private carArray:Car[] = [];
     private yValue:number = 96
 
@@ -21,6 +21,7 @@ export class LevelGeneration {
     private police:PoliceCar;
     private sedan:Sedan;
     private chicken:Chicken;
+    private nest:Nest;
  
     // lanes
     private startLane:createjs.Sprite;
@@ -37,12 +38,13 @@ export class LevelGeneration {
     private levelThree:createjs.Container;
 
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest) {
         this.stage = stage;
         this.chicken = chicken;
         this.sportsCar = sportsCar;
         this.police = police;
         this.sedan = sedan;
+        this.nest = nest;
         this.assetManager = assetManager;
 
         // construct containers
@@ -67,14 +69,11 @@ export class LevelGeneration {
         // Level 2
         this.levelTwo = new createjs.Container;
         // streets
-        
-
-        // cars
+              
 
         // Level 3
+        this.levelThree = new createjs.Container;
         // streets
-
-        // cars
 
     }
 
@@ -125,7 +124,11 @@ export class LevelGeneration {
         this.carArray[i].speed = this.carArray[i].speed + 0.25;
         }
         console.log("level " + levelType);
-        console.log("Speed: " + this.carArray[1].speed); 
+        console.log("Speed: " + this.carArray[1].speed);
+        
+        // place nest
+        this.nest.positiionMe();
+        
     }
 
     public update():void {

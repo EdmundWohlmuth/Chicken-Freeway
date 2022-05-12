@@ -15,12 +15,17 @@ export class Nest {
 
         this.chicken = chicken;
 
-        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", randomMe(10, 490), 70);
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/Nest", -20, -20);
         this.width = this._sprite.getBounds().width; 
         
         this.nestReached = new createjs.Event("nestReached", true, false);
 
         stage.addChild(this._sprite);
+    }
+
+    public positiionMe():void {
+        this._sprite.y = 70;
+        this._sprite.x = randomMe(10, 480);
     }
 
     public update():void {
