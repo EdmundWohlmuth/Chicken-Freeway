@@ -1300,6 +1300,49 @@ exports.ASSET_MANIFEST = [
 
 /***/ }),
 
+/***/ "./src/Corn1Up.ts":
+/*!************************!*\
+  !*** ./src/Corn1Up.ts ***!
+  \************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Corn1Up = void 0;
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Corn1Up {
+    constructor(stage, assetManager, chicken) {
+        this.stage = stage;
+        this.chicken = chicken;
+        this._sprite = assetManager.getSprite("sprites", "GameObjects/1Up", -15, -15);
+        this.width = this._sprite.getBounds().width;
+        this.lifeIncriment = new createjs.Event("lifeIncriment", true, false);
+        this.stage.addChild(this._sprite);
+    }
+    positionMe() {
+        this._sprite.x = (0, Toolkit_1.randomMe)(10, 480);
+        this._sprite.y = (0, Toolkit_1.randomMe)(96, 384);
+    }
+    new1Up() {
+        this.stage.addChild(this._sprite);
+        this.positionMe();
+    }
+    update() {
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            this.stage.removeChild(this._sprite);
+            this._sprite.x = -15;
+            this._sprite.y = -15;
+            this.stage.dispatchEvent("lifeIncriment");
+            console.log("1Up get");
+        }
+    }
+}
+exports.Corn1Up = Corn1Up;
+
+
+/***/ }),
+
 /***/ "./src/Game.ts":
 /*!*********************!*\
   !*** ./src/Game.ts ***!
@@ -1317,6 +1360,7 @@ const Nest_1 = __webpack_require__(/*! ./Nest */ "./src/Nest.ts");
 const UserInterface_1 = __webpack_require__(/*! ./UserInterface */ "./src/UserInterface.ts");
 const ScreenManager_1 = __webpack_require__(/*! ./ScreenManager */ "./src/ScreenManager.ts");
 const LevelGeneration_1 = __webpack_require__(/*! ./LevelGeneration */ "./src/LevelGeneration.ts");
+const Corn1Up_1 = __webpack_require__(/*! ./Corn1Up */ "./src/Corn1Up.ts");
 let stage;
 let canvas;
 let assetManager;
@@ -1329,6 +1373,7 @@ let sportsCar;
 let sedan;
 let police;
 let nest;
+let corn;
 let screenManager;
 let levelGeneration;
 let userInterface;
@@ -1361,13 +1406,15 @@ function onReady(e) {
     chicken = new Chicken_1.Chicken(stage, assetManager);
     userInterface = new UserInterface_1.UserInterface(stage, assetManager);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
-    levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest);
+    corn = new Corn1Up_1.Corn1Up(stage, assetManager, chicken);
+    levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn);
     screenManager = new ScreenManager_1.ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
     stage.on("gameReset", onGameEvent);
+    stage.on("lifeIncriment", onGameEvent);
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
     createjs.Ticker.framerate = Constants_1.FRAME_RATE;
@@ -1379,6 +1426,7 @@ function onReady(e) {
                 levelsCleared++;
                 userInterface.clears = levelsCleared;
                 levelGeneration.genLevels();
+                corn.new1Up();
                 console.log("levelsClears: " + levelsCleared);
                 break;
             case "lifeDecrement":
@@ -1391,6 +1439,12 @@ function onReady(e) {
                 }
                 break;
             case "lifeIncriment":
+                if (lives < 3) {
+                    lives++;
+                    userInterface.life = lives;
+                    userInterface.addLivesUI();
+                }
+                console.log("Lives: " + lives);
                 break;
             case "gameReset":
                 userInterface.resetMe();
@@ -1413,6 +1467,7 @@ function onTick(e) {
     levelGeneration.update();
     nest.update();
     userInterface.update();
+    corn.update();
     stage.update();
 }
 function onKeyDown(e) {
@@ -1467,7 +1522,7 @@ const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts")
 const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class LevelGeneration {
-    constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest) {
+    constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn) {
         this.carArray = [];
         this.yValue = 96;
         this.carSpeedBonus = 5;
@@ -1477,6 +1532,7 @@ class LevelGeneration {
         this.police = police;
         this.sedan = sedan;
         this.nest = nest;
+        this.corn = corn;
         this.assetManager = assetManager;
         this.levelOne = new createjs.Container;
         this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
@@ -1540,6 +1596,7 @@ class LevelGeneration {
         console.log("level " + levelType);
         console.log("Speed: " + this.carArray[1].speed);
         this.nest.positiionMe();
+        this.corn.positionMe();
     }
     update() {
         for (let car of this.carArray) {
@@ -1878,6 +1935,14 @@ class UserInterface {
         }
         else if (this.lives > 3)
             this.lives = 3;
+    }
+    addLivesUI() {
+        if (this.lives == 2) {
+            this.stage.addChild(this.lifeCounter3);
+        }
+        else if (this.lives == 1) {
+            this.stage.addChild(this.lifeCounter2);
+        }
     }
 }
 exports.UserInterface = UserInterface;
@@ -4216,7 +4281,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("9b74e6d29bb83db93e9a")
+/******/ 		__webpack_require__.h = () => ("b25aa8f02e5d54cdc1c7")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

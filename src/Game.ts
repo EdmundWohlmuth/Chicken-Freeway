@@ -14,6 +14,7 @@ import { PoliceCar } from "./PoliceCar";
 import { UserInterface } from "./UserInterface";
 import { ScreenManager } from "./ScreenManager";
 import { LevelGeneration } from "./LevelGeneration";
+import { Corn1Up } from "./Corn1Up";
 
 // game variables
 let stage:createjs.StageGL;
@@ -32,6 +33,7 @@ let sportsCar:SportsCar;
 let sedan:Sedan;
 let police:PoliceCar;
 let nest:Nest;
+let corn:Corn1Up;
 
 // managers
 let screenManager:ScreenManager;
@@ -76,8 +78,8 @@ function onReady(e:createjs.Event):void {
     chicken = new Chicken(stage, assetManager);
     userInterface = new UserInterface(stage, assetManager);
     nest = new Nest(stage, assetManager, chicken);
-    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest);
-
+    corn = new Corn1Up(stage, assetManager, chicken);
+    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn);
 
     screenManager = new ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();  
@@ -87,6 +89,7 @@ function onReady(e:createjs.Event):void {
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
     stage.on("gameReset", onGameEvent);
+    stage.on("lifeIncriment", onGameEvent);
 
      // event listeners
      document.onkeydown = onKeyDown;
@@ -105,6 +108,7 @@ function onReady(e:createjs.Event):void {
                 userInterface.clears = levelsCleared;
                 // gen new level
                 levelGeneration.genLevels();
+                corn.new1Up();
                 // console logs
                 console.log ("levelsClears: " + levelsCleared);             
                 break;
@@ -117,8 +121,13 @@ function onReady(e:createjs.Event):void {
                     console.log("Game over");
                 } 
                 break;
-            case "lifeIncriment":           
-
+            case "lifeIncriment": 
+                if (lives < 3) {
+                    lives++;
+                    userInterface.life = lives;
+                    userInterface.addLivesUI();
+                } 
+                console.log("Lives: " + lives);         
                 break;
             case "gameReset":
                 userInterface.resetMe();
@@ -144,8 +153,9 @@ function onTick(e:createjs.Event) {
     monitorKeys();
     chicken.update();  
     levelGeneration.update();
-    nest.update();
+    nest.update();  
     userInterface.update();
+    corn.update();
 
     // update the stage
     stage.update();   

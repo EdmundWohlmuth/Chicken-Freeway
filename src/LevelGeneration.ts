@@ -6,7 +6,8 @@ import { PoliceCar } from "./PoliceCar";
 import { Sedan } from "./Sedan";
 import { Chicken } from "./Chicken";
 import { STARTING_CAR_SPEED, CAR_SPEED_INCREASE } from "./Constants";
-import { Nest } from "./Nest"; 
+import { Nest } from "./Nest";
+import { Corn1Up } from "./Corn1Up"; 
 
 export class LevelGeneration {
 
@@ -23,6 +24,7 @@ export class LevelGeneration {
     private sedan:Sedan;
     private chicken:Chicken;
     private nest:Nest;
+    private corn:Corn1Up;
  
     // lanes
     private startLane:createjs.Sprite;
@@ -38,14 +40,14 @@ export class LevelGeneration {
     private levelTwo:createjs.Container;
     private levelThree:createjs.Container;
 
-
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest, corn:Corn1Up) {
         this.stage = stage;
         this.chicken = chicken;
         this.sportsCar = sportsCar;
         this.police = police;
         this.sedan = sedan;
         this.nest = nest;
+        this.corn = corn;
         this.assetManager = assetManager;
 
         // construct containers
@@ -132,6 +134,7 @@ export class LevelGeneration {
         
         // place nest
         this.nest.positiionMe();
+        this.corn.positionMe();
         
     }
 
