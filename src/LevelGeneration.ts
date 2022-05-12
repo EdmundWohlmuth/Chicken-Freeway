@@ -47,8 +47,8 @@ export class LevelGeneration {
 
         // construct containers
         // Level 1
-        // streets
         this.levelOne = new createjs.Container;
+        // streets    
         this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576)
         this.levelOne.addChild(this.startLane);
         this.laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480)
@@ -62,8 +62,36 @@ export class LevelGeneration {
         this.laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
         this.levelOne.addChild(this.laneFive);
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0) // inceriments of 96
-        this.levelOne.addChild(this.laneSix);
+        this.levelOne.addChild(this.laneSix);        
+
+        // Level 2
+        this.levelTwo = new createjs.Container;
+        // streets
+        
+
         // cars
+
+        // Level 3
+        // streets
+
+        // cars
+
+    }
+
+    // --------------------------- gets / sets ---------------------------------
+
+
+
+    // ------------------------- public meathods -------------------------------
+    public genLevels():void {
+        this.clearLevel();
+       // let levelType:number = randomMe(1, 4);
+       let levelType:number = 1; // TEMP     
+
+       if (levelType == 1) {
+        this.stage.addChildAt(this.levelOne, 0); 
+        this.yValue = 96;  
+        // gen cars
         for (let i = 0; i < 9; i++) { 
             let carType:number = randomMe(1, 3);     
             if(carType == 1){           
@@ -84,33 +112,7 @@ export class LevelGeneration {
                     
                 if (this.yValue == 158) this.yValue = 261;
                 this.yValue = this.yValue + 31; 
-                } // end of array  
-
-        // Level 2
-        // streets
-
-        // cars
-
-        // Level 3
-        // streets
-
-        // cars
-
-    }
-
-    // --------------------------- gets / sets ---------------------------------
-
-
-
-    // ------------------------- public meathods -------------------------------
-    public genLevels():void {
-        this.clearLevel();
-       // let levelType:number = randomMe(1, 4);
-       let levelType:number = 1; // TEMP
-       this.yValue = 96;
-
-       if (levelType == 1) {
-        this.stage.addChildAt(this.levelOne, 0);         
+                } // end of array        
         }
         else if (levelType == 2) {
 
@@ -137,13 +139,19 @@ export class LevelGeneration {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
+        for (let i = 0; i < this.carArray.length; i++) {
+            this.levelOne.removeChild(this.carArray[i].sprite);
+            this.levelTwo.removeChild(this.carArray[i].sprite);
+            this.levelThree.removeChild(this.carArray[i].sprite);
+        }
+        this.carArray = [];
     }
 
     public reset():void {
         // reset car's speed
         for (let i = 0; i < this.carArray.length; i++) {
             this.carArray[i].speed = STARTING_CAR_SPEED;
-            }
+        }
     }
 
 

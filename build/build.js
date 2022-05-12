@@ -1489,34 +1489,35 @@ class LevelGeneration {
         this.levelOne.addChild(this.laneFive);
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
         this.levelOne.addChild(this.laneSix);
-        for (let i = 0; i < 9; i++) {
-            let carType = (0, Toolkit_1.randomMe)(1, 3);
-            if (carType == 1) {
-                this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
-                this.sportsCar.positionMe();
-                this.levelOne.addChild(this.sportsCar.sprite);
-            }
-            else if (carType == 2) {
-                this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
-                this.sedan.positionMe();
-                this.levelOne.addChild(this.sedan.sprite);
-            }
-            else {
-                this.carArray.push(this.police = new PoliceCar_1.PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
-                this.police.positionMe();
-                this.levelOne.addChild(this.police.sprite);
-            }
-            if (this.yValue == 158)
-                this.yValue = 261;
-            this.yValue = this.yValue + 31;
-        }
+        this.levelTwo = new createjs.Container;
     }
     genLevels() {
         this.clearLevel();
         let levelType = 1;
-        this.yValue = 96;
         if (levelType == 1) {
             this.stage.addChildAt(this.levelOne, 0);
+            this.yValue = 96;
+            for (let i = 0; i < 9; i++) {
+                let carType = (0, Toolkit_1.randomMe)(1, 3);
+                if (carType == 1) {
+                    this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sportsCar.positionMe();
+                    this.levelOne.addChild(this.sportsCar.sprite);
+                }
+                else if (carType == 2) {
+                    this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sedan.positionMe();
+                    this.levelOne.addChild(this.sedan.sprite);
+                }
+                else {
+                    this.carArray.push(this.police = new PoliceCar_1.PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.police.positionMe();
+                    this.levelOne.addChild(this.police.sprite);
+                }
+                if (this.yValue == 158)
+                    this.yValue = 261;
+                this.yValue = this.yValue + 31;
+            }
         }
         else if (levelType == 2) {
         }
@@ -1537,6 +1538,12 @@ class LevelGeneration {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
+        for (let i = 0; i < this.carArray.length; i++) {
+            this.levelOne.removeChild(this.carArray[i].sprite);
+            this.levelTwo.removeChild(this.carArray[i].sprite);
+            this.levelThree.removeChild(this.carArray[i].sprite);
+        }
+        this.carArray = [];
     }
     reset() {
         for (let i = 0; i < this.carArray.length; i++) {
@@ -1835,6 +1842,8 @@ class UserInterface {
     resetMe() {
         this.clearsCount = 0;
         this.lives = 3;
+        this.clearsCount = 0;
+        this.clearsText.text = String(this.clearsCount);
         this.stage.addChild(this.lifeCounter1);
         this.stage.addChild(this.lifeCounter2);
         this.stage.addChild(this.lifeCounter3);
@@ -1849,6 +1858,8 @@ class UserInterface {
         else if (this.lives == 0) {
             this.stage.removeChild(this.lifeCounter1);
         }
+        else if (this.lives > 3)
+            this.lives = 3;
     }
 }
 exports.UserInterface = UserInterface;
@@ -4187,7 +4198,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("d43c0b0585cffca4b203")
+/******/ 		__webpack_require__.h = () => ("cd3b3fc3ea09b80b6c61")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

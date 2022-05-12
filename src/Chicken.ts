@@ -74,9 +74,6 @@ export class Chicken {
         this._state = value;
     } 
 
-    // ----------------------- event handlers -----------------------------
-
-
     // ----------------------- public meathods ----------------------------
 
     public startMe():void {
