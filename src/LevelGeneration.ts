@@ -5,7 +5,7 @@ import { SportsCar } from "./SportsCar";
 import { PoliceCar } from "./PoliceCar";
 import { Sedan } from "./Sedan";
 import { Chicken } from "./Chicken";
-import { STARTING_CAR_SPEED } from "./Constants";
+import { STARTING_CAR_SPEED, CAR_SPEED_INCREASE } from "./Constants";
 import { Nest } from "./Nest"; 
 
 export class LevelGeneration {
@@ -15,6 +15,7 @@ export class LevelGeneration {
     private assetManager:AssetManager;
     private carArray:Car[] = [];
     private yValue:number = 96
+    private carSpeedBonus:number = 5;
 
     // game objects
     private sportsCar:SportsCar;
@@ -77,9 +78,12 @@ export class LevelGeneration {
 
     }
 
-    // --------------------------- gets / sets ---------------------------------
-
-
+    get carSpeed() {
+        return this.carSpeedBonus;
+    }
+    set carSpeed(value:number) {
+        this.carSpeedBonus = value;
+    }
 
     // ------------------------- public meathods -------------------------------
     public genLevels():void {
@@ -121,7 +125,7 @@ export class LevelGeneration {
         }
         // update car speed
         for (let i = 0; i < this.carArray.length; i++) {
-        this.carArray[i].speed = this.carArray[i].speed + 0.25;
+        this.carArray[i].speed = this.carSpeedBonus + CAR_SPEED_INCREASE;
         }
         console.log("level " + levelType);
         console.log("Speed: " + this.carArray[1].speed);
@@ -139,15 +143,17 @@ export class LevelGeneration {
     }
 
     public clearLevel():void {
+        // resets levels and car array      
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
         for (let i = 0; i < this.carArray.length; i++) {
+            this.carSpeedBonus = this.carArray[1].speed;
             this.levelOne.removeChild(this.carArray[i].sprite);
             this.levelTwo.removeChild(this.carArray[i].sprite);
             this.levelThree.removeChild(this.carArray[i].sprite);
         }
-        this.carArray = [];
+        this.carArray = [];     
     }
 
     public reset():void {
@@ -155,6 +161,7 @@ export class LevelGeneration {
         for (let i = 0; i < this.carArray.length; i++) {
             this.carArray[i].speed = STARTING_CAR_SPEED;
         }
+        console.log("Level Rest");
     }
 
 

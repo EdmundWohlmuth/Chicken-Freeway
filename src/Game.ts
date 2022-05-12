@@ -124,7 +124,8 @@ function onReady(e:createjs.Event):void {
                 userInterface.resetMe();
                 chicken.stageClear();
                 levelGeneration.reset();
-                lives = 3;              
+                lives = 3;
+                levelGeneration.carSpeed = STARTING_CAR_SPEED;            
                 console.log("reset succsessfully");
                 console.log("Lives: " + lives);
                 break;

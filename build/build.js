@@ -1253,12 +1253,13 @@ Chicken.STATE_DEAD = 3;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
+exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.CAR_SPEED_INCREASE = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
 exports.STAGE_WIDTH = 510;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
 exports.CHICKEN_SPEED = 2.5;
 exports.STARTING_CAR_SPEED = 4.75;
+exports.CAR_SPEED_INCREASE = 0.5;
 exports.CHICKEN_START_Y = 575;
 exports.CHICKEN_START_X = 250;
 exports.LEVEL_GEN_START = 480;
@@ -1396,6 +1397,7 @@ function onReady(e) {
                 chicken.stageClear();
                 levelGeneration.reset();
                 lives = 3;
+                levelGeneration.carSpeed = Constants_1.STARTING_CAR_SPEED;
                 console.log("reset succsessfully");
                 console.log("Lives: " + lives);
                 break;
@@ -1468,6 +1470,7 @@ class LevelGeneration {
     constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest) {
         this.carArray = [];
         this.yValue = 96;
+        this.carSpeedBonus = 5;
         this.stage = stage;
         this.chicken = chicken;
         this.sportsCar = sportsCar;
@@ -1492,6 +1495,12 @@ class LevelGeneration {
         this.levelOne.addChild(this.laneSix);
         this.levelTwo = new createjs.Container;
         this.levelThree = new createjs.Container;
+    }
+    get carSpeed() {
+        return this.carSpeedBonus;
+    }
+    set carSpeed(value) {
+        this.carSpeedBonus = value;
     }
     genLevels() {
         this.clearLevel();
@@ -1526,7 +1535,7 @@ class LevelGeneration {
         else if (levelType == 3) {
         }
         for (let i = 0; i < this.carArray.length; i++) {
-            this.carArray[i].speed = this.carArray[i].speed + 0.25;
+            this.carArray[i].speed = this.carSpeedBonus + Constants_1.CAR_SPEED_INCREASE;
         }
         console.log("level " + levelType);
         console.log("Speed: " + this.carArray[1].speed);
@@ -1542,6 +1551,7 @@ class LevelGeneration {
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
         for (let i = 0; i < this.carArray.length; i++) {
+            this.carSpeedBonus = this.carArray[1].speed;
             this.levelOne.removeChild(this.carArray[i].sprite);
             this.levelTwo.removeChild(this.carArray[i].sprite);
             this.levelThree.removeChild(this.carArray[i].sprite);
@@ -1552,6 +1562,7 @@ class LevelGeneration {
         for (let i = 0; i < this.carArray.length; i++) {
             this.carArray[i].speed = Constants_1.STARTING_CAR_SPEED;
         }
+        console.log("Level Rest");
     }
 }
 exports.LevelGeneration = LevelGeneration;
@@ -4205,7 +4216,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("5c6dd83c8f053a063ba6")
+/******/ 		__webpack_require__.h = () => ("9b74e6d29bb83db93e9a")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
