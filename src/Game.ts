@@ -82,7 +82,7 @@ function onReady(e:createjs.Event):void {
     levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn);
 
     screenManager = new ScreenManager(stage, assetManager, levelGeneration);
-    screenManager.showMainMenu();  
+    screenManager.showMainMenu(); 
 
     // listen for custom events
     stage.on("nestReached", onGameEvent);
@@ -158,7 +158,8 @@ function onTick(e:createjs.Event) {
     corn.update();
 
     // update the stage
-    stage.update();   
+    stage.update();
+    console.log(screenManager.inMenuBool);   
 }
 
 // key press events

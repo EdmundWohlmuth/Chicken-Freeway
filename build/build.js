@@ -1045,6 +1045,47 @@ exports.AssetManager = AssetManager;
 
 /***/ }),
 
+/***/ "./src/Bush.ts":
+/*!*********************!*\
+  !*** ./src/Bush.ts ***!
+  \*********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Bush = void 0;
+const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
+const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Bush extends Obstacle_1.Obstacle {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Decor/Bush");
+        this._chicken = chicken;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
+            if (this._chicken.direction == Chicken_1.Chicken.UP) {
+                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
+                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
+                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
+                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+            }
+        }
+    }
+}
+exports.Bush = Bush;
+
+
+/***/ }),
+
 /***/ "./src/Car.ts":
 /*!********************!*\
   !*** ./src/Car.ts ***!
@@ -1469,6 +1510,7 @@ function onTick(e) {
     userInterface.update();
     corn.update();
     stage.update();
+    console.log(screenManager.inMenuBool);
 }
 function onKeyDown(e) {
     if (e.key == "w")
@@ -1506,6 +1548,47 @@ main();
 
 /***/ }),
 
+/***/ "./src/LargeRock.ts":
+/*!**************************!*\
+  !*** ./src/LargeRock.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LargeRock = void 0;
+const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
+const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class LargeRock extends Obstacle_1.Obstacle {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Decor/Rock_LG");
+        this._chicken = chicken;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
+            if (this._chicken.direction == Chicken_1.Chicken.UP) {
+                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
+                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
+                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
+                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+            }
+        }
+    }
+}
+exports.LargeRock = LargeRock;
+
+
+/***/ }),
+
 /***/ "./src/LevelGeneration.ts":
 /*!********************************!*\
   !*** ./src/LevelGeneration.ts ***!
@@ -1521,9 +1604,14 @@ const SportsCar_1 = __webpack_require__(/*! ./SportsCar */ "./src/SportsCar.ts")
 const PoliceCar_1 = __webpack_require__(/*! ./PoliceCar */ "./src/PoliceCar.ts");
 const Sedan_1 = __webpack_require__(/*! ./Sedan */ "./src/Sedan.ts");
 const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
+const LargeRock_1 = __webpack_require__(/*! ./LargeRock */ "./src/LargeRock.ts");
+const NormalRock_1 = __webpack_require__(/*! ./NormalRock */ "./src/NormalRock.ts");
+const Tree_1 = __webpack_require__(/*! ./Tree */ "./src/Tree.ts");
+const Bush_1 = __webpack_require__(/*! ./Bush */ "./src/Bush.ts");
 class LevelGeneration {
     constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn) {
         this.carArray = [];
+        this.obstacleArray = [];
         this.yValue = 96;
         this.carSpeedBonus = 5;
         this.stage = stage;
@@ -1550,6 +1638,20 @@ class LevelGeneration {
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
         this.levelOne.addChild(this.laneSix);
         this.levelTwo = new createjs.Container;
+        this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
+        this.levelTwo.addChild(this.startLane);
+        this.laneOne = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 480);
+        this.levelTwo.addChild(this.laneOne);
+        this.laneTwo = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 384);
+        this.levelTwo.addChild(this.laneTwo);
+        this.laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 288);
+        this.levelTwo.addChild(this.laneThree);
+        this.laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
+        this.levelTwo.addChild(this.laneFour);
+        this.laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
+        this.levelTwo.addChild(this.laneFive);
+        this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
+        this.levelTwo.addChild(this.laneSix);
         this.levelThree = new createjs.Container;
     }
     get carSpeed() {
@@ -1560,7 +1662,7 @@ class LevelGeneration {
     }
     genLevels() {
         this.clearLevel();
-        let levelType = 1;
+        let levelType = (0, Toolkit_1.randomMe)(1, 2);
         if (levelType == 1) {
             this.stage.addChildAt(this.levelOne, 0);
             this.yValue = 96;
@@ -1585,8 +1687,89 @@ class LevelGeneration {
                     this.yValue = 261;
                 this.yValue = this.yValue + 31;
             }
+            for (let i = 0; i < 20; i++) {
+                let obstacleType = (0, Toolkit_1.randomMe)(1, 4);
+                let newYPos = (0, Toolkit_1.randomMe)(1, 2);
+                if (newYPos == 1)
+                    this.yValue = (0, Toolkit_1.randomMe)(480, 520);
+                else if (newYPos == 2)
+                    this.yValue = (0, Toolkit_1.randomMe)(192, 220);
+                if (obstacleType == 1) {
+                    this.obstacleArray.push(this.largeRock = new LargeRock_1.LargeRock(this.stage, this.assetManager, this.chicken));
+                    this.largeRock.positionMe(this.yValue);
+                    this.levelOne.addChild(this.largeRock.sprite);
+                }
+                else if (obstacleType == 2) {
+                    this.obstacleArray.push(this.normalRock = new NormalRock_1.NormalRock(this.stage, this.assetManager, this.chicken));
+                    this.normalRock.positionMe(this.yValue);
+                    this.levelOne.addChild(this.normalRock.sprite);
+                }
+                else if (obstacleType == 3) {
+                    this.obstacleArray.push(this.tree = new Tree_1.Tree(this.stage, this.assetManager, this.chicken));
+                    this.tree.positionMe(this.yValue);
+                    this.levelOne.addChild(this.tree.sprite);
+                }
+                else if (obstacleType == 4) {
+                    this.obstacleArray.push(this.bush = new Bush_1.Bush(this.stage, this.assetManager, this.chicken));
+                    this.bush.positionMe(this.yValue);
+                    this.levelOne.addChild(this.bush.sprite);
+                }
+            }
         }
         else if (levelType == 2) {
+            this.stage.addChildAt(this.levelTwo, 0);
+            this.yValue = 96;
+            for (let i = 0; i < 9; i++) {
+                let carType = (0, Toolkit_1.randomMe)(1, 3);
+                if (carType == 1) {
+                    this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sportsCar.positionMe();
+                    this.levelTwo.addChild(this.sportsCar.sprite);
+                }
+                else if (carType == 2) {
+                    this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sedan.positionMe();
+                    this.levelTwo.addChild(this.sedan.sprite);
+                }
+                else {
+                    this.carArray.push(this.police = new PoliceCar_1.PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.police.positionMe();
+                    this.levelTwo.addChild(this.police.sprite);
+                }
+                if (this.yValue == 158)
+                    this.yValue = 257;
+                else if (this.yValue == 350)
+                    this.yValue = 449;
+                this.yValue = this.yValue + 31;
+            }
+            for (let i = 0; i < 20; i++) {
+                let obstacleType = (0, Toolkit_1.randomMe)(1, 4);
+                let newYPos = (0, Toolkit_1.randomMe)(1, 2);
+                if (newYPos == 1)
+                    this.yValue = (0, Toolkit_1.randomMe)(384, 430);
+                else if (newYPos == 2)
+                    this.yValue = (0, Toolkit_1.randomMe)(192, 220);
+                if (obstacleType == 1) {
+                    this.obstacleArray.push(this.largeRock = new LargeRock_1.LargeRock(this.stage, this.assetManager, this.chicken));
+                    this.largeRock.positionMe(this.yValue);
+                    this.levelTwo.addChild(this.largeRock.sprite);
+                }
+                else if (obstacleType == 2) {
+                    this.obstacleArray.push(this.normalRock = new NormalRock_1.NormalRock(this.stage, this.assetManager, this.chicken));
+                    this.normalRock.positionMe(this.yValue);
+                    this.levelTwo.addChild(this.normalRock.sprite);
+                }
+                else if (obstacleType == 3) {
+                    this.obstacleArray.push(this.tree = new Tree_1.Tree(this.stage, this.assetManager, this.chicken));
+                    this.tree.positionMe(this.yValue);
+                    this.levelTwo.addChild(this.tree.sprite);
+                }
+                else if (obstacleType == 4) {
+                    this.obstacleArray.push(this.bush = new Bush_1.Bush(this.stage, this.assetManager, this.chicken));
+                    this.bush.positionMe(this.yValue);
+                    this.levelTwo.addChild(this.bush.sprite);
+                }
+            }
         }
         else if (levelType == 3) {
         }
@@ -1602,6 +1785,9 @@ class LevelGeneration {
         for (let car of this.carArray) {
             car.update();
         }
+        for (let obstacle of this.obstacleArray) {
+            obstacle.update();
+        }
     }
     clearLevel() {
         this.stage.removeChild(this.levelOne);
@@ -1613,7 +1799,13 @@ class LevelGeneration {
             this.levelTwo.removeChild(this.carArray[i].sprite);
             this.levelThree.removeChild(this.carArray[i].sprite);
         }
+        for (let i = 0; i < this.obstacleArray.length; i++) {
+            this.levelOne.removeChild(this.obstacleArray[i].sprite);
+            this.levelTwo.removeChild(this.obstacleArray[i].sprite);
+            this.levelThree.removeChild(this.obstacleArray[i].sprite);
+        }
         this.carArray = [];
+        this.obstacleArray = [];
     }
     reset() {
         for (let i = 0; i < this.carArray.length; i++) {
@@ -1658,6 +1850,82 @@ class Nest {
     }
 }
 exports.Nest = Nest;
+
+
+/***/ }),
+
+/***/ "./src/NormalRock.ts":
+/*!***************************!*\
+  !*** ./src/NormalRock.ts ***!
+  \***************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NormalRock = void 0;
+const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
+const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class NormalRock extends Obstacle_1.Obstacle {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Decor/Rock_M");
+        this._chicken = chicken;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
+            if (this._chicken.direction == Chicken_1.Chicken.UP) {
+                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
+                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
+                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
+                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+            }
+        }
+    }
+}
+exports.NormalRock = NormalRock;
+
+
+/***/ }),
+
+/***/ "./src/Obstacle.ts":
+/*!*************************!*\
+  !*** ./src/Obstacle.ts ***!
+  \*************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Obstacle = void 0;
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Obstacle {
+    constructor(stage, assetManager, objectSprite) {
+        this.stage = stage;
+        this.objectSprite = objectSprite;
+        this._sprite = assetManager.getSprite("sprites", objectSprite, 0, 0);
+        this.width = this._sprite.getBounds().width;
+    }
+    get sprite() {
+        return this._sprite;
+    }
+    positionMe(yPosition) {
+        this._sprite.x = (0, Toolkit_1.randomMe)(10, (Constants_1.STAGE_WIDTH - 10));
+        this.sprite.y = yPosition;
+        this.stage.addChild(this._sprite);
+    }
+    update() {
+    }
+}
+exports.Obstacle = Obstacle;
 
 
 /***/ }),
@@ -1870,6 +2138,47 @@ function pointHit(sprite1, sprite2, sprite1HitX = 0, sprite1HitY = 0, stage = nu
     }
 }
 exports.pointHit = pointHit;
+
+
+/***/ }),
+
+/***/ "./src/Tree.ts":
+/*!*********************!*\
+  !*** ./src/Tree.ts ***!
+  \*********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Tree = void 0;
+const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
+const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Tree extends Obstacle_1.Obstacle {
+    constructor(stage, assetManager, chicken) {
+        super(stage, assetManager, "Decor/Big_Tree");
+        this._chicken = chicken;
+    }
+    update() {
+        super.update();
+        if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
+            if (this._chicken.direction == Chicken_1.Chicken.UP) {
+                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
+                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
+                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+            }
+            else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
+                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+            }
+        }
+    }
+}
+exports.Tree = Tree;
 
 
 /***/ }),
@@ -4281,7 +4590,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("b25aa8f02e5d54cdc1c7")
+/******/ 		__webpack_require__.h = () => ("7bf8adcfca62a42a43c7")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
