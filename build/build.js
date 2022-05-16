@@ -1058,6 +1058,7 @@ exports.Bush = void 0;
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
 const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class Bush extends Obstacle_1.Obstacle {
     constructor(stage, assetManager, chicken) {
         super(stage, assetManager, "Decor/Bush");
@@ -1067,16 +1068,16 @@ class Bush extends Obstacle_1.Obstacle {
         super.update();
         if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
             if (this._chicken.direction == Chicken_1.Chicken.UP) {
-                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+                this._chicken.sprite.y = this._chicken.sprite.y + Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
-                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+                this._chicken.sprite.y = this._chicken.sprite.y - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
-                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+                this._chicken.sprite.x = this._chicken.sprite.x - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
-                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+                this._chicken.sprite.x = this._chicken.sprite.x + Constants_1.CHICKEN_SPEED;
             }
         }
     }
@@ -1561,6 +1562,7 @@ exports.LargeRock = void 0;
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
 const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class LargeRock extends Obstacle_1.Obstacle {
     constructor(stage, assetManager, chicken) {
         super(stage, assetManager, "Decor/Rock_LG");
@@ -1570,16 +1572,16 @@ class LargeRock extends Obstacle_1.Obstacle {
         super.update();
         if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
             if (this._chicken.direction == Chicken_1.Chicken.UP) {
-                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+                this._chicken.sprite.y = this._chicken.sprite.y + Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
-                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+                this._chicken.sprite.y = this._chicken.sprite.y - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
-                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+                this._chicken.sprite.x = this._chicken.sprite.x - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
-                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+                this._chicken.sprite.x = this._chicken.sprite.x + Constants_1.CHICKEN_SPEED;
             }
         }
     }
@@ -1867,6 +1869,7 @@ exports.NormalRock = void 0;
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
 const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class NormalRock extends Obstacle_1.Obstacle {
     constructor(stage, assetManager, chicken) {
         super(stage, assetManager, "Decor/Rock_M");
@@ -1876,16 +1879,16 @@ class NormalRock extends Obstacle_1.Obstacle {
         super.update();
         if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
             if (this._chicken.direction == Chicken_1.Chicken.UP) {
-                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+                this._chicken.sprite.y = this._chicken.sprite.y + Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
-                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+                this._chicken.sprite.y = this._chicken.sprite.y - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
-                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+                this._chicken.sprite.x = this._chicken.sprite.x - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
-                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+                this._chicken.sprite.x = this._chicken.sprite.x + Constants_1.CHICKEN_SPEED;
             }
         }
     }
@@ -2155,6 +2158,7 @@ exports.Tree = void 0;
 const Chicken_1 = __webpack_require__(/*! ./Chicken */ "./src/Chicken.ts");
 const Obstacle_1 = __webpack_require__(/*! ./Obstacle */ "./src/Obstacle.ts");
 const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
 class Tree extends Obstacle_1.Obstacle {
     constructor(stage, assetManager, chicken) {
         super(stage, assetManager, "Decor/Big_Tree");
@@ -2164,16 +2168,16 @@ class Tree extends Obstacle_1.Obstacle {
         super.update();
         if ((0, Toolkit_1.boxHit)(this.sprite, this._chicken.sprite)) {
             if (this._chicken.direction == Chicken_1.Chicken.UP) {
-                this._chicken.sprite.y = this._chicken.sprite.y + 5;
+                this._chicken.sprite.y = this._chicken.sprite.y + Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.DOWN) {
-                this._chicken.sprite.y = this._chicken.sprite.y - 5;
+                this._chicken.sprite.y = this._chicken.sprite.y - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.RIGHT) {
-                this._chicken.sprite.x = this._chicken.sprite.x - 5;
+                this._chicken.sprite.x = this._chicken.sprite.x - Constants_1.CHICKEN_SPEED;
             }
             else if (this._chicken.direction == Chicken_1.Chicken.LEFT) {
-                this._chicken.sprite.x = this._chicken.sprite.x + 5;
+                this._chicken.sprite.x = this._chicken.sprite.x + Constants_1.CHICKEN_SPEED;
             }
         }
     }
@@ -4590,7 +4594,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("7bf8adcfca62a42a43c7")
+/******/ 		__webpack_require__.h = () => ("3c82d4ced266d8a40459")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
