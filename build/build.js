@@ -1655,6 +1655,20 @@ class LevelGeneration {
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
         this.levelTwo.addChild(this.laneSix);
         this.levelThree = new createjs.Container;
+        this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
+        this.levelThree.addChild(this.startLane);
+        this.laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480);
+        this.levelThree.addChild(this.laneOne);
+        this.laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384);
+        this.levelThree.addChild(this.laneTwo);
+        this.laneThree = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 288);
+        this.levelThree.addChild(this.laneThree);
+        this.laneFour = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 192);
+        this.levelThree.addChild(this.laneFour);
+        this.laneFive = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 96);
+        this.levelThree.addChild(this.laneFive);
+        this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
+        this.levelThree.addChild(this.laneSix);
     }
     get carSpeed() {
         return this.carSpeedBonus;
@@ -1664,7 +1678,7 @@ class LevelGeneration {
     }
     genLevels() {
         this.clearLevel();
-        let levelType = (0, Toolkit_1.randomMe)(1, 2);
+        let levelType = (0, Toolkit_1.randomMe)(1, 3);
         if (levelType == 1) {
             this.stage.addChildAt(this.levelOne, 0);
             this.yValue = 96;
@@ -1774,6 +1788,55 @@ class LevelGeneration {
             }
         }
         else if (levelType == 3) {
+            this.stage.addChildAt(this.levelThree, 0);
+            this.yValue = 192;
+            for (let i = 0; i < 9; i++) {
+                let carType = (0, Toolkit_1.randomMe)(1, 3);
+                if (carType == 1) {
+                    this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sportsCar.positionMe();
+                    this.levelThree.addChild(this.sportsCar.sprite);
+                }
+                else if (carType == 2) {
+                    this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sedan.positionMe();
+                    this.levelThree.addChild(this.sedan.sprite);
+                }
+                else {
+                    this.carArray.push(this.police = new PoliceCar_1.PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.police.positionMe();
+                    this.levelThree.addChild(this.police.sprite);
+                }
+                this.yValue = this.yValue + 31;
+            }
+            for (let i = 0; i < 20; i++) {
+                let obstacleType = (0, Toolkit_1.randomMe)(1, 4);
+                let newYPos = (0, Toolkit_1.randomMe)(1, 2);
+                if (newYPos == 1)
+                    this.yValue = (0, Toolkit_1.randomMe)(96, 120);
+                else if (newYPos == 2)
+                    this.yValue = (0, Toolkit_1.randomMe)(490, 520);
+                if (obstacleType == 1) {
+                    this.obstacleArray.push(this.largeRock = new LargeRock_1.LargeRock(this.stage, this.assetManager, this.chicken));
+                    this.largeRock.positionMe(this.yValue);
+                    this.levelThree.addChild(this.largeRock.sprite);
+                }
+                else if (obstacleType == 2) {
+                    this.obstacleArray.push(this.normalRock = new NormalRock_1.NormalRock(this.stage, this.assetManager, this.chicken));
+                    this.normalRock.positionMe(this.yValue);
+                    this.levelThree.addChild(this.normalRock.sprite);
+                }
+                else if (obstacleType == 3) {
+                    this.obstacleArray.push(this.tree = new Tree_1.Tree(this.stage, this.assetManager, this.chicken));
+                    this.tree.positionMe(this.yValue);
+                    this.levelThree.addChild(this.tree.sprite);
+                }
+                else if (obstacleType == 4) {
+                    this.obstacleArray.push(this.bush = new Bush_1.Bush(this.stage, this.assetManager, this.chicken));
+                    this.bush.positionMe(this.yValue);
+                    this.levelThree.addChild(this.bush.sprite);
+                }
+            }
         }
         for (let i = 0; i < this.carArray.length; i++) {
             this.carArray[i].speed = this.carSpeedBonus + Constants_1.CAR_SPEED_INCREASE;
@@ -4594,7 +4657,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("3c82d4ced266d8a40459")
+/******/ 		__webpack_require__.h = () => ("3688411ade23ef99e3e2")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
