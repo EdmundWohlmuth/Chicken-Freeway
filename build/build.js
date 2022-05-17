@@ -2313,10 +2313,10 @@ class UserInterface {
             this.lives = 3;
     }
     addLivesUI() {
-        if (this.lives == 2) {
+        if (this.lives == 3) {
             this.stage.addChild(this.lifeCounter3);
         }
-        else if (this.lives == 1) {
+        else if (this.lives == 2) {
             this.stage.addChild(this.lifeCounter2);
         }
     }
@@ -4657,7 +4657,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("3688411ade23ef99e3e2")
+/******/ 		__webpack_require__.h = () => ("5530cdba17d68afeeb87")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

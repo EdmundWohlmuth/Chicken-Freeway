@@ -87,10 +87,10 @@ export class UserInterface {
     }
 
     public addLivesUI():void { // this adds the egg element to the UI on getting a 1Up
-        if (this.lives == 2) {
+        if (this.lives == 3) {
             this.stage.addChild(this.lifeCounter3);
         }
-        else if (this.lives == 1) {
+        else if (this.lives == 2) {
             this.stage.addChild(this.lifeCounter2);
         }
     }
