@@ -130,6 +130,7 @@ function onReady(e:createjs.Event):void {
                 console.log("Lives: " + lives);         
                 break;
             case "gameReset":
+                levelsCleared = 0;
                 userInterface.resetMe();
                 chicken.stageClear();
                 levelGeneration.reset();

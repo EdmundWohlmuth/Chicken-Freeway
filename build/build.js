@@ -1489,6 +1489,7 @@ function onReady(e) {
                 console.log("Lives: " + lives);
                 break;
             case "gameReset":
+                levelsCleared = 0;
                 userInterface.resetMe();
                 chicken.stageClear();
                 levelGeneration.reset();
@@ -4657,7 +4658,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("5530cdba17d68afeeb87")
+/******/ 		__webpack_require__.h = () => ("466dd2a71d19fa46f89d")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
