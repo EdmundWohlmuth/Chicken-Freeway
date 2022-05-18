@@ -6,7 +6,7 @@ export class UserInterface {
     private stage:createjs.StageGL;
     private assetManager:AssetManager;
 
-    private clearsCount:number;
+    private pointCount:number;
     private clearsText:createjs.BitmapText;
 
     private lives:number = 3;
@@ -51,11 +51,11 @@ export class UserInterface {
     }
 
     // ------------------------- gets / sets -----------------------------------
-    public set clears(value:number) {
-        this.clearsCount = value;
+    public set points(value:number) {
+        this.pointCount = value;
 
         // update bitmapText object
-        this.clearsText.text = String(this.clearsCount); // theres a current bug involving restart
+        this.clearsText.text = String(this.pointCount); // theres a current bug involving restart
     }
 
     public set life(value:number) {
@@ -64,10 +64,10 @@ export class UserInterface {
 
     // ----------------------- public meathods ---------------------------------
     public resetMe():void {
-        this.clearsCount = 0;
+        this.pointCount = 0;
         this.lives = 3;
-        this.clearsCount = 0;
-        this.clearsText.text = String(this.clearsCount);
+        this.pointCount = 0;
+        this.clearsText.text = String(this.pointCount);
         this.stage.addChild(this.lifeCounter1);
         this.stage.addChild(this.lifeCounter2);
         this.stage.addChild(this.lifeCounter3);

@@ -1295,13 +1295,15 @@ Chicken.STATE_DEAD = 3;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.CAR_SPEED_INCREASE = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
+exports.ASSET_MANIFEST = exports.LANE_THREE_Y = exports.LEVEL_GEN_START = exports.CHICKEN_START_X = exports.CHICKEN_START_Y = exports.TRAIN_SPEED_INCREASE = exports.TRAIN_STARTING_SPEED = exports.CAR_SPEED_INCREASE = exports.STARTING_CAR_SPEED = exports.CHICKEN_SPEED = exports.FRAME_RATE = exports.STAGE_HEIGHT = exports.STAGE_WIDTH = void 0;
 exports.STAGE_WIDTH = 510;
 exports.STAGE_HEIGHT = 600;
 exports.FRAME_RATE = 30;
 exports.CHICKEN_SPEED = 2.5;
-exports.STARTING_CAR_SPEED = 4.75;
+exports.STARTING_CAR_SPEED = 4.5;
 exports.CAR_SPEED_INCREASE = 0.5;
+exports.TRAIN_STARTING_SPEED = 30;
+exports.TRAIN_SPEED_INCREASE = 0.5;
 exports.CHICKEN_START_Y = 575;
 exports.CHICKEN_START_X = 250;
 exports.LEVEL_GEN_START = 480;
@@ -1416,10 +1418,11 @@ let sedan;
 let police;
 let nest;
 let corn;
+let train;
 let screenManager;
 let levelGeneration;
 let userInterface;
-let levelsCleared = 0;
+let pointsGained = 0;
 let lives = 3;
 function monitorKeys() {
     if (screenManager.inMenuBool == false) {
@@ -1449,7 +1452,7 @@ function onReady(e) {
     userInterface = new UserInterface_1.UserInterface(stage, assetManager);
     nest = new Nest_1.Nest(stage, assetManager, chicken);
     corn = new Corn1Up_1.Corn1Up(stage, assetManager, chicken);
-    levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn);
+    levelGeneration = new LevelGeneration_1.LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
     screenManager = new ScreenManager_1.ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu();
     stage.on("nestReached", onGameEvent);
@@ -1465,11 +1468,11 @@ function onReady(e) {
     function onGameEvent(e) {
         switch (e.type) {
             case "nestReached":
-                levelsCleared++;
-                userInterface.clears = levelsCleared;
+                pointsGained = pointsGained + 100;
+                userInterface.points = pointsGained;
                 levelGeneration.genLevels();
                 corn.new1Up();
-                console.log("levelsClears: " + levelsCleared);
+                console.log("levelsClears: " + pointsGained);
                 break;
             case "lifeDecrement":
                 lives--;
@@ -1486,10 +1489,12 @@ function onReady(e) {
                     userInterface.life = lives;
                     userInterface.addLivesUI();
                 }
+                pointsGained = pointsGained + 25;
+                userInterface.points = pointsGained;
                 console.log("Lives: " + lives);
                 break;
             case "gameReset":
-                levelsCleared = 0;
+                pointsGained = 0;
                 userInterface.resetMe();
                 chicken.stageClear();
                 levelGeneration.reset();
@@ -1611,8 +1616,9 @@ const LargeRock_1 = __webpack_require__(/*! ./LargeRock */ "./src/LargeRock.ts")
 const NormalRock_1 = __webpack_require__(/*! ./NormalRock */ "./src/NormalRock.ts");
 const Tree_1 = __webpack_require__(/*! ./Tree */ "./src/Tree.ts");
 const Bush_1 = __webpack_require__(/*! ./Bush */ "./src/Bush.ts");
+const Train_1 = __webpack_require__(/*! ./Train */ "./src/Train.ts");
 class LevelGeneration {
-    constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn) {
+    constructor(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train) {
         this.carArray = [];
         this.obstacleArray = [];
         this.yValue = 96;
@@ -1624,6 +1630,7 @@ class LevelGeneration {
         this.sedan = sedan;
         this.nest = nest;
         this.corn = corn;
+        this.train = train;
         this.assetManager = assetManager;
         this.levelOne = new createjs.Container;
         this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
@@ -1670,6 +1677,23 @@ class LevelGeneration {
         this.levelThree.addChild(this.laneFive);
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
         this.levelThree.addChild(this.laneSix);
+        this.levelFour = new createjs.Container;
+        this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
+        this.levelFour.addChild(this.startLane);
+        this.laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480);
+        this.levelFour.addChild(this.laneOne);
+        this.laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384);
+        this.levelFour.addChild(this.laneTwo);
+        this.laneThree = assetManager.getSprite("sprites", "Land Tiles/Dirt_LG", 0, 288);
+        this.levelFour.addChild(this.laneThree);
+        this.trainTrack = assetManager.getSprite("sprites", "Land Tiles/Tracks", 0, 305);
+        this.levelFour.addChild(this.trainTrack);
+        this.laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
+        this.levelFour.addChild(this.laneFour);
+        this.laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
+        this.levelFour.addChild(this.laneFive);
+        this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0);
+        this.levelFour.addChild(this.laneSix);
     }
     get carSpeed() {
         return this.carSpeedBonus;
@@ -1679,8 +1703,8 @@ class LevelGeneration {
     }
     genLevels() {
         this.clearLevel();
-        let levelType = (0, Toolkit_1.randomMe)(1, 3);
-        if (levelType == 1) {
+        this.levelType = (0, Toolkit_1.randomMe)(1, 4);
+        if (this.levelType == 1) {
             this.stage.addChildAt(this.levelOne, 0);
             this.yValue = 96;
             for (let i = 0; i < 9; i++) {
@@ -1733,7 +1757,7 @@ class LevelGeneration {
                 }
             }
         }
-        else if (levelType == 2) {
+        else if (this.levelType == 2) {
             this.stage.addChildAt(this.levelTwo, 0);
             this.yValue = 96;
             for (let i = 0; i < 9; i++) {
@@ -1788,7 +1812,7 @@ class LevelGeneration {
                 }
             }
         }
-        else if (levelType == 3) {
+        else if (this.levelType == 3) {
             this.stage.addChildAt(this.levelThree, 0);
             this.yValue = 192;
             for (let i = 0; i < 9; i++) {
@@ -1839,10 +1863,68 @@ class LevelGeneration {
                 }
             }
         }
+        else if (this.levelType == 4) {
+            this.stage.addChildAt(this.levelFour, 0);
+            this.yValue = 96;
+            for (let i = 0; i < 9; i++) {
+                let carType = (0, Toolkit_1.randomMe)(1, 3);
+                if (carType == 1) {
+                    this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sportsCar.positionMe();
+                    this.levelFour.addChild(this.sportsCar.sprite);
+                }
+                else if (carType == 2) {
+                    this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sedan.positionMe();
+                    this.levelFour.addChild(this.sedan.sprite);
+                }
+                else {
+                    this.carArray.push(this.police = new PoliceCar_1.PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.police.positionMe();
+                    this.levelFour.addChild(this.police.sprite);
+                }
+                if (this.yValue == 158)
+                    this.yValue = 354;
+                else if (this.yValue == 447)
+                    this.yValue = 800;
+                this.yValue = this.yValue + 31;
+            }
+            for (let i = 0; i < 20; i++) {
+                let obstacleType = (0, Toolkit_1.randomMe)(1, 4);
+                let newYPos = (0, Toolkit_1.randomMe)(1, 2);
+                if (newYPos == 1)
+                    this.yValue = (0, Toolkit_1.randomMe)(480, 520);
+                else if (newYPos == 2)
+                    this.yValue = (0, Toolkit_1.randomMe)(192, 220);
+                if (obstacleType == 1) {
+                    this.obstacleArray.push(this.largeRock = new LargeRock_1.LargeRock(this.stage, this.assetManager, this.chicken));
+                    this.largeRock.positionMe(this.yValue);
+                    this.levelFour.addChild(this.largeRock.sprite);
+                }
+                else if (obstacleType == 2) {
+                    this.obstacleArray.push(this.normalRock = new NormalRock_1.NormalRock(this.stage, this.assetManager, this.chicken));
+                    this.normalRock.positionMe(this.yValue);
+                    this.levelFour.addChild(this.normalRock.sprite);
+                }
+                else if (obstacleType == 3) {
+                    this.obstacleArray.push(this.tree = new Tree_1.Tree(this.stage, this.assetManager, this.chicken));
+                    this.tree.positionMe(this.yValue);
+                    this.levelFour.addChild(this.tree.sprite);
+                }
+                else if (obstacleType == 4) {
+                    this.obstacleArray.push(this.bush = new Bush_1.Bush(this.stage, this.assetManager, this.chicken));
+                    this.bush.positionMe(this.yValue);
+                    this.levelFour.addChild(this.bush.sprite);
+                }
+            }
+            this.train = new Train_1.Train(this.stage, this.assetManager, this.chicken);
+            this.train.positionMe();
+            this.levelFour.addChild(this.train.sprite);
+        }
         for (let i = 0; i < this.carArray.length; i++) {
             this.carArray[i].speed = this.carSpeedBonus + Constants_1.CAR_SPEED_INCREASE;
         }
-        console.log("level " + levelType);
+        console.log("level " + this.levelType);
         console.log("Speed: " + this.carArray[1].speed);
         this.nest.positiionMe();
         this.corn.positionMe();
@@ -1854,22 +1936,29 @@ class LevelGeneration {
         for (let obstacle of this.obstacleArray) {
             obstacle.update();
         }
+        if (this.levelType == 4)
+            this.train.update();
     }
     clearLevel() {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
+        this.stage.removeChild(this.levelFour);
         for (let i = 0; i < this.carArray.length; i++) {
             this.carSpeedBonus = this.carArray[1].speed;
             this.levelOne.removeChild(this.carArray[i].sprite);
             this.levelTwo.removeChild(this.carArray[i].sprite);
             this.levelThree.removeChild(this.carArray[i].sprite);
+            this.levelFour.removeChild(this.carArray[i].sprite);
         }
         for (let i = 0; i < this.obstacleArray.length; i++) {
             this.levelOne.removeChild(this.obstacleArray[i].sprite);
             this.levelTwo.removeChild(this.obstacleArray[i].sprite);
             this.levelThree.removeChild(this.obstacleArray[i].sprite);
+            this.levelFour.removeChild(this.obstacleArray[i].sprite);
         }
+        if (this.levelType == 4)
+            this.levelFour.removeChild(this.train.sprite);
         this.carArray = [];
         this.obstacleArray = [];
     }
@@ -2044,14 +2133,21 @@ class ScreenManager {
         this.inMenu = true;
         this.MainMenu = new createjs.Container();
         this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
-        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/Instructions", 100, 110));
-        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 500);
+        this.MainMenu.addChild(assetManager.getSprite("sprites", "UI/StartScreen", 100, 110));
+        this.startButton = assetManager.getSprite("sprites", "Button/Start", 220, 410);
         this.MainMenu.addChild(this.startButton);
+        this.instructionsButton = assetManager.getSprite("sprites", "Button/Instruction", 180, 450);
+        this.MainMenu.addChild(this.instructionsButton);
         this.GameOver = new createjs.Container();
         this.GameOver.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
         this.GameOver.addChild(assetManager.getSprite("sprites", "Win-Lose/Lose_Game_Overlay", 170, 240));
         this.restartButton = assetManager.getSprite("sprites", "Button/Restart", 200, 400);
         this.GameOver.addChild(this.restartButton);
+        this.HowToPlay = new createjs.Container();
+        this.HowToPlay.addChild(assetManager.getSprite("sprites", "UI/Background", 0, 0));
+        this.HowToPlay.addChild(assetManager.getSprite("sprites", "UI/Instructions", 100, 110));
+        this.backButton = assetManager.getSprite("sprites", "Button/Back", 220, 500);
+        this.HowToPlay.addChild(this.backButton);
         this.gameReset = new createjs.Event("gameReset", true, false);
     }
     get inMenuBool() {
@@ -2068,6 +2164,11 @@ class ScreenManager {
             this.inMenu = false;
             console.log("game reset");
         }, this, true);
+        this.instructionsButton.on("click", (e) => {
+            this.hideAll();
+            this.showHowToPlay();
+            this.inMenu = true;
+        }, true, true);
     }
     showGameOver() {
         this.hideAll();
@@ -2080,10 +2181,22 @@ class ScreenManager {
             this.inMenu = true;
         }, this, true);
     }
+    showHowToPlay() {
+        this.hideAll();
+        this.stage.addChildAt(this.HowToPlay, 0);
+        this.inMenu = true;
+        this.backButton.on("click", (e) => {
+            console.log("back pressed");
+            this.hideAll();
+            this.showMainMenu();
+            this.inMenu = true;
+        }, true, true);
+    }
     hideAll() {
         this.levelGen.clearLevel();
         this.stage.removeChild(this.MainMenu);
         this.stage.removeChild(this.GameOver);
+        this.stage.removeChild(this.HowToPlay);
     }
 }
 exports.ScreenManager = ScreenManager;
@@ -2209,6 +2322,55 @@ exports.pointHit = pointHit;
 
 /***/ }),
 
+/***/ "./src/Train.ts":
+/*!**********************!*\
+  !*** ./src/Train.ts ***!
+  \**********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Train = void 0;
+const Constants_1 = __webpack_require__(/*! ./Constants */ "./src/Constants.ts");
+const Toolkit_1 = __webpack_require__(/*! ./Toolkit */ "./src/Toolkit.ts");
+class Train {
+    constructor(stage, assetManager, chicken) {
+        this.stage = stage;
+        this._speed = Constants_1.TRAIN_STARTING_SPEED;
+        this.chicken = chicken;
+        this._sprite = assetManager.getSprite("sprites", "Obstacles/Train", 0, 0);
+        this.width = this._sprite.getBounds().width;
+    }
+    get sprite() {
+        return this._sprite;
+    }
+    get speed() {
+        return this._speed;
+    }
+    set speed(value) {
+        this._speed = value;
+    }
+    positionMe() {
+        this._sprite.x = (0, Toolkit_1.randomMe)((-1000 - this.width), (Constants_1.STAGE_WIDTH + this.width + 1000));
+        this._sprite.y = 305;
+        this.stage.addChild(this._sprite);
+    }
+    update() {
+        this._sprite.x = this._sprite.x + this._speed;
+        if (this._sprite.x > (Constants_1.STAGE_WIDTH + this.width + 2500)) {
+            this._sprite.x = (-2500 - this.width);
+        }
+        if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
+            this.chicken.killMe();
+        }
+    }
+}
+exports.Train = Train;
+
+
+/***/ }),
+
 /***/ "./src/Tree.ts":
 /*!*********************!*\
   !*** ./src/Tree.ts ***!
@@ -2284,18 +2446,18 @@ class UserInterface {
         this.resetMe();
         console.log("lives: " + this.lives);
     }
-    set clears(value) {
-        this.clearsCount = value;
-        this.clearsText.text = String(this.clearsCount);
+    set points(value) {
+        this.pointCount = value;
+        this.clearsText.text = String(this.pointCount);
     }
     set life(value) {
         this.lives = value;
     }
     resetMe() {
-        this.clearsCount = 0;
+        this.pointCount = 0;
         this.lives = 3;
-        this.clearsCount = 0;
-        this.clearsText.text = String(this.clearsCount);
+        this.pointCount = 0;
+        this.clearsText.text = String(this.pointCount);
         this.stage.addChild(this.lifeCounter1);
         this.stage.addChild(this.lifeCounter2);
         this.stage.addChild(this.lifeCounter3);
@@ -4658,7 +4820,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("466dd2a71d19fa46f89d")
+/******/ 		__webpack_require__.h = () => ("c3857f4d29814c278d36")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

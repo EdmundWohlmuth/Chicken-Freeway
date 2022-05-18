@@ -13,6 +13,7 @@ import { LargeRock } from "./LargeRock";
 import { NormalRock } from "./NormalRock";
 import { Tree } from "./Tree";
 import { Bush } from "./Bush";
+import { Train } from "./Train";
 
 export class LevelGeneration {
 
@@ -23,6 +24,7 @@ export class LevelGeneration {
     private obstacleArray:Obstacle[] = [];
     private yValue:number = 96
     private carSpeedBonus:number = 5;
+    private levelType:number;
 
     // game objects
     private sportsCar:SportsCar;
@@ -35,6 +37,7 @@ export class LevelGeneration {
     private normalRock:NormalRock
     private tree:Tree;
     private bush:Bush;
+    private train:Train;
  
     // lanes
     private startLane:createjs.Sprite;
@@ -44,13 +47,15 @@ export class LevelGeneration {
     private laneFour:createjs.Sprite;
     private laneFive:createjs.Sprite;
     private laneSix:createjs.Sprite;
+    private trainTrack:createjs.Sprite;
 
     // containers
     private levelOne:createjs.Container;
     private levelTwo:createjs.Container;
     private levelThree:createjs.Container;
+    private levelFour:createjs.Container;
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest, corn:Corn1Up) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest, corn:Corn1Up, train:Train) {
         this.stage = stage;
         this.chicken = chicken;
         this.sportsCar = sportsCar;
@@ -58,6 +63,7 @@ export class LevelGeneration {
         this.sedan = sedan;
         this.nest = nest;
         this.corn = corn;
+        this.train = train;
         this.assetManager = assetManager;
 
         // construct containers
@@ -115,6 +121,25 @@ export class LevelGeneration {
         this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0) // inceriments of 96
         this.levelThree.addChild(this.laneSix); 
 
+        // level 4
+        this.levelFour = new createjs.Container;
+        // streets
+        this.startLane = assetManager.getSprite("sprites", "Land Tiles/Dirt_M", 0, 576);
+        this.levelFour.addChild(this.startLane);
+        this.laneOne = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 480);
+        this.levelFour.addChild(this.laneOne);
+        this.laneTwo = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 384);
+        this.levelFour.addChild(this.laneTwo);
+        this.laneThree = assetManager.getSprite("sprites", "Land Tiles/Dirt_LG", 0, 288);
+        this.levelFour.addChild(this.laneThree);
+        this.trainTrack = assetManager.getSprite("sprites", "Land Tiles/Tracks", 0, 305);
+        this.levelFour.addChild(this.trainTrack);
+        this.laneFour = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 192);
+        this.levelFour.addChild(this.laneFour);
+        this.laneFive = assetManager.getSprite("sprites", "Land Tiles/Road_3_Lane", 0, 96);
+        this.levelFour.addChild(this.laneFive);
+        this.laneSix = assetManager.getSprite("sprites", "Land Tiles/Grass_LG", 0, 0) // inceriments of 96
+        this.levelFour.addChild(this.laneSix);  
     }
 
     get carSpeed() {
@@ -127,9 +152,9 @@ export class LevelGeneration {
     // ------------------------- public meathods -------------------------------
     public genLevels():void {
         this.clearLevel();
-        let levelType:number = randomMe(1, 3);    
+        this.levelType = randomMe(1, 4);    
 
-       if (levelType == 1) {
+       if (this.levelType == 1) {
         this.stage.addChildAt(this.levelOne, 0); 
         this.yValue = 96;  
         // gen cars
@@ -185,7 +210,7 @@ export class LevelGeneration {
             }
             
         }
-        else if (levelType == 2) {
+        else if (this.levelType == 2) {
             this.stage.addChildAt(this.levelTwo, 0); 
             this.yValue = 96;  
             // gen cars
@@ -242,7 +267,7 @@ export class LevelGeneration {
             }                  
 
         }
-        else if (levelType == 3) {
+        else if (this.levelType == 3) {
             this.stage.addChildAt(this.levelThree, 0);
             this.yValue = 192;
             // gen cars
@@ -292,14 +317,75 @@ export class LevelGeneration {
                     this.bush.positionMe(this.yValue);
                     this.levelThree.addChild(this.bush.sprite);
                 }                            
-            }  
+            }                    
+        }
+        else if (this.levelType == 4) {
+            this.stage.addChildAt(this.levelFour, 0);
+            this.yValue = 96;
+
+            // gen cars
+            for (let i = 0; i < 9; i++) { 
+                let carType:number = randomMe(1, 3);     
+                if(carType == 1){           
+                    this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                    this.sportsCar.positionMe();
+                    this.levelFour.addChild(this.sportsCar.sprite);
+                    }
+                    else if(carType == 2) {
+                        this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
+                        this.sedan.positionMe();
+                        this.levelFour.addChild(this.sedan.sprite);
+                    }
+                    else {
+                        this.carArray.push(this.police = new PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
+                        this.police.positionMe();
+                        this.levelFour.addChild(this.police.sprite);
+                    }
+                        
+                    if (this.yValue == 158) this.yValue = 354;
+                    else if (this.yValue == 447) this.yValue = 800;
+                    this.yValue = this.yValue + 31; 
+                    } // end of array 
+
+            // gen obstacles
+            for (let i = 0; i < 20; i++) {
+                let obstacleType:number = randomMe(1,4);
+                let newYPos:number = randomMe(1,2);
+                if (newYPos == 1) this.yValue = randomMe(480, 520);
+                else if (newYPos == 2) this.yValue = randomMe(192, 220);
+                                
+                if (obstacleType == 1) {
+                    this.obstacleArray.push(this.largeRock = new LargeRock(this.stage, this.assetManager, this.chicken));
+                    this.largeRock.positionMe(this.yValue);
+                    this.levelFour.addChild(this.largeRock.sprite);
+                    }
+                else if (obstacleType == 2) {
+                    this.obstacleArray.push(this.normalRock = new NormalRock(this.stage, this.assetManager, this.chicken));
+                    this.normalRock.positionMe(this.yValue);
+                    this.levelFour.addChild(this.normalRock.sprite);
+                }
+                else if (obstacleType == 3) {
+                    this.obstacleArray.push(this.tree = new Tree(this.stage, this.assetManager, this.chicken));
+                    this.tree.positionMe(this.yValue);
+                    this.levelFour.addChild(this.tree.sprite);
+                }
+                else if (obstacleType == 4) {
+                    this.obstacleArray.push(this.bush = new Bush(this.stage, this.assetManager, this.chicken));
+                    this.bush.positionMe(this.yValue);
+                    this.levelFour.addChild(this.bush.sprite);
+                }                            
+            }
+            this.train = new Train(this.stage, this.assetManager, this.chicken);
+            this.train.positionMe();
+            this.levelFour.addChild(this.train.sprite);
+
         }
 
         // update car speed
         for (let i = 0; i < this.carArray.length; i++) {
         this.carArray[i].speed = this.carSpeedBonus + CAR_SPEED_INCREASE;
         }
-        console.log("level " + levelType);
+        console.log("level " + this.levelType);
         console.log("Speed: " + this.carArray[1].speed);
         
         // place nest
@@ -315,7 +401,8 @@ export class LevelGeneration {
         }  
         for (let obstacle of this.obstacleArray) {
             obstacle.update();
-        }   
+        } 
+        if (this.levelType == 4) this.train.update();
     }
 
     public clearLevel():void {
@@ -323,17 +410,21 @@ export class LevelGeneration {
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
+        this.stage.removeChild(this.levelFour);
         for (let i = 0; i < this.carArray.length; i++) {
             this.carSpeedBonus = this.carArray[1].speed;
             this.levelOne.removeChild(this.carArray[i].sprite);
             this.levelTwo.removeChild(this.carArray[i].sprite);
-            this.levelThree.removeChild(this.carArray[i].sprite);                  
+            this.levelThree.removeChild(this.carArray[i].sprite);
+            this.levelFour.removeChild(this.carArray[i].sprite);                  
         }
         for (let i = 0; i < this.obstacleArray.length; i++) {
             this.levelOne.removeChild(this.obstacleArray[i].sprite);
             this.levelTwo.removeChild(this.obstacleArray[i].sprite);
             this.levelThree.removeChild(this.obstacleArray[i].sprite);
+            this.levelFour.removeChild(this.obstacleArray[i].sprite);
         }
+        if (this.levelType == 4) this.levelFour.removeChild(this.train.sprite);
         this.carArray = []; 
         this.obstacleArray = [];    
     }

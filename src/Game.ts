@@ -15,6 +15,7 @@ import { UserInterface } from "./UserInterface";
 import { ScreenManager } from "./ScreenManager";
 import { LevelGeneration } from "./LevelGeneration";
 import { Corn1Up } from "./Corn1Up";
+import { Train } from "./Train"; 
 
 // game variables
 let stage:createjs.StageGL;
@@ -34,6 +35,7 @@ let sedan:Sedan;
 let police:PoliceCar;
 let nest:Nest;
 let corn:Corn1Up;
+let train:Train;
 
 // managers
 let screenManager:ScreenManager;
@@ -41,7 +43,7 @@ let levelGeneration:LevelGeneration;
 
 // UI && Screens
 let userInterface:UserInterface;
-let levelsCleared:number = 0;
+let pointsGained:number = 0;
 let lives:number = 3;
 
 function monitorKeys():void {
@@ -79,7 +81,7 @@ function onReady(e:createjs.Event):void {
     userInterface = new UserInterface(stage, assetManager);
     nest = new Nest(stage, assetManager, chicken);
     corn = new Corn1Up(stage, assetManager, chicken);
-    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn);
+    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
 
     screenManager = new ScreenManager(stage, assetManager, levelGeneration);
     screenManager.showMainMenu(); 
@@ -104,13 +106,13 @@ function onReady(e:createjs.Event):void {
         switch (e.type) {
             case "nestReached":
                 // update score
-                levelsCleared++;
-                userInterface.clears = levelsCleared;
+                pointsGained = pointsGained + 100;
+                userInterface.points = pointsGained;
                 // gen new level
                 levelGeneration.genLevels();
                 corn.new1Up();
                 // console logs
-                console.log ("levelsClears: " + levelsCleared);             
+                console.log ("levelsClears: " + pointsGained);             
                 break;
             case "lifeDecrement":
                 lives--
@@ -127,10 +129,12 @@ function onReady(e:createjs.Event):void {
                     userInterface.life = lives;
                     userInterface.addLivesUI();
                 } 
+                pointsGained = pointsGained + 25;
+                userInterface.points = pointsGained;
                 console.log("Lives: " + lives);         
                 break;
             case "gameReset":
-                levelsCleared = 0;
+                pointsGained = 0;
                 userInterface.resetMe();
                 chicken.stageClear();
                 levelGeneration.reset();
