@@ -1,10 +1,12 @@
 import { AssetManager } from "./AssetManager";
+import { CountDown } from "./CountDown";
 
 export class UserInterface {
 
     // private variables
     private stage:createjs.StageGL;
     private assetManager:AssetManager;
+    private countDown:CountDown;
 
     private pointCount:number;
     private clearsText:createjs.BitmapText;
@@ -16,10 +18,12 @@ export class UserInterface {
     private overlay:createjs.Sprite;
 
     private score:createjs.Sprite;
+    private timeText:createjs.Sprite;
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, countDown:CountDown) {
         this.stage = stage;
         this.assetManager = assetManager
+        this.countDown = this.countDown
 
         // overlay sprite
         this.overlay = assetManager.getSprite("sprites", "UI/UI_Bar", 314, 1);
@@ -31,6 +35,10 @@ export class UserInterface {
         this.clearsText.y = 45;
         this.clearsText.letterSpacing = 2;
         stage.addChild(this.clearsText);
+
+        // timer sprite
+        this.timeText = assetManager.getSprite("sprites", "UI/Time", 5, 45);
+        stage.addChild(this.timeText);
 
         // score UI
         this.score = assetManager.getSprite("sprites", "UI/Score", 325, 45);
@@ -55,7 +63,7 @@ export class UserInterface {
         this.pointCount = value;
 
         // update bitmapText object
-        this.clearsText.text = String(this.pointCount); // theres a current bug involving restart
+        this.clearsText.text = String(this.pointCount);
     }
 
     public set life(value:number) {

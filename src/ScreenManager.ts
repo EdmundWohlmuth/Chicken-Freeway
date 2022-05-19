@@ -1,5 +1,7 @@
 import { AssetManager } from "./AssetManager";
 import { LevelGeneration } from "./LevelGeneration";
+import { CountDown } from "./CountDown";
+import { COUNTDOWN_TIME } from "./Constants";
 
 export class ScreenManager {
 
@@ -10,6 +12,8 @@ export class ScreenManager {
     private restartButton:createjs.Sprite;
     private instructionsButton:createjs.Sprite;
     private backButton:createjs.Sprite;
+
+    private _countDown:CountDown;
 
     // containers
     private MainMenu:createjs.Container;
@@ -22,9 +26,11 @@ export class ScreenManager {
     // events
     private gameReset:createjs.Event;
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, levelgen:LevelGeneration) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, levelgen:LevelGeneration, countDown:CountDown) {
         this.stage = stage;
         this.levelGen = levelgen
+
+        this._countDown = countDown
 
         // bool
         this.inMenu = true;
@@ -72,11 +78,10 @@ export class ScreenManager {
 
         // detect click
         this.startButton.on("click", (e) => {  
-            console.log("start pressed");
             this.hideAll();
             this.levelGen.genLevels();
-            this.inMenu = false;      
-            console.log("game reset");
+            this.inMenu = false;
+            this._countDown.start(COUNTDOWN_TIME);      
         }, this, true);
 
         this.instructionsButton.on("click", (e) => {
@@ -111,7 +116,6 @@ export class ScreenManager {
 
         // detect pressed back
         this.backButton.on("click", (e) => {
-            console.log("back pressed");
             this.hideAll();
             this.showMainMenu();  
             this.inMenu = true; 

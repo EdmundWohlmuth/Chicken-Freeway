@@ -4,7 +4,7 @@
 // importing createjs framework
 import "createjs";
 // importing game constants
-import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST, STARTING_CAR_SPEED } from "./Constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FRAME_RATE, ASSET_MANIFEST, STARTING_CAR_SPEED, COUNTDOWN_TIME } from "./Constants";
 import { AssetManager } from "./AssetManager";
 import { Chicken } from "./Chicken";
 import { SportsCar } from "./SportsCar";
@@ -16,6 +16,7 @@ import { ScreenManager } from "./ScreenManager";
 import { LevelGeneration } from "./LevelGeneration";
 import { Corn1Up } from "./Corn1Up";
 import { Train } from "./Train"; 
+import { CountDown } from "./CountDown";
 
 // game variables
 let stage:createjs.StageGL;
@@ -43,7 +44,9 @@ let levelGeneration:LevelGeneration;
 
 // UI && Screens
 let userInterface:UserInterface;
+let countDown:CountDown;
 let pointsGained:number = 0;
+let timerCount:number = COUNTDOWN_TIME
 let lives:number = 3;
 
 function monitorKeys():void {
@@ -77,14 +80,16 @@ function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
     // construct game objects here
+    countDown = new CountDown(stage, assetManager);
     chicken = new Chicken(stage, assetManager);
-    userInterface = new UserInterface(stage, assetManager);
+    userInterface = new UserInterface(stage, assetManager, countDown);
     nest = new Nest(stage, assetManager, chicken);
     corn = new Corn1Up(stage, assetManager, chicken);
     levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
 
-    screenManager = new ScreenManager(stage, assetManager, levelGeneration);
-    screenManager.showMainMenu(); 
+    screenManager = new ScreenManager(stage, assetManager, levelGeneration, countDown);
+    screenManager.showMainMenu();
+    
 
     // listen for custom events
     stage.on("nestReached", onGameEvent);
@@ -106,22 +111,23 @@ function onReady(e:createjs.Event):void {
         switch (e.type) {
             case "nestReached":
                 // update score
-                pointsGained = pointsGained + 100;
+                pointsGained = pointsGained + countDown.seconds;
                 userInterface.points = pointsGained;
                 // gen new level
                 levelGeneration.genLevels();
-                corn.new1Up();
-                // console logs
-                console.log ("levelsClears: " + pointsGained);             
+                corn.new1Up(); 
+                countDown.reset();          
                 break;
             case "lifeDecrement":
                 lives--
                 userInterface.life = lives;
-                console.log("Lives: " + lives);
                 if (lives < 1) {
                     screenManager.showGameOver();
-                    console.log("Game over");
-                } 
+                }
+                if (pointsGained > 15) {
+                    pointsGained = pointsGained - 15;
+                    userInterface.points = pointsGained;
+                }                
                 break;
             case "lifeIncriment": 
                 if (lives < 3) {
@@ -130,8 +136,7 @@ function onReady(e:createjs.Event):void {
                     userInterface.addLivesUI();
                 } 
                 pointsGained = pointsGained + 25;
-                userInterface.points = pointsGained;
-                console.log("Lives: " + lives);         
+                userInterface.points = pointsGained;      
                 break;
             case "gameReset":
                 pointsGained = 0;
@@ -139,9 +144,9 @@ function onReady(e:createjs.Event):void {
                 chicken.stageClear();
                 levelGeneration.reset();
                 lives = 3;
-                levelGeneration.carSpeed = STARTING_CAR_SPEED;            
+                levelGeneration.carSpeed = STARTING_CAR_SPEED;
+                countDown.reset();            
                 console.log("reset succsessfully");
-                console.log("Lives: " + lives);
                 break;
         
             default:
@@ -163,8 +168,7 @@ function onTick(e:createjs.Event) {
     corn.update();
 
     // update the stage
-    stage.update();
-    console.log(screenManager.inMenuBool);   
+    stage.update(); 
 }
 
 // key press events

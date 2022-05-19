@@ -55,7 +55,6 @@ export class Car {
                
         if(randomMe(1, 3) == 1) this._direction = Car.LEFT
         else this._direction = Car.RIGHT;
-        console.log("direction = " + this._direction);
 
         if (this._direction == Car.LEFT) {          
             this._sprite.gotoAndPlay(this._animationLeft);

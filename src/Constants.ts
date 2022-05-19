@@ -16,6 +16,8 @@ export const CHICKEN_START_X:number = 250;
 export const LEVEL_GEN_START:number = 480;
 export const LANE_THREE_Y:number = 288;
 
+export const COUNTDOWN_TIME:number = 150;
+
 export const ASSET_MANIFEST:Object[] = [
     {
         type:"json",
