@@ -81,13 +81,15 @@ function onReady(e:createjs.Event):void {
 
     // construct game objects here
     countDown = new CountDown(stage, assetManager);
+
     chicken = new Chicken(stage, assetManager);
-    userInterface = new UserInterface(stage, assetManager, countDown);
     nest = new Nest(stage, assetManager, chicken);
     corn = new Corn1Up(stage, assetManager, chicken);
-    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
 
+    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
     screenManager = new ScreenManager(stage, assetManager, levelGeneration, countDown);
+    userInterface = new UserInterface(stage, assetManager, countDown);
+    
     screenManager.showMainMenu();
     
 

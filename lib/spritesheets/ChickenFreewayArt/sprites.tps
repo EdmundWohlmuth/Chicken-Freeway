@@ -598,6 +598,22 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">Lights/Go.png</key>
+            <key type="filename">Lights/Stop.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>2,7,5,13</rect>
+                <key>scale9Paddings</key>
+                <rect>2,7,5,13</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">Obstacles/Floating_Log.png</key>
             <key type="filename">Obstacles/Floating_Log_2.png</key>
             <struct type="IndividualSpriteSettings">
@@ -852,6 +868,7 @@
             <filename>GameObjects</filename>
             <filename>Police</filename>
             <filename>Sedan</filename>
+            <filename>Lights</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
