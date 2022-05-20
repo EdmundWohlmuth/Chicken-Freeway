@@ -80,17 +80,19 @@ function onReady(e:createjs.Event):void {
     console.log(">> spritesheet loaded – ready to add sprites to game");
 
     // construct game objects here
-    countDown = new CountDown(stage, assetManager);
-
     chicken = new Chicken(stage, assetManager);
     nest = new Nest(stage, assetManager, chicken);
     corn = new Corn1Up(stage, assetManager, chicken);
 
     levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
     screenManager = new ScreenManager(stage, assetManager, levelGeneration, countDown);
-    userInterface = new UserInterface(stage, assetManager, countDown);
+    countDown = new CountDown(stage, assetManager, screenManager);
+    userInterface = new UserInterface(stage, assetManager);
     
     screenManager.showMainMenu();
+
+    //start timer
+    countDown.start(COUNTDOWN_TIME);
     
 
     // listen for custom events

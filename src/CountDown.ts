@@ -1,6 +1,6 @@
 import { AssetManager } from "./AssetManager";
 import { COUNTDOWN_TIME } from "./Constants";
-import { UserInterface } from "./UserInterface";
+import { ScreenManager } from "./ScreenManager";
 
 export class CountDown {
 
@@ -8,11 +8,13 @@ export class CountDown {
     private _seconds:number;
     private timerText:createjs.BitmapText;
 
-    private userInterface:UserInterface
+    private screenManager:ScreenManager;
 
-    constructor (stage:createjs.StageGL, assetManager:AssetManager) {
+    constructor (stage:createjs.StageGL, assetManager:AssetManager, screenManager:ScreenManager) {
 
         this._seconds = COUNTDOWN_TIME;
+
+        this.screenManager = screenManager;
 
         // timer glyphs
         this.timerText = new createjs.BitmapText("150", assetManager.getSpriteSheet("glyphs"));
@@ -38,7 +40,7 @@ export class CountDown {
         this._seconds = startingSeconds;
 
         this.timer = window.setInterval(() => {
-            if (this._seconds > 0) {
+            if (this._seconds > 0 && !this.screenManager.inMenuBool) {
                 this._seconds--;
                 console.log("Count down: " + this._seconds);
                 this.timerText.text = String(this._seconds);

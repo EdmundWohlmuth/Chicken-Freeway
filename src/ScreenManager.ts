@@ -80,8 +80,7 @@ export class ScreenManager {
         this.startButton.on("click", (e) => {  
             this.hideAll();
             this.levelGen.genLevels();
-            this.inMenu = false;
-            this._countDown.start(COUNTDOWN_TIME);      
+            this.inMenu = false;                 
         }, this, true);
 
         this.instructionsButton.on("click", (e) => {

@@ -20,7 +20,7 @@ export class UserInterface {
     private score:createjs.Sprite;
     private timeText:createjs.Sprite;
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, countDown:CountDown) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager) {
         this.stage = stage;
         this.assetManager = assetManager
         this.countDown = this.countDown
