@@ -97,6 +97,9 @@ function onReady(e) {
                 userInterface.life = lives;
                 if (lives < 1) {
                     screenManager.showGameOver();
+                    corn.hideMe();
+                    nest.hideMe();
+                    chicken.hideCookedChocken();
                 }
                 if (pointsGained > 15) {
                     pointsGained = pointsGained - 15;
@@ -177,9 +180,9 @@ main();
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("d8be6e0768038570ffa8")
+/******/ 	__webpack_require__.h = () => ("a0ace89f6fff9e324781")
 /******/ })();
 /******/ 
 /******/ }
 );
-//# sourceMappingURL=main.1ea833e9ca4a80433a0a.hot-update.js.map
+//# sourceMappingURL=main.bd08a42458110edfc439.hot-update.js.map

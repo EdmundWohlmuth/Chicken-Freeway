@@ -34,5 +34,10 @@ export class Nest {
             this._sprite.dispatchEvent(this.nestReached);          
            // console.log("collssion");
         }
-    }  
+    }
+    
+    public hideMe():void {
+        this._sprite.x = -15;
+        this._sprite.y = -15;
+    }
 }

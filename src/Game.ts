@@ -127,6 +127,8 @@ function onReady(e:createjs.Event):void {
                 userInterface.life = lives;
                 if (lives < 1) {
                     screenManager.showGameOver();
+                    corn.hideMe();
+                    nest.hideMe();
                 }
                 if (pointsGained > 15) {
                     pointsGained = pointsGained - 15;

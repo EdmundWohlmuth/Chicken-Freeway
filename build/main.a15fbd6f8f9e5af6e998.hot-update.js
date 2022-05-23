@@ -72,6 +72,7 @@ function onReady(e) {
     countDown = new CountDown_1.CountDown(stage, assetManager, screenManager);
     userInterface = new UserInterface_1.UserInterface(stage, assetManager);
     screenManager.showMainMenu();
+    countDown.start(Constants_1.COUNTDOWN_TIME);
     stage.on("nestReached", onGameEvent);
     stage.on("lifeDecrement", onGameEvent);
     stage.on("newLevel", onGameEvent);
@@ -96,6 +97,8 @@ function onReady(e) {
                 userInterface.life = lives;
                 if (lives < 1) {
                     screenManager.showGameOver();
+                    corn.hideMe();
+                    nest.hideMe();
                 }
                 if (pointsGained > 15) {
                     pointsGained = pointsGained - 15;
@@ -176,9 +179,9 @@ main();
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("1ea833e9ca4a80433a0a")
+/******/ 	__webpack_require__.h = () => ("fb1b1f7b953a9e7aefc0")
 /******/ })();
 /******/ 
 /******/ }
 );
-//# sourceMappingURL=main.6cfa80b9827c6289a372.hot-update.js.map
+//# sourceMappingURL=main.a15fbd6f8f9e5af6e998.hot-update.js.map

@@ -45,4 +45,9 @@ export class Corn1Up {
             console.log("1Up get");
         }
     }
+
+    public hideMe():void {
+        this._sprite.x = -10;
+        this._sprite.y = -10;
+    }
 }

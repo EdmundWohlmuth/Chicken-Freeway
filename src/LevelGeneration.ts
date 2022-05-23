@@ -184,7 +184,7 @@ export class LevelGeneration {
             for (let i = 0; i < 20; i++) {
                 let obstacleType:number = randomMe(1,4);
                 let newYPos:number = randomMe(1,2);
-                if (newYPos == 1) this.yValue = randomMe(480, 520);
+                if (newYPos == 1) this.yValue = randomMe(480, 510);
                 else if (newYPos == 2) this.yValue = randomMe(192, 220);
 
                 if (obstacleType == 1) {
@@ -351,7 +351,7 @@ export class LevelGeneration {
             for (let i = 0; i < 20; i++) {
                 let obstacleType:number = randomMe(1,4);
                 let newYPos:number = randomMe(1,2);
-                if (newYPos == 1) this.yValue = randomMe(480, 520);
+                if (newYPos == 1) this.yValue = randomMe(480, 510);
                 else if (newYPos == 2) this.yValue = randomMe(192, 220);
                                 
                 if (obstacleType == 1) {

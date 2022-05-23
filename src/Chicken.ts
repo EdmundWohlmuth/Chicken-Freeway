@@ -172,5 +172,9 @@ export class Chicken {
         this.stage.removeChild(this._deadSprite);      
     }
 
+    public hideCookedChocken():void {
+        this.stage.removeChild(this._deadSprite);
+    }
+
     // ---------------------- private meathods ----------------------------
 }

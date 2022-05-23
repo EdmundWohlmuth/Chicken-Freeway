@@ -1272,6 +1272,9 @@ class Chicken {
         sprite.y = Constants_1.CHICKEN_START_Y;
         this.stage.removeChild(this._deadSprite);
     }
+    hideCookedChocken() {
+        this.stage.removeChild(this._deadSprite);
+    }
 }
 exports.Chicken = Chicken;
 Chicken.UP = 0;
@@ -1380,6 +1383,10 @@ class Corn1Up {
             this.stage.dispatchEvent("lifeIncriment");
             console.log("1Up get");
         }
+    }
+    hideMe() {
+        this._sprite.x = -10;
+        this._sprite.y = -10;
     }
 }
 exports.Corn1Up = Corn1Up;
@@ -1531,6 +1538,8 @@ function onReady(e) {
                 userInterface.life = lives;
                 if (lives < 1) {
                     screenManager.showGameOver();
+                    corn.hideMe();
+                    nest.hideMe();
                 }
                 if (pointsGained > 15) {
                     pointsGained = pointsGained - 15;
@@ -1784,7 +1793,7 @@ class LevelGeneration {
                 let obstacleType = (0, Toolkit_1.randomMe)(1, 4);
                 let newYPos = (0, Toolkit_1.randomMe)(1, 2);
                 if (newYPos == 1)
-                    this.yValue = (0, Toolkit_1.randomMe)(480, 520);
+                    this.yValue = (0, Toolkit_1.randomMe)(480, 510);
                 else if (newYPos == 2)
                     this.yValue = (0, Toolkit_1.randomMe)(192, 220);
                 if (obstacleType == 1) {
@@ -1945,7 +1954,7 @@ class LevelGeneration {
                 let obstacleType = (0, Toolkit_1.randomMe)(1, 4);
                 let newYPos = (0, Toolkit_1.randomMe)(1, 2);
                 if (newYPos == 1)
-                    this.yValue = (0, Toolkit_1.randomMe)(480, 520);
+                    this.yValue = (0, Toolkit_1.randomMe)(480, 510);
                 else if (newYPos == 2)
                     this.yValue = (0, Toolkit_1.randomMe)(192, 220);
                 if (obstacleType == 1) {
@@ -2054,6 +2063,10 @@ class Nest {
             this.chicken.stageClear();
             this._sprite.dispatchEvent(this.nestReached);
         }
+    }
+    hideMe() {
+        this._sprite.x = -15;
+        this._sprite.y = -15;
     }
 }
 exports.Nest = Nest;
@@ -4873,7 +4886,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("d8be6e0768038570ffa8")
+/******/ 		__webpack_require__.h = () => ("d54465f34566b56b47f7")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
