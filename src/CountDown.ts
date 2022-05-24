@@ -18,7 +18,7 @@ export class CountDown {
 
         // timer glyphs
         this.timerText = new createjs.BitmapText("150", assetManager.getSpriteSheet("glyphs"));
-        this.timerText.x = 60;
+        this.timerText.x = 150;
         this.timerText.y = 45;
         this.timerText.letterSpacing = 1.5;
         stage.addChild(this.timerText);

@@ -1410,7 +1410,7 @@ class CountDown {
         this._seconds = Constants_1.COUNTDOWN_TIME;
         this.screenManager = screenManager;
         this.timerText = new createjs.BitmapText("150", assetManager.getSpriteSheet("glyphs"));
-        this.timerText.x = 60;
+        this.timerText.x = 150;
         this.timerText.y = 45;
         this.timerText.letterSpacing = 1.5;
         stage.addChild(this.timerText);
@@ -4940,7 +4940,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("0c7b51980efbe79a0367")
+/******/ 		__webpack_require__.h = () => ("1dbf5c4ceee0ec01f448")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
