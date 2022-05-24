@@ -17,6 +17,7 @@ import { LevelGeneration } from "./LevelGeneration";
 import { Corn1Up } from "./Corn1Up";
 import { Train } from "./Train"; 
 import { CountDown } from "./CountDown";
+import { StopLight } from "./StopLight";
 
 // game variables
 let stage:createjs.StageGL;
@@ -37,6 +38,7 @@ let police:PoliceCar;
 let nest:Nest;
 let corn:Corn1Up;
 let train:Train;
+let stopLight:StopLight;
 
 // managers
 let screenManager:ScreenManager;
@@ -84,7 +86,7 @@ function onReady(e:createjs.Event):void {
     nest = new Nest(stage, assetManager, chicken);
     corn = new Corn1Up(stage, assetManager, chicken);
 
-    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train);
+    levelGeneration = new LevelGeneration(stage, assetManager, chicken, sportsCar, police, sedan, nest, corn, train, stopLight);
     screenManager = new ScreenManager(stage, assetManager, levelGeneration, countDown);
     countDown = new CountDown(stage, assetManager, screenManager);
     userInterface = new UserInterface(stage, assetManager);

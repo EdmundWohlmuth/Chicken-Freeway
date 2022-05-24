@@ -42,7 +42,7 @@ export class CountDown {
         this.timer = window.setInterval(() => {
             if (this._seconds > 0 && !this.screenManager.inMenuBool) {
                 this._seconds--;
-                console.log("Count down: " + this._seconds);
+               // console.log("Count down: " + this._seconds);
                 this.timerText.text = String(this._seconds);
             }          
         }, 1000);

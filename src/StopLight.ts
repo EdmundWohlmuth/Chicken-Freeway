@@ -8,28 +8,30 @@ export class StopLight {
     private stage:createjs.StageGL;
     private _train:Train
     private trainWidth:number;
+    private assetManager:AssetManager;
 
     private onSprite:createjs.Sprite;
     private offSprite:createjs.Sprite;
+    private _sprite:createjs.Sprite;
 
     constructor (stage:createjs.StageGL, assetManager:AssetManager, train:Train) {
         this.stage = stage;
         this._train = train;
         this.trainWidth = this._train.sprite.getBounds().width;
+        this.assetManager = assetManager
+    }
 
-        this.onSprite = assetManager.getSprite("sprites", "Lights/Go", 0, 0);
-        this.offSprite = assetManager.getSprite("sprites", "Lights/Stop", 0, 0);
+    get sprite() {
+        return this._sprite;
     }
 
     public SwitchStates():void {
 
         if (this._train.sprite.x > - 500 && this._train.sprite.x < STAGE_WIDTH + this.trainWidth) {
-            this.stage.addChildAt(this.offSprite, 10, 315);
-            this.stage.removeChild(this.onSprite);
+            this._sprite = this.assetManager.getSprite("sprites", "Lights/Stop", 10, 350);
         }
         else {
-            this.stage.addChildAt(this.onSprite, 10, 315);
-            this.stage.removeChild(this.offSprite);
+            this._sprite = this.assetManager.getSprite("sprites", "Lights/Go", 10, 350);
         }
     }
 }

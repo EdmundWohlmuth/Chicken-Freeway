@@ -121,7 +121,6 @@ export class Chicken {
                 if (sprite.x < 0) {
                     sprite.x = 0;
                 }
-
             } 
             else if (this._direction == Chicken.RIGHT) {
                 sprite.x = sprite.x + this._speed;
@@ -134,7 +133,6 @@ export class Chicken {
                 if (sprite.x > (STAGE_WIDTH - this.width)) {
                     sprite.x = (STAGE_WIDTH - this.width);
                 }
-
             } 
             else if (this._direction == Chicken.UP) {
                 sprite.y = sprite.y - this._speed;
@@ -159,8 +157,8 @@ export class Chicken {
                 if (sprite.y > (STAGE_HEIGHT - this.width)) {
                     sprite.y = (STAGE_HEIGHT - this.width);
                 }
-            }
-        }
+            }           
+        }       
     }
 
     public stageClear():void {

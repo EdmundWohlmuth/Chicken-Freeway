@@ -14,6 +14,7 @@ import { NormalRock } from "./NormalRock";
 import { Tree } from "./Tree";
 import { Bush } from "./Bush";
 import { Train } from "./Train";
+import { StopLight } from "./StopLight";
 
 export class LevelGeneration {
 
@@ -38,6 +39,7 @@ export class LevelGeneration {
     private tree:Tree;
     private bush:Bush;
     private train:Train;
+    private stopLight:StopLight;
  
     // lanes
     private startLane:createjs.Sprite;
@@ -55,7 +57,7 @@ export class LevelGeneration {
     private levelThree:createjs.Container;
     private levelFour:createjs.Container;
 
-    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest, corn:Corn1Up, train:Train) {
+    constructor(stage:createjs.StageGL, assetManager:AssetManager, chicken:Chicken, sportsCar:SportsCar, police:PoliceCar, sedan:Sedan, nest:Nest, corn:Corn1Up, train:Train, stopLight:StopLight) {
         this.stage = stage;
         this.chicken = chicken;
         this.sportsCar = sportsCar;
@@ -64,6 +66,7 @@ export class LevelGeneration {
         this.nest = nest;
         this.corn = corn;
         this.train = train;
+        this.stopLight = stopLight;
         this.assetManager = assetManager;
 
         // construct containers
@@ -163,16 +166,19 @@ export class LevelGeneration {
             if(carType == 1){           
                 this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                 this.sportsCar.positionMe();
+                this.sportsCar.speed = this.carSpeed + 0.5;
                 this.levelOne.addChild(this.sportsCar.sprite);
                 }
                 else if(carType == 2) {
                     this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
+                    this.sedan.speed = this.carSpeed - 0.5;
                     this.levelOne.addChild(this.sedan.sprite);
                 }
                 else {
                     this.carArray.push(this.police = new PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.police.positionMe();
+                    this.police.speed = this.carSpeed + 0.5;
                     this.levelOne.addChild(this.police.sprite);
                 }
                     
@@ -219,16 +225,19 @@ export class LevelGeneration {
                 if(carType == 1){           
                     this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
+                    this.sportsCar.speed = this.carSpeed + 0.5;
                     this.levelTwo.addChild(this.sportsCar.sprite);
                     }
                     else if(carType == 2) {
                         this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.sedan.positionMe();
+                        this.sedan.speed = this.carSpeed - 0.5;
                         this.levelTwo.addChild(this.sedan.sprite);
                     }
                     else {
                         this.carArray.push(this.police = new PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.police.positionMe();
+                        this.police.speed = this.carSpeed + 0.5;
                         this.levelTwo.addChild(this.police.sprite);
                     }
                         
@@ -276,16 +285,19 @@ export class LevelGeneration {
                 if(carType == 1){           
                     this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
+                    this.sportsCar.speed = this.carSpeed + 0.5;
                     this.levelThree.addChild(this.sportsCar.sprite);
                     }
                     else if(carType == 2) {
                         this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.sedan.positionMe();
+                        this.sedan.speed = this.carSpeed - 0.5;
                         this.levelThree.addChild(this.sedan.sprite);
                     }
                     else {
                         this.carArray.push(this.police = new PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.police.positionMe();
+                        this.police.speed = this.carSpeed + 0.5;
                         this.levelThree.addChild(this.police.sprite);
                     }
                     this.yValue = this.yValue + 31;
@@ -329,16 +341,19 @@ export class LevelGeneration {
                 if(carType == 1){           
                     this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
+                    this.sportsCar.speed = this.carSpeed + 0.5;
                     this.levelFour.addChild(this.sportsCar.sprite);
                     }
                     else if(carType == 2) {
                         this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.sedan.positionMe();
+                        this.sedan.speed = this.carSpeed - 0.5;
                         this.levelFour.addChild(this.sedan.sprite);
                     }
                     else {
                         this.carArray.push(this.police = new PoliceCar(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.police.positionMe();
+                        this.police.speed = this.carSpeed + 0.5;
                         this.levelFour.addChild(this.police.sprite);
                     }
                         
@@ -379,15 +394,10 @@ export class LevelGeneration {
             this.train.positionMe();
             this.levelFour.addChild(this.train.sprite);
 
-        }
+            this.stopLight = new StopLight(this.stage, this.assetManager, this.train);
+            this.levelFour.addChild(this.stopLight.sprite);
 
-        // update car speed
-        for (let i = 0; i < this.carArray.length; i++) {
-        this.carArray[i].speed = this.carSpeedBonus + CAR_SPEED_INCREASE;
-        }
-        console.log("level " + this.levelType);
-        console.log("Speed: " + this.carArray[1].speed);
-        
+        }      
         // place nest
         this.nest.positiionMe();
         this.corn.positionMe();
@@ -402,11 +412,21 @@ export class LevelGeneration {
         for (let obstacle of this.obstacleArray) {
             obstacle.update();
         } 
-        if (this.levelType == 4) this.train.update();
+        if (this.levelType == 4) {
+            this.train.update();
+            this.stopLight.SwitchStates();
+        } 
     }
 
     public clearLevel():void {
-        // resets levels and car array      
+        // resets levels and car array 
+        // update car speed
+        for (let i = 0; i < this.carArray.length; i++) {
+            this.carArray[i].speed = this.carSpeedBonus + CAR_SPEED_INCREASE;
+            // console.log("level " + this.levelType);
+            console.log("Speed: " + this.carArray[1].speed); 
+            }
+
         this.stage.removeChild(this.levelOne);
         this.stage.removeChild(this.levelTwo);
         this.stage.removeChild(this.levelThree);
@@ -424,7 +444,10 @@ export class LevelGeneration {
             this.levelThree.removeChild(this.obstacleArray[i].sprite);
             this.levelFour.removeChild(this.obstacleArray[i].sprite);
         }
-        if (this.levelType == 4) this.levelFour.removeChild(this.train.sprite);
+        if (this.levelType == 4) {
+            this.levelFour.removeChild(this.train.sprite);
+            this.levelFour.removeChild(this.stopLight.sprite);
+        } 
         this.carArray = []; 
         this.obstacleArray = [];    
     }
