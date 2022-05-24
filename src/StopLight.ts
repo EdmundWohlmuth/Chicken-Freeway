@@ -28,7 +28,7 @@ export class StopLight {
 
     public SwitchStates():void {
 
-        if (this._train.sprite.x > - 1500 && this._train.sprite.x < STAGE_WIDTH + this.trainWidth) {
+        if (this._train.sprite.x > - 1250 && this._train.sprite.x < STAGE_WIDTH + this.trainWidth) {
             this._sprite.gotoAndPlay("Lights/Stop");
         }
         else {

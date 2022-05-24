@@ -2369,7 +2369,7 @@ class StopLight {
         return this._sprite;
     }
     SwitchStates() {
-        if (this._train.sprite.x > -1500 && this._train.sprite.x < Constants_1.STAGE_WIDTH + this.trainWidth) {
+        if (this._train.sprite.x > -1250 && this._train.sprite.x < Constants_1.STAGE_WIDTH + this.trainWidth) {
             this._sprite.gotoAndPlay("Lights/Stop");
         }
         else {
@@ -2477,7 +2477,7 @@ class Train {
     update() {
         this._sprite.x = this._sprite.x + this._speed;
         if (this._sprite.x > (Constants_1.STAGE_WIDTH + this.width + 2500)) {
-            this._sprite.x = (-2500 - this.width);
+            this._sprite.x = (-3000 - this.width);
         }
         if ((0, Toolkit_1.boxHit)(this._sprite, this.chicken.sprite)) {
             this.chicken.killMe();
@@ -4941,7 +4941,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("d8119f253c7ceda9a1b7")
+/******/ 		__webpack_require__.h = () => ("7aec4d7616a1e40b139c")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

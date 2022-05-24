@@ -48,7 +48,7 @@ export class Train {
         this._sprite.x = this._sprite.x + this._speed;
 
         if (this._sprite.x > (STAGE_WIDTH + this.width + 2500)) {
-            this._sprite.x = (-2500 - this.width);
+            this._sprite.x = (-3000 - this.width);
         }
         if (boxHit(this._sprite, this.chicken.sprite)) {
             this.chicken.killMe();
