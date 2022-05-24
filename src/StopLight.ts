@@ -19,6 +19,7 @@ export class StopLight {
         this._train = train;
         this.trainWidth = this._train.sprite.getBounds().width;
         this.assetManager = assetManager
+        this._sprite = this.assetManager.getSprite("sprites", "Lights/Go", 10, 350);
     }
 
     get sprite() {
@@ -27,11 +28,11 @@ export class StopLight {
 
     public SwitchStates():void {
 
-        if (this._train.sprite.x > - 500 && this._train.sprite.x < STAGE_WIDTH + this.trainWidth) {
-            this._sprite = this.assetManager.getSprite("sprites", "Lights/Stop", 10, 350);
+        if (this._train.sprite.x > - 1500 && this._train.sprite.x < STAGE_WIDTH + this.trainWidth) {
+            this._sprite.gotoAndPlay("Lights/Stop");
         }
         else {
-            this._sprite = this.assetManager.getSprite("sprites", "Lights/Go", 10, 350);
+            this._sprite.gotoAndPlay("Lights/Go");
         }
     }
 }

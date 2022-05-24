@@ -1775,13 +1775,13 @@ class LevelGeneration {
                 if (carType == 1) {
                     this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelOne.addChild(this.sportsCar.sprite);
                 }
                 else if (carType == 2) {
                     this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
-                    this.sedan.speed = this.carSpeed - 0.5;
+                    this.sedan.speed = this.carSpeed - 1;
                     this.levelOne.addChild(this.sedan.sprite);
                 }
                 else {
@@ -1831,13 +1831,13 @@ class LevelGeneration {
                 if (carType == 1) {
                     this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelTwo.addChild(this.sportsCar.sprite);
                 }
                 else if (carType == 2) {
                     this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
-                    this.sedan.speed = this.carSpeed - 0.5;
+                    this.sedan.speed = this.carSpeed - 1;
                     this.levelTwo.addChild(this.sedan.sprite);
                 }
                 else {
@@ -1889,13 +1889,13 @@ class LevelGeneration {
                 if (carType == 1) {
                     this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelThree.addChild(this.sportsCar.sprite);
                 }
                 else if (carType == 2) {
                     this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
-                    this.sedan.speed = this.carSpeed - 0.5;
+                    this.sedan.speed = this.carSpeed - 1;
                     this.levelThree.addChild(this.sedan.sprite);
                 }
                 else {
@@ -1943,13 +1943,13 @@ class LevelGeneration {
                 if (carType == 1) {
                     this.carArray.push(this.sportsCar = new SportsCar_1.SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelFour.addChild(this.sportsCar.sprite);
                 }
                 else if (carType == 2) {
                     this.carArray.push(this.sedan = new Sedan_1.Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
-                    this.sedan.speed = this.carSpeed - 0.5;
+                    this.sedan.speed = this.carSpeed - 1;
                     this.levelFour.addChild(this.sedan.sprite);
                 }
                 else {
@@ -2363,16 +2363,17 @@ class StopLight {
         this._train = train;
         this.trainWidth = this._train.sprite.getBounds().width;
         this.assetManager = assetManager;
+        this._sprite = this.assetManager.getSprite("sprites", "Lights/Go", 10, 350);
     }
     get sprite() {
         return this._sprite;
     }
     SwitchStates() {
-        if (this._train.sprite.x > -500 && this._train.sprite.x < Constants_1.STAGE_WIDTH + this.trainWidth) {
-            this._sprite = this.assetManager.getSprite("sprites", "Lights/Stop", 10, 350);
+        if (this._train.sprite.x > -1500 && this._train.sprite.x < Constants_1.STAGE_WIDTH + this.trainWidth) {
+            this._sprite.gotoAndPlay("Lights/Stop");
         }
         else {
-            this._sprite = this.assetManager.getSprite("sprites", "Lights/Go", 10, 350);
+            this._sprite.gotoAndPlay("Lights/Go");
         }
     }
 }
@@ -4940,7 +4941,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("1dbf5c4ceee0ec01f448")
+/******/ 		__webpack_require__.h = () => ("d8119f253c7ceda9a1b7")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

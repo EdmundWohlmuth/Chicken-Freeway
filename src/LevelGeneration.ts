@@ -166,13 +166,13 @@ export class LevelGeneration {
             if(carType == 1){           
                 this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                 this.sportsCar.positionMe();
-                this.sportsCar.speed = this.carSpeed + 0.5;
+                this.sportsCar.speed = this.carSpeed + 1;
                 this.levelOne.addChild(this.sportsCar.sprite);
                 }
                 else if(carType == 2) {
                     this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sedan.positionMe();
-                    this.sedan.speed = this.carSpeed - 0.5;
+                    this.sedan.speed = this.carSpeed - 1;
                     this.levelOne.addChild(this.sedan.sprite);
                 }
                 else {
@@ -225,13 +225,13 @@ export class LevelGeneration {
                 if(carType == 1){           
                     this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelTwo.addChild(this.sportsCar.sprite);
                     }
                     else if(carType == 2) {
                         this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.sedan.positionMe();
-                        this.sedan.speed = this.carSpeed - 0.5;
+                        this.sedan.speed = this.carSpeed - 1;
                         this.levelTwo.addChild(this.sedan.sprite);
                     }
                     else {
@@ -285,13 +285,13 @@ export class LevelGeneration {
                 if(carType == 1){           
                     this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelThree.addChild(this.sportsCar.sprite);
                     }
                     else if(carType == 2) {
                         this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.sedan.positionMe();
-                        this.sedan.speed = this.carSpeed - 0.5;
+                        this.sedan.speed = this.carSpeed - 1;
                         this.levelThree.addChild(this.sedan.sprite);
                     }
                     else {
@@ -341,13 +341,13 @@ export class LevelGeneration {
                 if(carType == 1){           
                     this.carArray.push(this.sportsCar = new SportsCar(this.stage, this.assetManager, this.chicken, this.yValue));
                     this.sportsCar.positionMe();
-                    this.sportsCar.speed = this.carSpeed + 0.5;
+                    this.sportsCar.speed = this.carSpeed + 1;
                     this.levelFour.addChild(this.sportsCar.sprite);
                     }
                     else if(carType == 2) {
                         this.carArray.push(this.sedan = new Sedan(this.stage, this.assetManager, this.chicken, this.yValue));
                         this.sedan.positionMe();
-                        this.sedan.speed = this.carSpeed - 0.5;
+                        this.sedan.speed = this.carSpeed - 1;
                         this.levelFour.addChild(this.sedan.sprite);
                     }
                     else {
