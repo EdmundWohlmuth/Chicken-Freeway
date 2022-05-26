@@ -133,6 +133,7 @@ export class Chicken {
                 if (sprite.x > (STAGE_WIDTH - this.width)) {
                     sprite.x = (STAGE_WIDTH - this.width);
                 }
+                console.log(this.width);
             } 
             else if (this._direction == Chicken.UP) {
                 sprite.y = sprite.y - this._speed;
@@ -145,6 +146,7 @@ export class Chicken {
                 if (sprite.y < 0) {
                     sprite.y = 0;
                 }
+                console.log(this.width);
             } 
             else if (this._direction == Chicken.DOWN) {
                 sprite.y = sprite.y + this._speed;
@@ -157,6 +159,7 @@ export class Chicken {
                 if (sprite.y > (STAGE_HEIGHT - this.width)) {
                     sprite.y = (STAGE_HEIGHT - this.width);
                 }
+                console.log(this.width);
             }           
         }       
     }

@@ -1243,6 +1243,7 @@ class Chicken {
                 if (sprite.x > (Constants_1.STAGE_WIDTH - this.width)) {
                     sprite.x = (Constants_1.STAGE_WIDTH - this.width);
                 }
+                console.log(this.width);
             }
             else if (this._direction == Chicken.UP) {
                 sprite.y = sprite.y - this._speed;
@@ -1253,6 +1254,7 @@ class Chicken {
                 if (sprite.y < 0) {
                     sprite.y = 0;
                 }
+                console.log(this.width);
             }
             else if (this._direction == Chicken.DOWN) {
                 sprite.y = sprite.y + this._speed;
@@ -1263,6 +1265,7 @@ class Chicken {
                 if (sprite.y > (Constants_1.STAGE_HEIGHT - this.width)) {
                     sprite.y = (Constants_1.STAGE_HEIGHT - this.width);
                 }
+                console.log(this.width);
             }
         }
     }
@@ -1540,6 +1543,7 @@ function onReady(e) {
                     screenManager.showGameOver();
                     corn.hideMe();
                     nest.hideMe();
+                    chicken.stageClear();
                 }
                 if (pointsGained > 15) {
                     pointsGained = pointsGained - 15;
@@ -4941,7 +4945,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("7aec4d7616a1e40b139c")
+/******/ 		__webpack_require__.h = () => ("af9b1a807abd9d8c9ecd")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

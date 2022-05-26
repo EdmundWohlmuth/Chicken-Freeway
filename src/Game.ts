@@ -131,6 +131,7 @@ function onReady(e:createjs.Event):void {
                     screenManager.showGameOver();
                     corn.hideMe();
                     nest.hideMe();
+                    chicken.stageClear();
                 }
                 if (pointsGained > 15) {
                     pointsGained = pointsGained - 15;
