@@ -91,13 +91,15 @@ export class Chicken {
     public killMe():void {
         let sprite:createjs.Sprite = this._sprite;
         this._state = Chicken.STATE_DEAD;
-        // decerement life
-        this._sprite.dispatchEvent(this.lifeDecrement);
-
+       
         // create cooked chicken
         this._deadSprite.x = sprite.x;
         this._deadSprite.y = sprite.y;
         this.stage.addChild(this._deadSprite);
+
+        // decerement life
+        this._sprite.dispatchEvent(this.lifeDecrement);
+
         
         // reset player pos
         sprite.x = CHICKEN_START_X;
